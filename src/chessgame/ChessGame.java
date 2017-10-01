@@ -2,8 +2,6 @@ package chessgame;
 
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
@@ -18,25 +16,25 @@ public class ChessGame {
     }
 }
 class GameFrame extends JFrame{
-    private JLabel[] WhitePawns = new JLabel[8];
-    private JLabel WhiteLeftKnight = new JLabel("here");
-    private JLabel WhiteRightKnight = new JLabel("here");
-    private JLabel WhiteLeftBishop = new JLabel("here");
-    private JLabel WhiteRightBishop = new JLabel("here");
-    private JLabel WhiteLeftRook = new JLabel("here");
-    private JLabel WhiteRightRook = new JLabel("here");
-    private JLabel WhiteQueen = new JLabel("here");
-    private JLabel WhiteKing = new JLabel("here");
+    private Piece[] WhitePawns = new Piece[8];
+    private Piece WhiteLeftKnight = new Piece("WhiteLeftKnight");
+    private Piece WhiteRightKnight = new Piece("WhiteRightKnight");
+    private Piece WhiteLeftBishop = new Piece("WhiteLeftBishop");
+    private Piece WhiteRightBishop = new Piece("WhiteRightBishop");
+    private Piece WhiteLeftRook = new Piece("WhiteLeftRook");
+    private Piece WhiteRightRook = new Piece("WhiteRightRook");
+    private Piece WhiteQueen = new Piece("WhiteQueen");
+    private Piece WhiteKing = new Piece("WhiteKing");
     
-    private JLabel[] BlackPawns = new JLabel[8];
-    private JLabel BlackLeftKnight = new JLabel();
-    private JLabel BlackRightKnight = new JLabel();
-    private JLabel BlackLeftBishop = new JLabel();
-    private JLabel BlackRightBishop = new JLabel();
-    private JLabel BlackLeftRook = new JLabel();
-    private JLabel BlackRightRook = new JLabel();
-    private JLabel BlackQueen = new JLabel();
-    private JLabel BlackKing = new JLabel();
+    private Piece[] BlackPawns = new Piece[8];
+    private Piece BlackLeftKnight = new Piece("BlackLeftKnight");
+    private Piece BlackRightKnight = new Piece("BlackRightKnight");
+    private Piece BlackLeftBishop = new Piece("BlackLeftBishop");
+    private Piece BlackRightBishop = new Piece("BlackRightBishop");
+    private Piece BlackLeftRook = new Piece("BlackLeftRook");
+    private Piece BlackRightRook = new Piece("BlackRightRook");
+    private Piece BlackQueen = new Piece("BlackQueen");
+    private Piece BlackKing = new Piece("BlackKing");
     
     private Tile[][] Tiles = new Tile[8][8];
     
@@ -57,7 +55,7 @@ class GameFrame extends JFrame{
     private JPanel ppl = new JPanel();
     GameFrame(){
         
-        this.setTitle("masr");
+        this.setTitle("Chess2shba7");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setBounds(300,10,646,669);
         this.setResizable(false);
@@ -106,76 +104,76 @@ class GameFrame extends JFrame{
             }
         }
         for(int i = 0; i < 8; i++){
-            WhitePawns[i] = new JLabel();
+            WhitePawns[i] = new Piece("WhitePawns");
             WhitePawns[i].setIcon(WhitePawnImg);
             WhitePawns[i].setBounds(Tiles[6][i].getBounds());
-            ppl.add(WhitePawns[i]);
+            Tiles[6][i].add(WhitePawns[i]);
             
-            BlackPawns[i] = new JLabel();
+            BlackPawns[i] = new Piece("BlackPawn");
             BlackPawns[i].setIcon(BlackPawnImg);
             WhitePawns[i].setBounds(Tiles[1][i].getBounds());
-            ppl.add(WhitePawns[i]);
+            Tiles[1][i].add(BlackPawns[i]);
         }
         WhiteLeftKnight.setIcon(WhiteKnightImg);
         WhiteLeftKnight.setBounds(Tiles[7][1].getBounds());
         WhiteRightKnight.setIcon(WhiteKnightImg);
         WhiteRightKnight.setBounds(Tiles[7][6].getBounds());
-        System.out.println(Tiles[0][0].getBounds());
-        ppl.add(WhiteLeftKnight);
-        ppl.add(WhiteRightKnight);
+        Tiles[7][1].add(WhiteLeftKnight);
+        Tiles[7][6].add(WhiteRightKnight);
         
         BlackLeftKnight.setIcon(BlackKnightImg);
         BlackLeftKnight.setBounds(Tiles[0][1].getBounds());
         BlackRightKnight.setIcon(BlackKnightImg);
         BlackRightKnight.setBounds(Tiles[0][6].getBounds());
-        ppl.add(BlackLeftKnight);
-        ppl.add(BlackRightKnight);
+        Tiles[0][1].add(BlackLeftKnight);
+        Tiles[0][6].add(BlackRightKnight);
         
         WhiteLeftRook.setIcon(WhiteRookImg);
         WhiteLeftRook.setBounds(Tiles[7][0].getBounds());
         WhiteRightRook.setIcon(WhiteRookImg);
         WhiteRightRook.setBounds(Tiles[7][7].getBounds());
-        ppl.add(WhiteLeftRook);
-        ppl.add(WhiteRightRook);
+        Tiles[7][0].add(WhiteLeftRook);
+        Tiles[7][7].add(WhiteRightRook);
         
         BlackLeftRook.setIcon(BlackRookImg);
         BlackLeftRook.setBounds(Tiles[0][0].getBounds());
         BlackRightRook.setIcon(BlackRookImg);
         BlackRightRook.setBounds(Tiles[0][7].getBounds());
-        ppl.add(BlackLeftRook);
-        ppl.add(BlackRightRook);
+        Tiles[0][0].add(BlackLeftRook);
+        Tiles[0][7].add(BlackRightRook);
         
         WhiteLeftBishop.setIcon(WhiteBishopImg);
         WhiteLeftBishop.setBounds(Tiles[7][2].getBounds());
         WhiteRightBishop.setIcon(WhiteBishopImg);
         WhiteRightBishop.setBounds(Tiles[7][5].getBounds());
-        ppl.add(WhiteLeftBishop);
-        ppl.add(WhiteRightBishop);
+        Tiles[7][2].add(WhiteLeftBishop);
+        Tiles[7][5].add(WhiteRightBishop);
         
         BlackLeftBishop.setIcon(BlackBishopImg);
         BlackLeftBishop.setBounds(Tiles[0][2].getBounds());
         BlackRightBishop.setIcon(BlackBishopImg);
         BlackRightBishop.setBounds(Tiles[0][5].getBounds());
-        ppl.add(BlackLeftBishop);
-        ppl.add(BlackRightBishop);
+        Tiles[0][2].add(BlackLeftBishop);
+        Tiles[0][5].add(BlackRightBishop);
         
         WhiteKing.setIcon(WhiteKingImg);
         WhiteKing.setBounds(Tiles[7][4].getBounds());
         WhiteQueen.setIcon(WhiteQueenImg);
         WhiteQueen.setBounds(Tiles[7][3].getBounds());
-        ppl.add(WhiteKing);
-        ppl.add(WhiteQueen);
+        Tiles[7][4].add(WhiteKing);
+        Tiles[7][3].add(WhiteQueen);
         
         BlackKing.setIcon(BlackKingImg);
         BlackKing.setBounds(Tiles[0][4].getBounds());
         BlackQueen.setIcon(BlackQueenImg);
         BlackQueen.setBounds(Tiles[0][3].getBounds());
-        ppl.add(BlackKing);
-        ppl.add(BlackQueen);
+        Tiles[0][4].add(BlackKing);
+        Tiles[0][3].add(BlackQueen);
     }
     
     class Hole extends MouseAdapter{
         private int i,j;
+        private 
         Hole(int ind1, int ind2){
             i = ind1;
             j = ind2;
@@ -196,8 +194,11 @@ class GameFrame extends JFrame{
         }
     }
     
-    class Piece{
-        
+    class Piece extends JLabel{
+        private String Name;
+        Piece(String name){
+            Name = name;
+        }
     }
 }
 
