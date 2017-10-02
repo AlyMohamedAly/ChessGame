@@ -79,6 +79,7 @@ class GameFrame extends JFrame{
         }
         for(int i = 0, j = 0; j < 8; i += 2){
             Tiles[j][i].setBackground(W);
+            Tiles[j][i].setColor(W);
             if((i+2) % 8 == 0){
                 j += 2;
                 i = -2;
@@ -86,6 +87,7 @@ class GameFrame extends JFrame{
         }
         for(int i = 0, j = 1; j < 8; i += 2){
             Tiles[j][i].setBackground(B);
+            Tiles[j][i].setColor(B);
             if((i+2) % 8 == 0){
                 j += 2;
                 i = -2;
@@ -93,6 +95,7 @@ class GameFrame extends JFrame{
         }
         for(int i = 1, j = 1; j < 8; i += 2){
             Tiles[j][i].setBackground(W);
+            Tiles[j][i].setColor(W);
             if((i+1) % 8 == 0){
                 j += 2;
                 i = -1;
@@ -100,6 +103,7 @@ class GameFrame extends JFrame{
         }
         for(int i = 1, j = 0; j < 8; i += 2){
             Tiles[j][i].setBackground(B);
+            Tiles[j][i].setColor(B);
             if((i+1) % 8 == 0){
                 j += 2;
                 i = -1;
@@ -184,11 +188,10 @@ class GameFrame extends JFrame{
         {
             Color B = new Color(145, 83, 55);
             Color W = new Color(249, 217, 202);
-            Color WY = new Color(234, 230, 119);
-            Color BY = new Color(238, 234, 116);
+            Color Y = new Color(234, 230, 119);
             
             if(current.getPiece() != null){
-                if(current.getBackground().getRed() == WY.getRed()){
+                if(current.getColor().getRGB()== W.getRGB()){
                     current.WhiteTile();
                     Piece ps = current.getPiece();
                     current.removePiece();
@@ -207,19 +210,10 @@ class GameFrame extends JFrame{
                     current = EmptyTile();
                 }
             }
-            else{
-                if(Tiles[i][j].getPiece() != null){
-                    if(Tiles[i][j].getBackground().getRed()== B.getRed()){
-                        Tiles[i][j].setBackground(BY);
-                        current = Tiles[i][j];
-                        Tiles[i][j].repaint();
-                    }
-                    else if(Tiles[i][j].getBackground().getRed() == W.getRed()){
-                            Tiles[i][j].setBackground(WY);
-                            current = Tiles[i][j];
-                            Tiles[i][j].repaint();
-                    }
-                }
+            else if(Tiles[i][j].getPiece() != null){
+                    Tiles[i][j].setBackground(Y);
+                    current = Tiles[i][j];
+                    Tiles[i][j].repaint();
             }
         }
     }
@@ -237,6 +231,14 @@ class GameFrame extends JFrame{
     }
     
     class Tile extends JPanel{
+        private Color C;
+        
+        void setColor(Color c){
+            C = c;
+        }
+        Color getColor(){
+            return C;
+        }
         
         void setPiece(Piece pp){
             this.add(pp);
