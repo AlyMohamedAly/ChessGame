@@ -16,25 +16,25 @@ public class ChessGame {
     }
 }
 class GameFrame extends JFrame{
-    private Piece[] WhitePawns = new Piece[8];
-    private Piece WhiteLeftKnight = new Piece("WhiteLeftKnight");
-    private Piece WhiteRightKnight = new Piece("WhiteRightKnight");
-    private Piece WhiteLeftBishop = new Piece("WhiteLeftBishop");
-    private Piece WhiteRightBishop = new Piece("WhiteRightBishop");
-    private Piece WhiteLeftRook = new Piece("WhiteLeftRook");
-    private Piece WhiteRightRook = new Piece("WhiteRightRook");
-    private Piece WhiteQueen = new Piece("WhiteQueen");
-    private Piece WhiteKing = new Piece("WhiteKing");
+    private Pawn[] WhitePawns = new Pawn[8];
+    private Knight WhiteLeftKnight = new Knight("WhiteLeftKnight");
+    private Knight WhiteRightKnight = new Knight("WhiteRightKnight");
+    private Bishop WhiteLeftBishop = new Bishop("WhiteLeftBishop");
+    private Bishop WhiteRightBishop = new Bishop("WhiteRightBishop");
+    private Rook WhiteLeftRook = new Rook("WhiteLeftRook");
+    private Rook WhiteRightRook = new Rook("WhiteRightRook");
+    private Queen WhiteQueen = new Queen("WhiteQueen");
+    private King WhiteKing = new King("WhiteKing");
     
-    private Piece[] BlackPawns = new Piece[8];
-    private Piece BlackLeftKnight = new Piece("BlackLeftKnight");
-    private Piece BlackRightKnight = new Piece("BlackRightKnight");
-    private Piece BlackLeftBishop = new Piece("BlackLeftBishop");
-    private Piece BlackRightBishop = new Piece("BlackRightBishop");
-    private Piece BlackLeftRook = new Piece("BlackLeftRook");
-    private Piece BlackRightRook = new Piece("BlackRightRook");
-    private Piece BlackQueen = new Piece("BlackQueen");
-    private Piece BlackKing = new Piece("BlackKing");
+    private Pawn[] BlackPawns = new Pawn[8];
+    private Knight BlackLeftKnight = new Knight("BlackLeftKnight");
+    private Knight BlackRightKnight = new Knight("BlackRightKnight");
+    private Bishop BlackLeftBishop = new Bishop("BlackLeftBishop");
+    private Bishop BlackRightBishop = new Bishop("BlackRightBishop");
+    private Rook BlackLeftRook = new Rook("BlackLeftRook");
+    private Rook BlackRightRook = new Rook("BlackRightRook");
+    private Queen BlackQueen = new Queen("BlackQueen");
+    private King BlackKing = new King("BlackKing");
     
     private Tile[][] Tiles = new Tile[8][8];
     
@@ -78,7 +78,7 @@ class GameFrame extends JFrame{
         }
         return null;
     }
-    class Piece extends JLabel{
+    abstract class Piece extends JLabel{
         private String Name;
         Piece(String name){
             Name = name;
@@ -88,6 +88,142 @@ class GameFrame extends JFrame{
         }
         String GetType(){
             return Name;
+        }
+         public abstract boolean canMove(Tile c, Tile t);
+    }
+    class Pawn extends Piece{
+        private boolean Moved = false;
+        Pawn(String s){
+            super(s);
+        }
+        public boolean canMove(Tile c, Tile t){
+            int CI = c.getX()/80;
+            int CJ = c.getY()/80;
+            
+            int TI = t.getX()/80;
+            int TJ = t.getY()/80;
+            if(Moved){
+                if(CI == TI && TJ == CJ+1)
+                    return true;
+            }
+            else{
+                Moved = true;
+                if(CI == TI && TJ == CJ+1)
+                    return true;
+                if(CI == TI && TJ == CJ+2 && Tiles[TI][TJ].getPiece() == null)
+                    return true;
+            }
+            return false;
+        }
+    }
+    class Knight extends Piece{
+        Knight(String s){
+            super(s);
+        }
+        public boolean canMove(Tile c, Tile t){
+            int CI = 80/c.getX();
+            int CJ = 80/c.getY();
+            
+            int TI = 80/t.getX();
+            int TJ = 80/t.getY();
+            
+            if(TI == CI-2 && TJ == CJ-1)
+                return true;
+            if(TI == CI-2 && TJ == CJ+1)
+                return true;
+            if(TI == CI+2 && TJ == CJ-1)
+                return true;
+            return TI == CI+2 && TJ == CJ+1;
+        }
+    }
+    class King extends Piece{
+        King(String s){
+            super(s);
+        }
+        public boolean canMove(Tile c, Tile t){         // needs adjusyments
+            int CI = 80/c.getX();
+            int CJ = 80/c.getY();
+            
+            int TI = 80/t.getX();
+            int TJ = 80/t.getY();
+            
+            if(TI == CI && TJ == CJ+1)
+                return true;
+            if(TI == CI && TJ == CJ-1)
+                return true;
+            
+            if(TI == CI-1 && TJ == CJ)
+                return true;
+            if(TI == CI-1 && TJ == CJ-1)
+                return true;
+            if(TI == CI-1 && TJ == CJ+1)
+                return true;
+            
+            if(TI == CI+1 && TJ == CJ)
+                return true;
+            if(TI == CI+1 && TJ == CJ+1)
+                return true;
+            return TI == CI+1 && TJ == CJ-1;
+        }
+    }
+    class Rook extends Piece{
+        Rook(String s){
+            super(s);
+        }
+        public boolean canMove(Tile c, Tile t){
+            int CI = 80/c.getX();
+            int CJ = 80/c.getY();
+            
+            int TI = 80/t.getX();
+            int TJ = 80/t.getY();
+            
+            if(TI == CI-2 && TJ == CJ-1)
+                return true;
+            if(TI == CI-2 && TJ == CJ+1)
+                return true;
+            if(TI == CI+2 && TJ == CJ-1)
+                return true;
+            return TI == CI+2 && TJ == CJ+1;
+        }
+    }
+    class Bishop extends Piece{
+        Bishop(String s){
+            super(s);
+        }
+        public boolean canMove(Tile c, Tile t){
+            int CI = 80/c.getX();
+            int CJ = 80/c.getY();
+            
+            int TI = 80/t.getX();
+            int TJ = 80/t.getY();
+            
+            if(TI == CI-2 && TJ == CJ-1)
+                return true;
+            if(TI == CI-2 && TJ == CJ+1)
+                return true;
+            if(TI == CI+2 && TJ == CJ-1)
+                return true;
+            return TI == CI+2 && TJ == CJ+1;
+        }
+    }
+    class Queen extends Piece{
+        Queen(String s){
+            super(s);
+        }
+        public boolean canMove(Tile c, Tile t){
+            int CI = 80/c.getX();
+            int CJ = 80/c.getY();
+            
+            int TI = 80/t.getX();
+            int TJ = 80/t.getY();
+            
+            if(TI == CI-2 && TJ == CJ-1)
+                return true;
+            if(TI == CI-2 && TJ == CJ+1)
+                return true;
+            if(TI == CI+2 && TJ == CJ-1)
+                return true;
+            return TI == CI+2 && TJ == CJ+1;
         }
     }
     class Tile extends JPanel{
@@ -137,28 +273,32 @@ class GameFrame extends JFrame{
                     current.BlackTile();
                 
                 if(Tiles[i][j].getPiece() != null){
-                    ps = current.getPiece();
-                    Tiles[i][j].removePiece();
-                    current.removePiece();
-                    Tiles[i][j].setPiece(ps);
-                    current.repaint();
-                    Tiles[i][j].repaint();
-                    current = EmptyTile();
+                    if(current.getPiece().canMove(current, Tiles[i][j])){
+                        if(Tiles[i][j].getPiece().getColor().equals(current.getPiece().getColor())){
+                        }
+                        else{
+                        ps = current.getPiece();
+                        Tiles[i][j].removePiece();
+                        current.removePiece();
+                        Tiles[i][j].setPiece(ps);
+                        
+                        }
+                    }
                 }
                 else{
                 ps = current.getPiece();
                 current.removePiece();
                 Tiles[i][j].setPiece(ps);
-                current.repaint();
-                Tiles[i][j].repaint();
-                current = EmptyTile();
                 }
+                current.repaint();
+                current = EmptyTile();
             }
             else if(Tiles[i][j].getPiece() != null){
                     Tiles[i][j].setBackground(Y);
                     current = Tiles[i][j];
-                    Tiles[i][j].repaint();
+                    
             }
+            Tiles[i][j].repaint();
         }
     }
     private void init() {
@@ -205,12 +345,12 @@ class GameFrame extends JFrame{
             }
         }
         for(int i = 0; i < 8; i++){
-            WhitePawns[i] = new Piece("WhitePawns");
+            WhitePawns[i] = new Pawn("WhitePawns");
             WhitePawns[i].setIcon(WhitePawnImg);
             WhitePawns[i].setBounds(Tiles[6][i].getBounds());
             Tiles[6][i].add(WhitePawns[i]);
             
-            BlackPawns[i] = new Piece("BlackPawn");
+            BlackPawns[i] = new Pawn("BlackPawn");
             BlackPawns[i].setIcon(BlackPawnImg);
             WhitePawns[i].setBounds(Tiles[1][i].getBounds());
             Tiles[1][i].add(BlackPawns[i]);
