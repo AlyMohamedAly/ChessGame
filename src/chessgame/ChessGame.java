@@ -53,6 +53,8 @@ class GameFrame extends JFrame{
     private ImageIcon BlackKingImg = new ImageIcon("Black_King.png");
     
     private JPanel ppl = new JPanel();
+    private Tile current = new Tile();
+    private int player = 1;
     GameFrame(){
         
         this.setTitle("Chess2shba7");
@@ -180,11 +182,44 @@ class GameFrame extends JFrame{
         }
         public void mouseClicked(MouseEvent e)
         {
-            Piece ps =(Piece) Tiles[7][3].getComponent(0);
-            Tiles[7][3].removePiece();
-            Tiles[3][3].setPiece(ps);
-            Tiles[7][3].repaint();
-            Tiles[3][3].repaint();
+            Color B = new Color(145, 83, 55);
+            Color W = new Color(249, 217, 202);
+            Color WY = new Color(234, 230, 119);
+            Color BY = new Color(238, 234, 116);
+            
+            if(current.getPiece() != null){
+                System.out.println(current.getBackground());
+                if(current.getBackground().getRed() == WY.getRed()){
+                    current.WhiteTile();
+                    Piece ps = current.getPiece();
+                    current.removePiece();
+                    Tiles[i][j].setPiece(ps);
+                    current.repaint();
+                    Tiles[i][j].repaint();
+                }
+                else{
+                    current.BlackTile();
+                    Piece ps = current.getPiece();
+                    current.removePiece();
+                    Tiles[i][j].setPiece(ps);
+                    current.repaint();
+                    Tiles[i][j].repaint();
+                }
+            }
+            else{
+                if(Tiles[i][j].getPiece() != null){
+                    if(Tiles[i][j].getBackground().getRed()== B.getRed()){
+                        Tiles[i][j].setBackground(BY);
+                        current = Tiles[i][j];
+                        Tiles[i][j].repaint();
+                    }
+                    else if(Tiles[i][j].getBackground().getRed() == W.getRed()){
+                            Tiles[i][j].setBackground(WY);
+                            current = Tiles[i][j];
+                            Tiles[i][j].repaint();
+                    }
+                }
+            }
         }
     }
     
@@ -194,10 +229,18 @@ class GameFrame extends JFrame{
             this.add(pp);
         }
         Piece getPiece(){
+            if(this.getComponentCount() == 0)
+                return null;
             return (Piece)this.getComponent(0);
         }
         void removePiece(){
             this.removeAll();
+        }
+        void BlackTile(){
+            this.setBackground(new Color(145, 83, 55));
+        }
+        void WhiteTile(){
+            this.setBackground(new Color(249, 217, 202));
         }
     }
     
@@ -208,6 +251,9 @@ class GameFrame extends JFrame{
         }
         String getColor(){
             return Name.substring(0, 5);
+        }
+        String GetType(){
+            return Name;
         }
     }
 }
