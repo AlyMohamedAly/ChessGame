@@ -188,7 +188,6 @@ class GameFrame extends JFrame{
             Color BY = new Color(238, 234, 116);
             
             if(current.getPiece() != null){
-                System.out.println(current.getBackground());
                 if(current.getBackground().getRed() == WY.getRed()){
                     current.WhiteTile();
                     Piece ps = current.getPiece();
@@ -196,6 +195,7 @@ class GameFrame extends JFrame{
                     Tiles[i][j].setPiece(ps);
                     current.repaint();
                     Tiles[i][j].repaint();
+                    current = EmptyTile();
                 }
                 else{
                     current.BlackTile();
@@ -204,6 +204,7 @@ class GameFrame extends JFrame{
                     Tiles[i][j].setPiece(ps);
                     current.repaint();
                     Tiles[i][j].repaint();
+                    current = EmptyTile();
                 }
             }
             else{
@@ -221,6 +222,18 @@ class GameFrame extends JFrame{
                 }
             }
         }
+    }
+    public Tile EmptyTile(){
+        Tile pp;
+        for (int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if(Tiles[i][j].getPiece() == null){
+                    pp = Tiles[i][j];
+                    return pp;
+                }
+            }
+        }
+        return null;
     }
     
     class Tile extends JPanel{
