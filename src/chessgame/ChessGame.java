@@ -173,24 +173,31 @@ class GameFrame extends JFrame{
     
     class Hole extends MouseAdapter{
         private int i,j;
-        private 
+        private Piece pp = null;
         Hole(int ind1, int ind2){
             i = ind1;
             j = ind2;
         }
         public void mouseClicked(MouseEvent e)
         {
-            Tiles[i][j].setBackground(Color.red);
+            Piece ps =(Piece) Tiles[7][3].getComponent(0);
+            Tiles[7][3].removePiece();
+            Tiles[3][3].setPiece(ps);
+            Tiles[7][3].repaint();
+            Tiles[3][3].repaint();
         }
     }
     
     class Tile extends JPanel{
-        private Piece pp = null;
-        void setPiece(Piece p){
-            pp = p;
+        
+        void setPiece(Piece pp){
+            this.add(pp);
         }
         Piece getPiece(){
-            return pp;
+            return (Piece)this.getComponent(0);
+        }
+        void removePiece(){
+            this.removeAll();
         }
     }
     
@@ -198,6 +205,9 @@ class GameFrame extends JFrame{
         private String Name;
         Piece(String name){
             Name = name;
+        }
+        String getColor(){
+            return Name.substring(0, 5);
         }
     }
 }
