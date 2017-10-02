@@ -55,8 +55,8 @@ class GameFrame extends JFrame{
     private JPanel ppl = new JPanel();
     private Tile current = new Tile();
     private int player = 1;
+    
     GameFrame(){
-        
         this.setTitle("Chess2shba7");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setBounds(300,10,646,669);
@@ -65,6 +65,101 @@ class GameFrame extends JFrame{
         ppl.setLayout(null);
         init();
         C.add(ppl);
+    }
+    public Tile EmptyTile(){
+        Tile pp;
+        for (int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if(Tiles[i][j].getPiece() == null){
+                    pp = Tiles[i][j];
+                    return pp;
+                }
+            }
+        }
+        return null;
+    }
+    class Piece extends JLabel{
+        private String Name;
+        Piece(String name){
+            Name = name;
+        }
+        String getColor(){
+            return Name.substring(0, 5);
+        }
+        String GetType(){
+            return Name;
+        }
+    }
+    class Tile extends JPanel{
+        private Color C;
+        
+        void setColor(Color c){
+            C = c;
+        }
+        Color getColor(){
+            return C;
+        }
+        
+        void setPiece(Piece pp){
+            this.add(pp);
+        }
+        Piece getPiece(){
+            if(this.getComponentCount() == 0)
+                return null;
+            return (Piece)this.getComponent(0);
+        }
+        void removePiece(){
+            this.removeAll();
+        }
+        
+        void BlackTile(){
+            this.setBackground(new Color(145, 83, 55));
+        }
+        void WhiteTile(){
+            this.setBackground(new Color(249, 217, 202));
+        }
+    }
+    class Hole extends MouseAdapter{
+        private int i,j;
+        Hole(int ind1, int ind2){
+            i = ind1;
+            j = ind2;
+        }
+        public void mouseClicked(MouseEvent e)
+        {
+            Color W = new Color(249, 217, 202);
+            Color Y = new Color(234, 230, 119);
+            Piece ps;
+            if(current.getPiece() != null){
+                if(current.getColor().getRGB()== W.getRGB())
+                    current.WhiteTile();
+                else
+                    current.BlackTile();
+                
+                if(Tiles[i][j].getPiece() != null){
+                    ps = current.getPiece();
+                    Tiles[i][j].removePiece();
+                    current.removePiece();
+                    Tiles[i][j].setPiece(ps);
+                    current.repaint();
+                    Tiles[i][j].repaint();
+                    current = EmptyTile();
+                }
+                else{
+                ps = current.getPiece();
+                current.removePiece();
+                Tiles[i][j].setPiece(ps);
+                current.repaint();
+                Tiles[i][j].repaint();
+                current = EmptyTile();
+                }
+            }
+            else if(Tiles[i][j].getPiece() != null){
+                    Tiles[i][j].setBackground(Y);
+                    current = Tiles[i][j];
+                    Tiles[i][j].repaint();
+            }
+        }
     }
     private void init() {
         Color B = new Color(145, 83, 55);
@@ -176,100 +271,4 @@ class GameFrame extends JFrame{
         Tiles[0][4].add(BlackKing);
         Tiles[0][3].add(BlackQueen);
     }
-    
-    class Hole extends MouseAdapter{
-        private int i,j;
-        private Piece pp = null;
-        Hole(int ind1, int ind2){
-            i = ind1;
-            j = ind2;
-        }
-        public void mouseClicked(MouseEvent e)
-        {
-            Color B = new Color(145, 83, 55);
-            Color W = new Color(249, 217, 202);
-            Color Y = new Color(234, 230, 119);
-            
-            if(current.getPiece() != null){
-                if(current.getColor().getRGB()== W.getRGB()){
-                    current.WhiteTile();
-                    Piece ps = current.getPiece();
-                    current.removePiece();
-                    Tiles[i][j].setPiece(ps);
-                    current.repaint();
-                    Tiles[i][j].repaint();
-                    current = EmptyTile();
-                }
-                else{
-                    current.BlackTile();
-                    Piece ps = current.getPiece();
-                    current.removePiece();
-                    Tiles[i][j].setPiece(ps);
-                    current.repaint();
-                    Tiles[i][j].repaint();
-                    current = EmptyTile();
-                }
-            }
-            else if(Tiles[i][j].getPiece() != null){
-                    Tiles[i][j].setBackground(Y);
-                    current = Tiles[i][j];
-                    Tiles[i][j].repaint();
-            }
-        }
-    }
-    public Tile EmptyTile(){
-        Tile pp;
-        for (int i = 0; i < 8; i++){
-            for(int j = 0; j < 8; j++){
-                if(Tiles[i][j].getPiece() == null){
-                    pp = Tiles[i][j];
-                    return pp;
-                }
-            }
-        }
-        return null;
-    }
-    
-    class Tile extends JPanel{
-        private Color C;
-        
-        void setColor(Color c){
-            C = c;
-        }
-        Color getColor(){
-            return C;
-        }
-        
-        void setPiece(Piece pp){
-            this.add(pp);
-        }
-        Piece getPiece(){
-            if(this.getComponentCount() == 0)
-                return null;
-            return (Piece)this.getComponent(0);
-        }
-        void removePiece(){
-            this.removeAll();
-        }
-        void BlackTile(){
-            this.setBackground(new Color(145, 83, 55));
-        }
-        void WhiteTile(){
-            this.setBackground(new Color(249, 217, 202));
-        }
-    }
-    
-    class Piece extends JLabel{
-        private String Name;
-        Piece(String name){
-            Name = name;
-        }
-        String getColor(){
-            return Name.substring(0, 5);
-        }
-        String GetType(){
-            return Name;
-        }
-    }
 }
-
