@@ -211,7 +211,7 @@ public class GameFrame extends JFrame {
             Color W = new Color(249, 217, 202);
             Color Y = new Color(234, 230, 119);
             Color G = new Color(127, 229, 55);
-            Color R = new Color(216, 60, 60);
+            Color R = new Color(255, 22, 22);
             Piece ps;
             if(current.getPiece() != null){
                 if(current.getColor().getRGB()== W.getRGB())
