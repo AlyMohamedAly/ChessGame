@@ -103,16 +103,31 @@ class GameFrame extends JFrame{
             
             int TI = t.getY()/80;
             int TJ = t.getX()/80;
-            if(Moved){
-                if(TJ == CJ && TI == CI-1)
-                    return true;
+            if(this.getColor().equals("White")){
+                if(Moved){
+                    if(TJ == CJ && TI == CI-1)
+                        return true;
+                }
+                else{
+                    Moved = true;   // law 3amal call lel function w mamsheesh htb2a true
+                    if(TJ == CJ && TI == CI-1)
+                        return true;
+                    if(TJ == CJ && TI == CI-2 && Tiles[CI-1][CJ].getPiece() == null)
+                        return true;
+                }
             }
             else{
-                Moved = true;   // law 3amal call lel function w mamsheesh htb2a true
-                if(TJ == CJ && TI == CI-1)
-                    return true;
-                if(TJ == CJ && TI == CI-2 && Tiles[CI-1][CJ].getPiece() == null)
-                    return true;
+                if(Moved){
+                    if(TJ == CJ && TI == CI+1)
+                        return true;
+                }
+                else{
+                    Moved = true;   // law 3amal call lel function w mamsheesh htb2a true
+                    if(TJ == CJ && TI == CI+1)
+                        return true;
+                    if(TJ == CJ && TI == CI+2 && Tiles[CI+1][CJ].getPiece() == null)
+                        return true;
+                }
             }
             return false;
         }
@@ -146,7 +161,7 @@ class GameFrame extends JFrame{
             
             if(TI == CI-1 && TJ == CJ+2)
                 return true;
-            return TI == CI-1 && TJ == CJ-2;
+            return TI == CI+1 && TJ == CJ+2;
         }
     }
     class King extends Piece{
@@ -196,6 +211,10 @@ class GameFrame extends JFrame{
                 return true;
             if(TJ == CJ && TI == CI+1)
                     return true;
+            if(TI == CI && TJ == CJ-1)
+                return true;
+            if(TJ == CJ && TI == CI-1)
+                    return true;
             try{
             if(Tiles[CI][CJ+1].getPiece() == null){
                 if(TI == CI && TJ == CJ+2)
@@ -224,25 +243,81 @@ class GameFrame extends JFrame{
             }catch(ArrayIndexOutOfBoundsException ex){
                 
             }
+            try{
+            if(Tiles[CI][CJ-1].getPiece() == null){
+                if(TI == CI && TJ == CJ-2)
+                    return true;
+                if(Tiles[CI][CJ-2].getPiece() == null){
+                    if(TI == CI && TJ == CJ-3)
+                        return true;
+                    if(Tiles[CI][CJ-3].getPiece() == null){
+                        if(TI == CI && TJ == CJ-4)
+                            return true;
+                        if(Tiles[CI][CJ-4].getPiece() == null){
+                            if(TI == CI && TJ == CJ-5)
+                                return true;
+                            if(Tiles[CI][CJ-5].getPiece() == null){
+                                if(TI == CI && TJ == CJ-6)
+                                    return true;
+                                if(Tiles[CI][CJ-6].getPiece() == null){
+                                    if(TI == CI && TJ == CJ-7)
+                                        return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            }catch(ArrayIndexOutOfBoundsException ex){
+                
+            }
             
             try{
-            if(Tiles[CI][CJ+1].getPiece() == null){
+            if(Tiles[CI+1][CJ].getPiece() == null){
                 if(TJ == CJ && TI == CI+2)
                     return true;
-                if(Tiles[CI][CJ+2].getPiece() == null){
+                if(Tiles[CI+2][CJ].getPiece() == null){
                     if(TJ == CJ && TI == CI+3)
                         return true;
-                    if(Tiles[CI][CJ+3].getPiece() == null){
+                    if(Tiles[CI+3][CJ].getPiece() == null){
                         if(TJ == CJ && TI == CI+4)
                             return true;
-                        if(Tiles[CI][CJ+4].getPiece() == null){
+                        if(Tiles[CI+4][CJ].getPiece() == null){
                             if(TJ == CJ && TI == CI+5)
                                 return true;
-                            if(Tiles[CI][CJ+5].getPiece() == null){
+                            if(Tiles[CI+5][CJ].getPiece() == null){
                                 if(TJ == CJ && TI == CI+6)
                                     return true;
-                                if(Tiles[CI][CJ+6].getPiece() == null){
+                                if(Tiles[CI+6][CJ].getPiece() == null){
                                     if(TJ == CJ && TI == CI+7)
+                                        return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            }catch(ArrayIndexOutOfBoundsException ex){
+                
+            }
+            try{
+            if(Tiles[CI-1][CJ].getPiece() == null){
+                if(TJ == CJ && TI == CI-2)
+                    return true;
+                if(Tiles[CI-2][CJ].getPiece() == null){
+                    if(TJ == CJ && TI == CI-3)
+                        return true;
+                    if(Tiles[CI-3][CJ].getPiece() == null){
+                        if(TJ == CJ && TI == CI-4)
+                            return true;
+                        if(Tiles[CI-4][CJ].getPiece() == null){
+                            if(TJ == CJ && TI == CI-5)
+                                return true;
+                            if(Tiles[CI-5][CJ].getPiece() == null){
+                                if(TJ == CJ && TI == CI-6)
+                                    return true;
+                                if(Tiles[CI-6][CJ].getPiece() == null){
+                                    if(TJ == CJ && TI == CI-7)
                                         return true;
                                 }
                             }
@@ -268,13 +343,128 @@ class GameFrame extends JFrame{
             int TI = t.getY()/80;
             int TJ = t.getX()/80;
             
-            if(TI == CI-2 && TJ == CJ-1)
+            if(TI == CI-1 && TJ == CJ-1)
                 return true;
-            if(TI == CI-2 && TJ == CJ+1)
+            if(TJ == CJ+1 && TI == CI+1)
+                    return true;
+            if(TI == CI+1 && TJ == CJ-1)
                 return true;
-            if(TI == CI+2 && TJ == CJ-1)
-                return true;
-            return TI == CI+2 && TJ == CJ+1;
+            if(TJ == CJ+1 && TI == CI-1)
+                    return true;
+            try{
+            if(Tiles[CI+1][CJ+1].getPiece() == null){
+                if(TI == CI+2 && TJ == CJ+2)
+                    return true;
+                if(Tiles[CI+2][CJ+2].getPiece() == null){
+                    if(TI == CI+3 && TJ == CJ+3)
+                        return true;
+                    if(Tiles[CI+3][CJ+3].getPiece() == null){
+                        if(TI == CI+4 && TJ == CJ+4)
+                            return true;
+                        if(Tiles[CI+4][CJ+4].getPiece() == null){
+                            if(TI == CI+5 && TJ == CJ+5)
+                                return true;
+                            if(Tiles[CI+5][CJ+5].getPiece() == null){
+                                if(TI == CI+6 && TJ == CJ+6)
+                                    return true;
+                                if(Tiles[CI+6][CJ+6].getPiece() == null){
+                                    if(TI == CI+7 && TJ == CJ+7)
+                                        return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            }catch(ArrayIndexOutOfBoundsException ex){
+                
+            }
+            try{
+            if(Tiles[CI-1][CJ-1].getPiece() == null){
+                if(TI == CI-2 && TJ == CJ-2)
+                    return true;
+                if(Tiles[CI-2][CJ-2].getPiece() == null){
+                    if(TI == CI-3 && TJ == CJ-3)
+                        return true;
+                    if(Tiles[CI-3][CJ-3].getPiece() == null){
+                        if(TI == CI-4 && TJ == CJ-4)
+                            return true;
+                        if(Tiles[CI-4][CJ-4].getPiece() == null){
+                            if(TI == CI-5 && TJ == CJ-5)
+                                return true;
+                            if(Tiles[CI-5][CJ-5].getPiece() == null){
+                                if(TI == CI-6 && TJ == CJ-6)
+                                    return true;
+                                if(Tiles[CI-6][CJ-6].getPiece() == null){
+                                    if(TI == CI-7 && TJ == CJ-7)
+                                        return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            }catch(ArrayIndexOutOfBoundsException ex){
+                
+            }
+            
+            try{
+            if(Tiles[CI+1][CJ-1].getPiece() == null){
+                if(TJ == CJ-2 && TI == CI+2)
+                    return true;
+                if(Tiles[CI+2][CJ-2].getPiece() == null){
+                    if(TJ == CJ-3 && TI == CI+3)
+                        return true;
+                    if(Tiles[CI+3][CJ-3].getPiece() == null){
+                        if(TJ == CJ-4 && TI == CI+4)
+                            return true;
+                        if(Tiles[CI+4][CJ-4].getPiece() == null){
+                            if(TJ == CJ-5 && TI == CI+5)
+                                return true;
+                            if(Tiles[CI+5][CJ-5].getPiece() == null){
+                                if(TJ == CJ-6 && TI == CI+6)
+                                    return true;
+                                if(Tiles[CI+6][CJ-6].getPiece() == null){
+                                    if(TJ == CJ-7 && TI == CI+7)
+                                        return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            }catch(ArrayIndexOutOfBoundsException ex){
+                
+            }
+            try{
+            if(Tiles[CI-1][CJ+1].getPiece() == null){
+                if(TJ == CJ+2 && TI == CI-2)
+                    return true;
+                if(Tiles[CI-2][CJ+2].getPiece() == null){
+                    if(TJ == CJ+3 && TI == CI-3)
+                        return true;
+                    if(Tiles[CI-3][CJ+3].getPiece() == null){
+                        if(TJ == CJ+4 && TI == CI-4)
+                            return true;
+                        if(Tiles[CI-4][CJ+4].getPiece() == null){
+                            if(TJ == CJ+5 && TI == CI-5)
+                                return true;
+                            if(Tiles[CI-5][CJ+5].getPiece() == null){
+                                if(TJ == CJ+6 && TI == CI-6)
+                                    return true;
+                                if(Tiles[CI-6][CJ+6].getPiece() == null){
+                                    if(TJ == CJ+7 && TI == CI-7)
+                                        return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            }catch(ArrayIndexOutOfBoundsException ex){
+                
+            }
+            return false;
         }
     }
     class Queen extends Piece{
@@ -289,13 +479,249 @@ class GameFrame extends JFrame{
             int TI = t.getY()/80;
             int TJ = t.getX()/80;
             
-            if(TI == CI-2 && TJ == CJ-1)
+            if(TI == CI && TJ == CJ+1)
                 return true;
-            if(TI == CI-2 && TJ == CJ+1)
+            if(TJ == CJ && TI == CI+1)
+                    return true;
+            if(TI == CI && TJ == CJ-1)
                 return true;
-            if(TI == CI+2 && TJ == CJ-1)
+            if(TJ == CJ && TI == CI-1)
+                    return true;
+            if(TI == CI-1 && TJ == CJ-1)
                 return true;
-            return TI == CI+2 && TJ == CJ+1;
+            if(TJ == CJ+1 && TI == CI+1)
+                    return true;
+            if(TI == CI+1 && TJ == CJ-1)
+                return true;
+            if(TJ == CJ+1 && TI == CI-1)
+                    return true;
+            try{
+            if(Tiles[CI][CJ+1].getPiece() == null){
+                if(TI == CI && TJ == CJ+2)
+                    return true;
+                if(Tiles[CI][CJ+2].getPiece() == null){
+                    if(TI == CI && TJ == CJ+3)
+                        return true;
+                    if(Tiles[CI][CJ+3].getPiece() == null){
+                        if(TI == CI && TJ == CJ+4)
+                            return true;
+                        if(Tiles[CI][CJ+4].getPiece() == null){
+                            if(TI == CI && TJ == CJ+5)
+                                return true;
+                            if(Tiles[CI][CJ+5].getPiece() == null){
+                                if(TI == CI && TJ == CJ+6)
+                                    return true;
+                                if(Tiles[CI][CJ+6].getPiece() == null){
+                                    if(TI == CI && TJ == CJ+7)
+                                        return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            }catch(ArrayIndexOutOfBoundsException ex){
+                
+            }
+            try{
+            if(Tiles[CI][CJ-1].getPiece() == null){
+                if(TI == CI && TJ == CJ-2)
+                    return true;
+                if(Tiles[CI][CJ-2].getPiece() == null){
+                    if(TI == CI && TJ == CJ-3)
+                        return true;
+                    if(Tiles[CI][CJ-3].getPiece() == null){
+                        if(TI == CI && TJ == CJ-4)
+                            return true;
+                        if(Tiles[CI][CJ-4].getPiece() == null){
+                            if(TI == CI && TJ == CJ-5)
+                                return true;
+                            if(Tiles[CI][CJ-5].getPiece() == null){
+                                if(TI == CI && TJ == CJ-6)
+                                    return true;
+                                if(Tiles[CI][CJ-6].getPiece() == null){
+                                    if(TI == CI && TJ == CJ-7)
+                                        return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            }catch(ArrayIndexOutOfBoundsException ex){
+                
+            }
+            
+            try{
+            if(Tiles[CI+1][CJ].getPiece() == null){
+                if(TJ == CJ && TI == CI+2)
+                    return true;
+                if(Tiles[CI+2][CJ].getPiece() == null){
+                    if(TJ == CJ && TI == CI+3)
+                        return true;
+                    if(Tiles[CI+3][CJ].getPiece() == null){
+                        if(TJ == CJ && TI == CI+4)
+                            return true;
+                        if(Tiles[CI+4][CJ].getPiece() == null){
+                            if(TJ == CJ && TI == CI+5)
+                                return true;
+                            if(Tiles[CI+5][CJ].getPiece() == null){
+                                if(TJ == CJ && TI == CI+6)
+                                    return true;
+                                if(Tiles[CI+6][CJ].getPiece() == null){
+                                    if(TJ == CJ && TI == CI+7)
+                                        return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            }catch(ArrayIndexOutOfBoundsException ex){
+                
+            }
+            try{
+            if(Tiles[CI-1][CJ].getPiece() == null){
+                if(TJ == CJ && TI == CI-2)
+                    return true;
+                if(Tiles[CI-2][CJ].getPiece() == null){
+                    if(TJ == CJ && TI == CI-3)
+                        return true;
+                    if(Tiles[CI-3][CJ].getPiece() == null){
+                        if(TJ == CJ && TI == CI-4)
+                            return true;
+                        if(Tiles[CI-4][CJ].getPiece() == null){
+                            if(TJ == CJ && TI == CI-5)
+                                return true;
+                            if(Tiles[CI-5][CJ].getPiece() == null){
+                                if(TJ == CJ && TI == CI-6)
+                                    return true;
+                                if(Tiles[CI-6][CJ].getPiece() == null){
+                                    if(TJ == CJ && TI == CI-7)
+                                        return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            }catch(ArrayIndexOutOfBoundsException ex){
+                
+            }
+            try{
+            if(Tiles[CI+1][CJ+1].getPiece() == null){
+                if(TI == CI+2 && TJ == CJ+2)
+                    return true;
+                if(Tiles[CI+2][CJ+2].getPiece() == null){
+                    if(TI == CI+3 && TJ == CJ+3)
+                        return true;
+                    if(Tiles[CI+3][CJ+3].getPiece() == null){
+                        if(TI == CI+4 && TJ == CJ+4)
+                            return true;
+                        if(Tiles[CI+4][CJ+4].getPiece() == null){
+                            if(TI == CI+5 && TJ == CJ+5)
+                                return true;
+                            if(Tiles[CI+5][CJ+5].getPiece() == null){
+                                if(TI == CI+6 && TJ == CJ+6)
+                                    return true;
+                                if(Tiles[CI+6][CJ+6].getPiece() == null){
+                                    if(TI == CI+7 && TJ == CJ+7)
+                                        return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            }catch(ArrayIndexOutOfBoundsException ex){
+                
+            }
+            try{
+            if(Tiles[CI-1][CJ-1].getPiece() == null){
+                if(TI == CI-2 && TJ == CJ-2)
+                    return true;
+                if(Tiles[CI-2][CJ-2].getPiece() == null){
+                    if(TI == CI-3 && TJ == CJ-3)
+                        return true;
+                    if(Tiles[CI-3][CJ-3].getPiece() == null){
+                        if(TI == CI-4 && TJ == CJ-4)
+                            return true;
+                        if(Tiles[CI-4][CJ-4].getPiece() == null){
+                            if(TI == CI-5 && TJ == CJ-5)
+                                return true;
+                            if(Tiles[CI-5][CJ-5].getPiece() == null){
+                                if(TI == CI-6 && TJ == CJ-6)
+                                    return true;
+                                if(Tiles[CI-6][CJ-6].getPiece() == null){
+                                    if(TI == CI-7 && TJ == CJ-7)
+                                        return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            }catch(ArrayIndexOutOfBoundsException ex){
+                
+            }
+            
+            try{
+            if(Tiles[CI+1][CJ-1].getPiece() == null){
+                if(TJ == CJ-2 && TI == CI+2)
+                    return true;
+                if(Tiles[CI+2][CJ-2].getPiece() == null){
+                    if(TJ == CJ-3 && TI == CI+3)
+                        return true;
+                    if(Tiles[CI+3][CJ-3].getPiece() == null){
+                        if(TJ == CJ-4 && TI == CI+4)
+                            return true;
+                        if(Tiles[CI+4][CJ-4].getPiece() == null){
+                            if(TJ == CJ-5 && TI == CI+5)
+                                return true;
+                            if(Tiles[CI+5][CJ-5].getPiece() == null){
+                                if(TJ == CJ-6 && TI == CI+6)
+                                    return true;
+                                if(Tiles[CI+6][CJ-6].getPiece() == null){
+                                    if(TJ == CJ-7 && TI == CI+7)
+                                        return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            }catch(ArrayIndexOutOfBoundsException ex){
+                
+            }
+            try{
+            if(Tiles[CI-1][CJ+1].getPiece() == null){
+                if(TJ == CJ+2 && TI == CI-2)
+                    return true;
+                if(Tiles[CI-2][CJ+2].getPiece() == null){
+                    if(TJ == CJ+3 && TI == CI-3)
+                        return true;
+                    if(Tiles[CI-3][CJ+3].getPiece() == null){
+                        if(TJ == CJ+4 && TI == CI-4)
+                            return true;
+                        if(Tiles[CI-4][CJ+4].getPiece() == null){
+                            if(TJ == CJ+5 && TI == CI-5)
+                                return true;
+                            if(Tiles[CI-5][CJ+5].getPiece() == null){
+                                if(TJ == CJ+6 && TI == CI-6)
+                                    return true;
+                                if(Tiles[CI-6][CJ+6].getPiece() == null){
+                                    if(TJ == CJ+7 && TI == CI-7)
+                                        return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            }catch(ArrayIndexOutOfBoundsException ex){
+                
+            }
+            return false;
         }
     }
     class Tile extends JPanel{
