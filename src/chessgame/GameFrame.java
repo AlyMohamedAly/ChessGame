@@ -3,6 +3,7 @@ package chessgame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
@@ -46,16 +47,16 @@ public class GameFrame extends JFrame {
     private ImageIcon BlackQueenImg = new ImageIcon("bQueen.png");
     private ImageIcon BlackKingImg = new ImageIcon("bKing.png");
     
-    //private ImageIcon nPnl = new ImageIcon(".png");
-    //private ImageIcon sPnl = new ImageIcon(".png");
-    //private ImageIcon ePnl = new ImageIcon(".png");
-    //private ImageIcon wPnl = new ImageIcon(".png");
+    private ImageIcon nPnl = new ImageIcon(".png");
+    private ImageIcon sPnl = new ImageIcon(".png");
+    private ImageIcon ePnl = new ImageIcon(".png");
+    private ImageIcon wPnl = new ImageIcon(".png");
     
     private JPanel cPPL = new JPanel();
-    //private JPanel nPPL = new JPanel();
-    //private JPanel sPPL = new JPanel();
-    //private JPanel ePPL = new JPanel();
-    //private JPanel wPPL = new JPanel();
+    private BackgroundPanel nPPL = new BackgroundPanel(1);
+    private BackgroundPanel sPPL = new BackgroundPanel(2);
+    private BackgroundPanel ePPL = new BackgroundPanel(3);
+    private BackgroundPanel wPPL = new BackgroundPanel(4);
     
     private Tile current = new Tile();
     private int player = 1;
@@ -63,11 +64,18 @@ public class GameFrame extends JFrame {
     GameFrame(){
         this.setTitle("Chess Masters");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setBounds(300,10,646,669);
-        this.setResizable(false);
+        //this.setBounds(300,10,646,669);
+        this.setBounds(300,10,656,679);
+        //this.setBounds(300,10,782,804);
+        this.setResizable(true);
         Container C = this.getContentPane();
         cPPL.setLayout(null);
         init();
+        
+        //nPPL.setPreferredSize(new Dimension(640,63));
+        //sPPL.setPreferredSize(new Dimension(640,63));
+        //ePPL.setPreferredSize(new Dimension(63,640));
+        //wPPL.setPreferredSize(new Dimension(63,640));
         
         C.add(cPPL, BorderLayout.CENTER);
         //C.add(nPPL, BorderLayout.NORTH);
@@ -195,15 +203,27 @@ public class GameFrame extends JFrame {
             i = ind1;
             j = ind2;
         }
+        @Override
         public void mouseClicked(MouseEvent e) {
             Color W = new Color(249, 217, 202);
             Color Y = new Color(234, 230, 119);
+            Color G = new Color(127, 229, 55);
+            Color R = new Color(216, 60, 60);
             Piece ps;
             if(current.getPiece() != null){
                 if(current.getColor().getRGB()== W.getRGB())
                     current.WhiteTile();
                 else
                     current.BlackTile();
+                
+                for(int k = 0; k < 8; k++){
+                    for(int u = 0; u < 8; u++){
+                        if(current.getPiece().canMove(current, Tiles[u][k])){
+                            Tiles[u][k].setBackground(Tiles[u][k].getColor());
+                            Tiles[u][k].repaint();
+                        }
+                    }
+                }
                 
                 if(Tiles[i][j].getPiece() != null){
                     if(current.getPiece().canMove(current, Tiles[i][j])){
@@ -230,6 +250,24 @@ public class GameFrame extends JFrame {
                     current = EmptyTile();
             }
             else if(Tiles[i][j].getPiece() != null){
+                for(int k = 0; k < 8; k++){
+                    for(int u = 0; u < 8; u++){
+                        if(Tiles[i][j].getPiece().canMove(Tiles[i][j], Tiles[u][k])){
+                            Tiles[u][k].setBackground(G);
+                            Tiles[u][k].repaint();
+                            if(Tiles[u][k].getPiece() != null){
+                                if(!Tiles[u][k].getPiece().getColor().equals( Tiles[i][j].getPiece().getColor())){
+                                Tiles[u][k].setBackground(R);
+                                Tiles[u][k].repaint();
+                                }
+                                else{
+                                    Tiles[u][k].setBackground(Tiles[u][k].getColor());
+                                    Tiles[u][k].repaint();
+                                }
+                            }
+                        }
+                    }
+                }
                     Tiles[i][j].setBackground(Y);
                     current = Tiles[i][j];
             }
