@@ -6,6 +6,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -92,8 +93,10 @@ public class GameFrame extends JFrame {
             for(int j = 0; j < 8; j++){
             Tiles[i][j] = new Tile();
             Tiles[i][j].setBounds(j*80, i*80, 80, 80);
+            Tiles[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
             Tiles[i][j].addMouseListener(new Hole(i,j));
             cPPL.add(Tiles[i][j]);
+            //add(createBorderedPanel(BorderFactory.createLineBorder(Color.BLACK), "createLineBorder(Color.red)"));
             }
         }
         for(int i = 0, j = 0; j < 8; i += 2){
