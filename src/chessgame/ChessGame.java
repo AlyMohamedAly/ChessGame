@@ -96,21 +96,22 @@ class GameFrame extends JFrame{
         Pawn(String s){
             super(s);
         }
+        @Override
         public boolean canMove(Tile c, Tile t){
-            int CI = c.getX()/80;
-            int CJ = c.getY()/80;
+            int CI = c.getY()/80;
+            int CJ = c.getX()/80;
             
-            int TI = t.getX()/80;
-            int TJ = t.getY()/80;
+            int TI = t.getY()/80;
+            int TJ = t.getX()/80;
             if(Moved){
-                if(CI == TI && TJ == CJ+1)
+                if(TJ == CJ && TI == CI-1)
                     return true;
             }
             else{
-                Moved = true;
-                if(CI == TI && TJ == CJ+1)
+                Moved = true;   // law 3amal call lel function w mamsheesh htb2a true
+                if(TJ == CJ && TI == CI-1)
                     return true;
-                if(CI == TI && TJ == CJ+2 && Tiles[TI][TJ].getPiece() == null)
+                if(TJ == CJ && TI == CI-2 && Tiles[CI-1][CJ].getPiece() == null)
                     return true;
             }
             return false;
@@ -120,32 +121,45 @@ class GameFrame extends JFrame{
         Knight(String s){
             super(s);
         }
+        @Override
         public boolean canMove(Tile c, Tile t){
-            int CI = 80/c.getX();
-            int CJ = 80/c.getY();
+            int CI = c.getY()/80;
+            int CJ = c.getX()/80;
             
-            int TI = 80/t.getX();
-            int TJ = 80/t.getY();
+            int TI = t.getY()/80;
+            int TJ = t.getX()/80;
             
             if(TI == CI-2 && TJ == CJ-1)
                 return true;
             if(TI == CI-2 && TJ == CJ+1)
                 return true;
+            
             if(TI == CI+2 && TJ == CJ-1)
                 return true;
-            return TI == CI+2 && TJ == CJ+1;
+            if(TI == CI+2 && TJ == CJ+1)
+                return true;
+            
+            if(TI == CI-1 && TJ == CJ-2)
+                return true;
+            if(TI == CI+1 && TJ == CJ-2)
+                return true;
+            
+            if(TI == CI-1 && TJ == CJ+2)
+                return true;
+            return TI == CI-1 && TJ == CJ-2;
         }
     }
     class King extends Piece{
         King(String s){
             super(s);
         }
+        @Override
         public boolean canMove(Tile c, Tile t){         // needs adjusyments
-            int CI = 80/c.getX();
-            int CJ = 80/c.getY();
+            int CI = c.getY()/80;
+            int CJ = c.getX()/80;
             
-            int TI = 80/t.getX();
-            int TJ = 80/t.getY();
+            int TI = t.getY()/80;
+            int TJ = t.getX()/80;
             
             if(TI == CI && TJ == CJ+1)
                 return true;
@@ -170,32 +184,89 @@ class GameFrame extends JFrame{
         Rook(String s){
             super(s);
         }
+        @Override
         public boolean canMove(Tile c, Tile t){
-            int CI = 80/c.getX();
-            int CJ = 80/c.getY();
+            int CI = c.getY()/80;
+            int CJ = c.getX()/80;
             
-            int TI = 80/t.getX();
-            int TJ = 80/t.getY();
+            int TI = t.getY()/80;
+            int TJ = t.getX()/80;
             
-            if(TI == CI-2 && TJ == CJ-1)
+            if(TI == CI && TJ == CJ+1)
                 return true;
-            if(TI == CI-2 && TJ == CJ+1)
-                return true;
-            if(TI == CI+2 && TJ == CJ-1)
-                return true;
-            return TI == CI+2 && TJ == CJ+1;
+            if(TJ == CJ && TI == CI+1)
+                    return true;
+            try{
+            if(Tiles[CI][CJ+1].getPiece() == null){
+                if(TI == CI && TJ == CJ+2)
+                    return true;
+                if(Tiles[CI][CJ+2].getPiece() == null){
+                    if(TI == CI && TJ == CJ+3)
+                        return true;
+                    if(Tiles[CI][CJ+3].getPiece() == null){
+                        if(TI == CI && TJ == CJ+4)
+                            return true;
+                        if(Tiles[CI][CJ+4].getPiece() == null){
+                            if(TI == CI && TJ == CJ+5)
+                                return true;
+                            if(Tiles[CI][CJ+5].getPiece() == null){
+                                if(TI == CI && TJ == CJ+6)
+                                    return true;
+                                if(Tiles[CI][CJ+6].getPiece() == null){
+                                    if(TI == CI && TJ == CJ+7)
+                                        return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            }catch(ArrayIndexOutOfBoundsException ex){
+                
+            }
+            
+            try{
+            if(Tiles[CI][CJ+1].getPiece() == null){
+                if(TJ == CJ && TI == CI+2)
+                    return true;
+                if(Tiles[CI][CJ+2].getPiece() == null){
+                    if(TJ == CJ && TI == CI+3)
+                        return true;
+                    if(Tiles[CI][CJ+3].getPiece() == null){
+                        if(TJ == CJ && TI == CI+4)
+                            return true;
+                        if(Tiles[CI][CJ+4].getPiece() == null){
+                            if(TJ == CJ && TI == CI+5)
+                                return true;
+                            if(Tiles[CI][CJ+5].getPiece() == null){
+                                if(TJ == CJ && TI == CI+6)
+                                    return true;
+                                if(Tiles[CI][CJ+6].getPiece() == null){
+                                    if(TJ == CJ && TI == CI+7)
+                                        return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            }catch(ArrayIndexOutOfBoundsException ex){
+                
+            }
+            return false;
         }
     }
     class Bishop extends Piece{
         Bishop(String s){
             super(s);
         }
+        @Override
         public boolean canMove(Tile c, Tile t){
-            int CI = 80/c.getX();
-            int CJ = 80/c.getY();
+            int CI = c.getY()/80;
+            int CJ = c.getX()/80;
             
-            int TI = 80/t.getX();
-            int TJ = 80/t.getY();
+            int TI = t.getY()/80;
+            int TJ = t.getX()/80;
             
             if(TI == CI-2 && TJ == CJ-1)
                 return true;
@@ -210,12 +281,13 @@ class GameFrame extends JFrame{
         Queen(String s){
             super(s);
         }
+        @Override
         public boolean canMove(Tile c, Tile t){
-            int CI = 80/c.getX();
-            int CJ = 80/c.getY();
+            int CI = c.getY()/80;
+            int CJ = c.getX()/80;
             
-            int TI = 80/t.getX();
-            int TJ = 80/t.getY();
+            int TI = t.getY()/80;
+            int TJ = t.getX()/80;
             
             if(TI == CI-2 && TJ == CJ-1)
                 return true;
@@ -281,17 +353,20 @@ class GameFrame extends JFrame{
                         Tiles[i][j].removePiece();
                         current.removePiece();
                         Tiles[i][j].setPiece(ps);
-                        
                         }
                     }
                 }
                 else{
-                ps = current.getPiece();
-                current.removePiece();
-                Tiles[i][j].setPiece(ps);
+                    if(current.getPiece().canMove(current, Tiles[i][j])){
+                    ps = current.getPiece();
+                    current.removePiece();
+                    Tiles[i][j].setPiece(ps);
+                    }
+                    else{
+                    }
                 }
-                current.repaint();
-                current = EmptyTile();
+                    current.repaint();
+                    current = EmptyTile();
             }
             else if(Tiles[i][j].getPiece() != null){
                     Tiles[i][j].setBackground(Y);
