@@ -1,7 +1,7 @@
 package chessgame;
 
 class Pawn extends Piece{
-        private boolean Moved = false;
+        private boolean Moved = true;
         Pawn(String s){
             super(s);
         }
@@ -13,30 +13,22 @@ class Pawn extends Piece{
             int TI = t.getY()/80;
             int TJ = t.getX()/80;
             if(this.getColor().equals("White")){
-                if(Moved){
-                    if(TJ == CJ && TI == CI-1)
-                        return true;
-                }
-                else{
-                    Moved = true;   // law 3amal call lel function w mamsheesh htb2a true
-                    if(TJ == CJ && TI == CI-1)
-                        return true;
-                    if(TJ == CJ && TI == CI-2 && GameFrame.Tiles[CI-1][CJ].getPiece() == null)
-                        return true;
-                }
+                if(TJ == CJ-1 && TI == CI-1 && GameFrame.Tiles[TI][TJ].getPiece() != null)
+                    return true;
+                if(TJ == CJ+1 && TI == CI-1 && GameFrame.Tiles[TI][TJ].getPiece() != null)
+                    return true;
+                
+                if(TJ == CJ && TI == CI-1 && GameFrame.Tiles[TI][TJ].getPiece() == null)
+                    return true;
             }
             else{
-                if(Moved){
-                    if(TJ == CJ && TI == CI+1)
-                        return true;
-                }
-                else{
-                    Moved = true;   // law 3amal call lel function w mamsheesh htb2a true
-                    if(TJ == CJ && TI == CI+1)
-                        return true;
-                    if(TJ == CJ && TI == CI+2 && GameFrame.Tiles[CI+1][CJ].getPiece() == null)
-                        return true;
-                }
+                if(TJ == CJ-1 && TI == CI+1 && GameFrame.Tiles[TI][TJ].getPiece() != null)
+                    return true;
+                if(TJ == CJ+1 && TI == CI+1 && GameFrame.Tiles[TI][TJ].getPiece() != null)
+                    return true;
+                
+                if(TJ == CJ && TI == CI+1 && GameFrame.Tiles[TI][TJ].getPiece() == null)
+                    return true;
             }
             return false;
         }

@@ -3,7 +3,7 @@ package chessgame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
@@ -48,16 +48,16 @@ public class GameFrame extends JFrame {
     private ImageIcon BlackQueenImg = new ImageIcon("bQueen.png");
     private ImageIcon BlackKingImg = new ImageIcon("bKing.png");
     
-    private ImageIcon nPnl = new ImageIcon(".png");
-    private ImageIcon sPnl = new ImageIcon(".png");
-    private ImageIcon ePnl = new ImageIcon(".png");
-    private ImageIcon wPnl = new ImageIcon(".png");
-    
     private JPanel cPPL = new JPanel();
     private BackgroundPanel nPPL = new BackgroundPanel(1);
     private BackgroundPanel sPPL = new BackgroundPanel(2);
     private BackgroundPanel ePPL = new BackgroundPanel(3);
     private BackgroundPanel wPPL = new BackgroundPanel(4);
+    
+    private Image gameLoading = new ImageIcon("gameLoading.png").getImage();
+    private Image logo = new ImageIcon("Logo.png").getImage();
+    private Image template = new ImageIcon("Template.png").getImage();
+    private Image pressAnyKey = new ImageIcon("pressAnyKey.png").getImage();
     
     private Tile current = new Tile();
     private int player = 1;
@@ -65,14 +65,14 @@ public class GameFrame extends JFrame {
     GameFrame(){
         this.setTitle("Chess Masters");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //this.setBounds(300,10,646,669);
-        this.setBounds(300,10,656,679);
-        //this.setBounds(300,10,782,804);
-        this.setResizable(true);
+        this.setBounds(300,10,646,669);
+        this.setResizable(false);
         Container C = this.getContentPane();
         cPPL.setLayout(null);
-        init();
         
+        //init();
+        
+        welcome();
         //nPPL.setPreferredSize(new Dimension(640,63));
         //sPPL.setPreferredSize(new Dimension(640,63));
         //ePPL.setPreferredSize(new Dimension(63,640));
@@ -289,5 +289,8 @@ public class GameFrame extends JFrame {
         return null;
     }
 }
+    public void welcome() {
+        init();
+    }
     
 }
