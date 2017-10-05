@@ -251,10 +251,12 @@ public class GameFrame extends JFrame{
                                 JOptionPane.showMessageDialog(null, "White Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
                                 System.exit(0);
                             }
+
                             ps = current.getPiece();
                             Tiles[i][j].removePiece();
                             current.removePiece();
                             Tiles[i][j].setPiece(ps);
+                            SwapPlayers();
                         }
                     }
                 }else{
@@ -263,6 +265,7 @@ public class GameFrame extends JFrame{
                             Pawn temp = (Pawn) current.getPiece();
                             temp.Moved = true;
                         }
+                        SwapPlayers();
                         ps = current.getPiece();
                         current.removePiece();
                         Tiles[i][j].setPiece(ps);
@@ -271,6 +274,11 @@ public class GameFrame extends JFrame{
                 }
                 current.repaint();
                 current = EmptyTile();
+                if (player == 1){
+                    canKingDie(2);
+                }else{
+                    canKingDie(1);
+                }
             }else if (Tiles[i][j].getPiece() != null){
                 if (!(player == 1 && Tiles[i][j].getPiece().getColor().equals("Black"))){
                     if (!(player == 2 && Tiles[i][j].getPiece().getColor().equals("White"))){
@@ -293,7 +301,6 @@ public class GameFrame extends JFrame{
                         }
                         Tiles[i][j].setBackground(Y);
                         current = Tiles[i][j];
-                        SwapPlayers();
                     }
                 }
             }
@@ -322,8 +329,39 @@ public class GameFrame extends JFrame{
         }
     }
 
+    public void canKingDie (int n){
+        Tile KingTile;
+        if (n == 1){
+            KingTile = (Tile) BlackKing.getParent();
+            for (int r = 0; r < 8; r++){
+                for (int p = 0; p < 8; p++){
+                    if (Tiles[r][p].getPiece() != null){
+                        if (Tiles[r][p].getPiece().getColor().equals("White")){
+                            if (Tiles[r][p].getPiece().canMove(Tiles[r][p], KingTile)){
+                                KingTile.setBackground(Color.red);
+                            }
+                        }
+                    }
+                }
+            }
+        }else{
+            KingTile = (Tile) WhiteKing.getParent();
+            for (int r = 0; r < 8; r++){
+                for (int p = 0; p < 8; p++){
+                    if (Tiles[r][p].getPiece() != null){
+                        if (Tiles[r][p].getPiece().getColor().equals("Black")){
+                            if (Tiles[r][p].getPiece().canMove(Tiles[r][p], KingTile)){
+                                KingTile.setBackground(Color.red);
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
     public void welcome (){
         init();
     }
-
 }
