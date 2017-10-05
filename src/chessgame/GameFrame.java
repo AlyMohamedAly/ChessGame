@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GameFrame extends JFrame{
@@ -35,19 +36,19 @@ public class GameFrame extends JFrame{
 
     public static Tile[][] Tiles = new Tile[8][8];
 
-    private ImageIcon WhitePawnImg = new ImageIcon("wPawn.png");
-    private ImageIcon WhiteKnightImg = new ImageIcon("wKnight.png");
-    private ImageIcon WhiteBishopImg = new ImageIcon("wBishop.png");
-    private ImageIcon WhiteRookImg = new ImageIcon("wRook.png");
-    private ImageIcon WhiteQueenImg = new ImageIcon("wQueen.png");
-    private ImageIcon WhiteKingImg = new ImageIcon("wKing.png");
+    private ImageIcon WhitePawnImg = new ImageIcon("TopViewPieces/wPawn.png");
+    private ImageIcon WhiteKnightImg = new ImageIcon("TopViewPieces/wKnight.png");
+    private ImageIcon WhiteBishopImg = new ImageIcon("TopViewPieces/wBishop.png");
+    private ImageIcon WhiteRookImg = new ImageIcon("TopViewPieces/wRook.png");
+    private ImageIcon WhiteQueenImg = new ImageIcon("TopViewPieces/wQueen.png");
+    private ImageIcon WhiteKingImg = new ImageIcon("TopViewPieces/wKing.png");
 
-    private ImageIcon BlackPawnImg = new ImageIcon("bPawn.png");
-    private ImageIcon BlackKnightImg = new ImageIcon("bKnight.png");
-    private ImageIcon BlackBishopImg = new ImageIcon("bBishop.png");
-    private ImageIcon BlackRookImg = new ImageIcon("bRook.png");
-    private ImageIcon BlackQueenImg = new ImageIcon("bQueen.png");
-    private ImageIcon BlackKingImg = new ImageIcon("bKing.png");
+    private ImageIcon BlackPawnImg = new ImageIcon("TopViewPieces/bPawn.png");
+    private ImageIcon BlackKnightImg = new ImageIcon("TopViewPieces/bKnight.png");
+    private ImageIcon BlackBishopImg = new ImageIcon("TopViewPieces/bBishop.png");
+    private ImageIcon BlackRookImg = new ImageIcon("TopViewPieces/bRook.png");
+    private ImageIcon BlackQueenImg = new ImageIcon("TopViewPieces/bQueen.png");
+    private ImageIcon BlackKingImg = new ImageIcon("TopViewPieces/bKing.png");
 
     private JPanel cPPL = new JPanel();
     private BackgroundPanel nPPL = new BackgroundPanel(1);
@@ -235,6 +236,21 @@ public class GameFrame extends JFrame{
                     if (current.getPiece().canMove(current, Tiles[i][j])){
                         if (Tiles[i][j].getPiece().getColor().equals(current.getPiece().getColor())){
                         }else{
+                            if (Tiles[i][j].getPiece() == WhiteKing){
+                                ps = current.getPiece();
+                                Tiles[i][j].removePiece();
+                                current.removePiece();
+                                Tiles[i][j].setPiece(ps);
+                                JOptionPane.showMessageDialog(null, "Black Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
+                                System.exit(0);
+                            }else if (Tiles[i][j].getPiece() == BlackKing){
+                                ps = current.getPiece();
+                                Tiles[i][j].removePiece();
+                                current.removePiece();
+                                Tiles[i][j].setPiece(ps);
+                                JOptionPane.showMessageDialog(null, "White Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
+                                System.exit(0);
+                            }
                             ps = current.getPiece();
                             Tiles[i][j].removePiece();
                             current.removePiece();
@@ -256,25 +272,30 @@ public class GameFrame extends JFrame{
                 current.repaint();
                 current = EmptyTile();
             }else if (Tiles[i][j].getPiece() != null){
-                for (int k = 0; k < 8; k++){
-                    for (int u = 0; u < 8; u++){
-                        if (Tiles[i][j].getPiece().canMove(Tiles[i][j], Tiles[u][k])){
-                            Tiles[u][k].setBackground(G);
-                            Tiles[u][k].repaint();
-                            if (Tiles[u][k].getPiece() != null){
-                                if (!Tiles[u][k].getPiece().getColor().equals(Tiles[i][j].getPiece().getColor())){
-                                    Tiles[u][k].setBackground(R);
+                if (!(player == 1 && Tiles[i][j].getPiece().getColor().equals("Black"))){
+                    if (!(player == 2 && Tiles[i][j].getPiece().getColor().equals("White"))){
+                        for (int k = 0; k < 8; k++){
+                            for (int u = 0; u < 8; u++){
+                                if (Tiles[i][j].getPiece().canMove(Tiles[i][j], Tiles[u][k])){
+                                    Tiles[u][k].setBackground(G);
                                     Tiles[u][k].repaint();
-                                }else{
-                                    Tiles[u][k].setBackground(Tiles[u][k].getColor());
-                                    Tiles[u][k].repaint();
+                                    if (Tiles[u][k].getPiece() != null){
+                                        if (!Tiles[u][k].getPiece().getColor().equals(Tiles[i][j].getPiece().getColor())){
+                                            Tiles[u][k].setBackground(R);
+                                            Tiles[u][k].repaint();
+                                        }else{
+                                            Tiles[u][k].setBackground(Tiles[u][k].getColor());
+                                            Tiles[u][k].repaint();
+                                        }
+                                    }
                                 }
                             }
                         }
+                        Tiles[i][j].setBackground(Y);
+                        current = Tiles[i][j];
+                        SwapPlayers();
                     }
                 }
-                Tiles[i][j].setBackground(Y);
-                current = Tiles[i][j];
             }
             Tiles[i][j].repaint();
         }
@@ -290,6 +311,14 @@ public class GameFrame extends JFrame{
                 }
             }
             return null;
+        }
+    }
+
+    public void SwapPlayers (){
+        if (player == 1){
+            player = 2;
+        }else{
+            player = 1;
         }
     }
 
