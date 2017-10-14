@@ -72,8 +72,8 @@ public class GameFrame extends JFrame{
         Container C = this.getContentPane();
         cPPL.setLayout(null);
 
-        //init();
-        welcome();
+        init();
+        //welcome();
         //nPPL.setPreferredSize(new Dimension(640,63));
         //sPPL.setPreferredSize(new Dimension(640,63));
         //ePPL.setPreferredSize(new Dimension(63,640));
@@ -197,11 +197,7 @@ public class GameFrame extends JFrame{
             Color Y = new Color(234, 230, 119);
             Piece ps = current.getPiece();
             if (current.getPiece() != null){
-                if (current.getColor().getRGB() == W.getRGB()){       // Color current Tile its original color
-                    current.WhiteTile();
-                }else{
-                    current.BlackTile();
-                }
+                current.setBackground(current.getColor());
 
                 OriginalColor();
 
@@ -232,24 +228,15 @@ public class GameFrame extends JFrame{
                                     }
                                 }
                             }
-
-                            for (int k = 0; k < 8; k++){
-                                for (int l = 0; l < 8; l++){
-                                    if (Tiles[k][l].getPiece() != null){
-                                        if (current.getPiece().getColor().equals("Black")){
-                                            if (Tiles[k][l].getPiece().equals("White")){
-                                                Tile KingTile = (Tile) BlackKing.getParent();                  // checkmate
-                                                if (Tiles[k][l].getPiece().canMove(Tiles[k][l], KingTile)){
-
-                                                }
-                                            }
-
-                                        }
-                                    }
+                            if (current.getPiece() instanceof King){
+                                if (!CanKingDie(i, j)){
+                                    MovePiece(ps, i, j);
+                                    SwapPlayers();
                                 }
+                            }else{
+                                MovePiece(ps, i, j);
+                                SwapPlayers();
                             }
-                            MovePiece(ps, i, j);
-                            SwapPlayers();
                         }
                     }
                 }else{
@@ -268,17 +255,24 @@ public class GameFrame extends JFrame{
                                 }
                             }
                         }
-                        SwapPlayers();
-                        MovePiece(ps, i, j);
+                        if (current.getPiece() instanceof King){
+                            if (!CanKingDie(i, j)){
+                                MovePiece(ps, i, j);
+                                SwapPlayers();
+                            }
+                        }else{
+                            MovePiece(ps, i, j);
+                            SwapPlayers();
+                        }
                     }else{
                     }
                 }
                 current.repaint();
                 current = EmptyTile();
                 if (player == 1){
-                    canKingDie(2);
+                    CheckMate(2);
                 }else{
-                    canKingDie(1);
+                    CheckMate(1);
                 }
             }else if (Tiles[i][j].getPiece() != null){
                 if (!(player == 1 && Tiles[i][j].getPiece().getColor().equals("Black"))){
@@ -290,6 +284,14 @@ public class GameFrame extends JFrame{
                 }
             }
             Tiles[i][j].repaint();
+        }
+
+        public void SwapPlayers (){
+            if (player == 1){
+                player = 2;
+            }else{
+                player = 1;
+            }
         }
 
         public Tile EmptyTile (){
@@ -306,42 +308,12 @@ public class GameFrame extends JFrame{
         }
     }
 
-    public void SwapPlayers (){
-        if (player == 1){
-            player = 2;
-        }else{
-            player = 1;
-        }
-    }
-
     public void OriginalColor (){
         for (int k = 0; k < 8; k++){
             for (int u = 0; u < 8; u++){
                 if (current.getPiece().canMove(current, Tiles[u][k])){
                     Tiles[u][k].setBackground(Tiles[u][k].getColor());
                     Tiles[u][k].repaint();
-                }
-            }
-        }
-    }
-
-    public void ColorMoves (int i, int j){
-        Color G = new Color(127, 229, 55);
-        Color R = new Color(255, 22, 22);
-        for (int k = 0; k < 8; k++){
-            for (int u = 0; u < 8; u++){
-                if (Tiles[i][j].getPiece().canMove(Tiles[i][j], Tiles[u][k])){
-                    Tiles[u][k].setBackground(G);
-                    Tiles[u][k].repaint();
-                    if (Tiles[u][k].getPiece() != null){
-                        if (!Tiles[u][k].getPiece().getColor().equals(Tiles[i][j].getPiece().getColor())){
-                            Tiles[u][k].setBackground(R);
-                            Tiles[u][k].repaint();
-                        }else{
-                            Tiles[u][k].setBackground(Tiles[u][k].getColor());
-                            Tiles[u][k].repaint();
-                        }
-                    }
                 }
             }
         }
@@ -371,7 +343,54 @@ public class GameFrame extends JFrame{
         current.validate();
     }
 
-    public void canKingDie (int n){
+    public void ColorMoves (int i, int j){
+        Color G = new Color(127, 229, 55);
+        Color R = new Color(255, 22, 22);
+        for (int k = 0; k < 8; k++){
+            for (int u = 0; u < 8; u++){
+                if (Tiles[i][j].getPiece().canMove(Tiles[i][j], Tiles[u][k])){
+                    Tiles[u][k].setBackground(G);
+                    Tiles[u][k].repaint();
+                    if (Tiles[u][k].getPiece() != null){
+                        if (!Tiles[u][k].getPiece().getColor().equals(Tiles[i][j].getPiece().getColor())){
+                            Tiles[u][k].setBackground(R);
+                            Tiles[u][k].repaint();
+                        }else{
+                            Tiles[u][k].setBackground(Tiles[u][k].getColor());
+                            Tiles[u][k].repaint();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public boolean CanKingDie (int i, int j){
+        for (int k = 0; k < 8; k++){
+            for (int l = 0; l < 8; l++){
+                if (Tiles[k][l].getPiece() != null){
+                    if (current.getPiece().getColor().equals("Black")){
+                        if (Tiles[k][l].getPiece().getColor().equals("White")){
+                            if (Tiles[k][l].getPiece().canMove(Tiles[k][l], Tiles[i][j])){                      //Prototype
+                                Tiles[i][j].setBackground(Color.CYAN);
+                                return true;
+                            }
+                        }
+                    }else{
+                        if (Tiles[k][l].getPiece().getColor().equals("Black")){
+                            if (Tiles[k][l].getPiece().canMove(Tiles[k][l], Tiles[i][j])){                     //Prototype
+                                Tiles[i][j].setBackground(Color.CYAN);
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public void CheckMate (int n){
         Tile KingTile;
         if (n == 1){
             KingTile = (Tile) BlackKing.getParent();
@@ -401,9 +420,5 @@ public class GameFrame extends JFrame{
 
             }
         }
-    }
-
-    public void welcome (){
-        init();
     }
 }
