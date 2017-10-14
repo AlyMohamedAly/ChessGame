@@ -133,69 +133,51 @@ public class GameFrame extends JFrame{
             }
         }
         for (int i = 0; i < 8; i++){
-            WhitePawns[i] = new Pawn("WhitePawns");
+            WhitePawns[i] = new Pawn("WhitePawn" + i);
             WhitePawns[i].setIcon(WhitePawnImg);
-            WhitePawns[i].setBounds(Tiles[6][i].getBounds());
             Tiles[6][i].add(WhitePawns[i]);
 
-            BlackPawns[i] = new Pawn("BlackPawn");
+            BlackPawns[i] = new Pawn("BlackPawn" + i);
             BlackPawns[i].setIcon(BlackPawnImg);
-            WhitePawns[i].setBounds(Tiles[1][i].getBounds());
             Tiles[1][i].add(BlackPawns[i]);
         }
         WhiteLeftKnight.setIcon(WhiteKnightImg);
-        WhiteLeftKnight.setBounds(Tiles[7][1].getBounds());
         WhiteRightKnight.setIcon(WhiteKnightImg);
-        WhiteRightKnight.setBounds(Tiles[7][6].getBounds());
         Tiles[7][1].add(WhiteLeftKnight);
         Tiles[7][6].add(WhiteRightKnight);
 
         BlackLeftKnight.setIcon(BlackKnightImg);
-        BlackLeftKnight.setBounds(Tiles[0][1].getBounds());
         BlackRightKnight.setIcon(BlackKnightImg);
-        BlackRightKnight.setBounds(Tiles[0][6].getBounds());
         Tiles[0][1].add(BlackLeftKnight);
         Tiles[0][6].add(BlackRightKnight);
 
         WhiteLeftRook.setIcon(WhiteRookImg);
-        WhiteLeftRook.setBounds(Tiles[7][0].getBounds());
         WhiteRightRook.setIcon(WhiteRookImg);
-        WhiteRightRook.setBounds(Tiles[7][7].getBounds());
         Tiles[7][0].add(WhiteLeftRook);
         Tiles[7][7].add(WhiteRightRook);
 
         BlackLeftRook.setIcon(BlackRookImg);
-        BlackLeftRook.setBounds(Tiles[0][0].getBounds());
         BlackRightRook.setIcon(BlackRookImg);
-        BlackRightRook.setBounds(Tiles[0][7].getBounds());
         Tiles[0][0].add(BlackLeftRook);
         Tiles[0][7].add(BlackRightRook);
 
         WhiteLeftBishop.setIcon(WhiteBishopImg);
-        WhiteLeftBishop.setBounds(Tiles[7][2].getBounds());
         WhiteRightBishop.setIcon(WhiteBishopImg);
-        WhiteRightBishop.setBounds(Tiles[7][5].getBounds());
         Tiles[7][2].add(WhiteLeftBishop);
         Tiles[7][5].add(WhiteRightBishop);
 
         BlackLeftBishop.setIcon(BlackBishopImg);
-        BlackLeftBishop.setBounds(Tiles[0][2].getBounds());
         BlackRightBishop.setIcon(BlackBishopImg);
-        BlackRightBishop.setBounds(Tiles[0][5].getBounds());
         Tiles[0][2].add(BlackLeftBishop);
         Tiles[0][5].add(BlackRightBishop);
 
         WhiteKing.setIcon(WhiteKingImg);
-        WhiteKing.setBounds(Tiles[7][4].getBounds());
         WhiteQueen.setIcon(WhiteQueenImg);
-        WhiteQueen.setBounds(Tiles[7][3].getBounds());
         Tiles[7][4].add(WhiteKing);
         Tiles[7][3].add(WhiteQueen);
 
         BlackKing.setIcon(BlackKingImg);
-        BlackKing.setBounds(Tiles[0][4].getBounds());
         BlackQueen.setIcon(BlackQueenImg);
-        BlackQueen.setBounds(Tiles[0][3].getBounds());
         Tiles[0][4].add(BlackKing);
         Tiles[0][3].add(BlackQueen);
     }
@@ -217,7 +199,7 @@ public class GameFrame extends JFrame{
             Color R = new Color(255, 22, 22);
             Piece ps;
             if (current.getPiece() != null){
-                if (current.getColor().getRGB() == W.getRGB()){
+                if (current.getColor().getRGB() == W.getRGB()){       // Color Tiles thier original color
                     current.WhiteTile();
                 }else{
                     current.BlackTile();
@@ -225,7 +207,7 @@ public class GameFrame extends JFrame{
 
                 for (int k = 0; k < 8; k++){
                     for (int u = 0; u < 8; u++){
-                        if (current.getPiece().canMove(current, Tiles[u][k])){
+                        if (current.getPiece().canMove(current, Tiles[u][k])){    // Color Tiles Green
                             Tiles[u][k].setBackground(Tiles[u][k].getColor());
                             Tiles[u][k].repaint();
                         }
@@ -251,7 +233,30 @@ public class GameFrame extends JFrame{
                                 JOptionPane.showMessageDialog(null, "White Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
                                 System.exit(0);
                             }
+                            if (current.getPiece() instanceof Pawn){
+                                Pawn temp = (Pawn) current.getPiece();
+                                temp.Moved = true;
+                                if (temp.getColor().equals("Black")){
+                                    if (i == 7){
+                                        Queen Promotion = new Queen("BlackPromotedPawn");
+                                        Promotion.setIcon(BlackQueenImg);
+                                        current.removePiece();                                   //Promotion
+                                        current.setPiece(Promotion);
+                                        current.repaint();
+                                        current.validate();
+                                    }
 
+                                }else{
+                                    if (i == 0){
+                                        Queen Promotion = new Queen("WhitePromotedPawn");
+                                        Promotion.setIcon(WhiteQueenImg);
+                                        current.removePiece();                                  //Promotion
+                                        current.setPiece(Promotion);
+                                        current.repaint();
+                                        current.validate();
+                                    }
+                                }
+                            }
                             ps = current.getPiece();
                             Tiles[i][j].removePiece();
                             current.removePiece();
@@ -264,6 +269,26 @@ public class GameFrame extends JFrame{
                         if (current.getPiece() instanceof Pawn){
                             Pawn temp = (Pawn) current.getPiece();
                             temp.Moved = true;
+                            if (temp.getColor().equals("Black")){
+                                if (i == 7){
+                                    Queen Promotion = new Queen("BlackPromotedPawn");
+                                    Promotion.setIcon(BlackQueenImg);
+                                    current.removePiece();                                   //Promotion
+                                    current.setPiece(Promotion);
+                                    current.repaint();
+                                    current.validate();
+                                }
+
+                            }else{
+                                if (i == 0){
+                                    Queen Promotion = new Queen("WhitePromotedPawn");
+                                    Promotion.setIcon(WhiteQueenImg);
+                                    current.removePiece();                                              //Promotion
+                                    current.setPiece(Promotion);
+                                    current.repaint();
+                                    current.validate();
+                                }
+                            }
                         }
                         SwapPlayers();
                         ps = current.getPiece();

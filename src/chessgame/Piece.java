@@ -2,20 +2,21 @@ package chessgame;
 
 import javax.swing.JLabel;
 
-public abstract class Piece extends JLabel {
+public abstract class Piece extends JLabel{
+
     private String Name;
-    
-    Piece(String name){
+
+    Piece (String name){
         Name = name;
     }
-    
-    String getColor(){
+
+    String getColor (){
         return Name.substring(0, 5);
     }
-    
-    String GetType(){
+
+    String GetType (){
         return Name;
     }
-    
-    public abstract boolean canMove(Tile c, Tile t);
+
+    public abstract boolean canMove (Tile c, Tile t);
 }
