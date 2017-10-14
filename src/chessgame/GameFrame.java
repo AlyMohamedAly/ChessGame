@@ -357,13 +357,13 @@ public class GameFrame extends JFrame{
     public void Promote (){
         Queen Promotion;
         if (player == 1){
-            Promotion = new Queen("BlackPromotedPawn");
-            Promotion.setIcon(BlackQueenImg);
+            Promotion = new Queen("WhitePromotedPawn");
+            Promotion.setIcon(WhiteQueenImg);
             current.removePiece();
             current.setPiece(Promotion);
         }else{
-            Promotion = new Queen("WhitePromotedPawn");
-            Promotion.setIcon(WhiteQueenImg);
+            Promotion = new Queen("BlackPromotedPawn");
+            Promotion.setIcon(BlackQueenImg);
             current.removePiece();
             current.setPiece(Promotion);
         }
