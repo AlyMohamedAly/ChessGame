@@ -342,16 +342,16 @@ public class GameFrame extends JFrame{
     }
 
     public void ColorMoves (int i, int j){
-        Color G = new Color(127, 229, 55);
-        Color R = new Color(255, 22, 22);
+        //Color G = new Color(127, 229, 55);
+        //Color R = new Color(255, 22, 22);
         for (int k = 0; k < 8; k++){
             for (int u = 0; u < 8; u++){
                 if (Tiles[i][j].getPiece().canMove(Tiles[i][j], Tiles[u][k])){
-                    Tiles[u][k].setBackground(G);
+                    Tiles[u][k].setBackground(Color.GREEN);
                     Tiles[u][k].repaint();
                     if (Tiles[u][k].getPiece() != null){
                         if (!Tiles[u][k].getPiece().getColor().equals(Tiles[i][j].getPiece().getColor())){
-                            Tiles[u][k].setBackground(R);
+                            Tiles[u][k].setBackground(Color.red);
                             Tiles[u][k].repaint();
                         }else{
                             Tiles[u][k].setBackground(Tiles[u][k].getColor());
