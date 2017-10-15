@@ -229,7 +229,7 @@ public class GameFrame extends JFrame{
                                 }
                             }
                             if (current.getPiece() instanceof King){
-                                if (!CanKingDie(i, j)){                   //Prototype
+                                if (!CanKingDie(i, j)){
                                     MovePiece(ps, i, j);
                                     SwapPlayers();
                                 }
@@ -256,7 +256,7 @@ public class GameFrame extends JFrame{
                             }
                         }
                         if (current.getPiece() instanceof King){
-                            if (!CanKingDie(i, j)){                      //Prototype
+                            if (!CanKingDie(i, j)){
                                 MovePiece(ps, i, j);
                                 SwapPlayers();
                             }
@@ -311,10 +311,8 @@ public class GameFrame extends JFrame{
     public void OriginalColor (){
         for (int k = 0; k < 8; k++){
             for (int u = 0; u < 8; u++){
-                if (current.getPiece().canMove(current, Tiles[u][k])){
-                    Tiles[u][k].setBackground(Tiles[u][k].getColor());
-                    Tiles[u][k].repaint();
-                }
+                Tiles[u][k].setBackground(Tiles[u][k].getColor());
+                Tiles[u][k].repaint();
             }
         }
     }
@@ -369,17 +367,19 @@ public class GameFrame extends JFrame{
         for (int k = 0; k < 8; k++){
             for (int l = 0; l < 8; l++){
                 if (Tiles[k][l].getPiece() != null){
-                    if (current.getPiece().getColor().equals("Black")){
+                    if (player == 2){
                         if (Tiles[k][l].getPiece().getColor().equals("White")){
-                            if (Tiles[k][l].getPiece().canMove(Tiles[k][l], Tiles[i][j])){                      //Prototype
+                            if (Tiles[k][l].getPiece().canKill(Tiles[k][l], Tiles[i][j])){
                                 Tiles[i][j].setBackground(Color.CYAN);
+                                Tiles[k][l].setBackground(Color.red);
                                 return true;
                             }
                         }
                     }else{
                         if (Tiles[k][l].getPiece().getColor().equals("Black")){
-                            if (Tiles[k][l].getPiece().canMove(Tiles[k][l], Tiles[i][j])){                     //Prototype
+                            if (Tiles[k][l].getPiece().canKill(Tiles[k][l], Tiles[i][j])){
                                 Tiles[i][j].setBackground(Color.CYAN);
+                                Tiles[k][l].setBackground(Color.red);
                                 return true;
                             }
                         }

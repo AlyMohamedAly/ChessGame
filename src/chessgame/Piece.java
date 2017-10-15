@@ -19,4 +19,6 @@ public abstract class Piece extends JLabel{
     }
 
     public abstract boolean canMove (Tile c, Tile t);
+
+    public abstract boolean canKill (Tile c, Tile t);
 }

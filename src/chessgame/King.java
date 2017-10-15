@@ -7,6 +7,11 @@ public class King extends Piece{
     }
 
     @Override
+    public boolean canKill (Tile c, Tile t){
+        return canMove(c, t);
+    }
+
+    @Override
     public boolean canMove (Tile c, Tile t){         // needs adjusyments
         int CI = c.getY() / 80;
         int CJ = c.getX() / 80;
