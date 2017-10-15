@@ -229,7 +229,7 @@ public class GameFrame extends JFrame{
                                 }
                             }
                             if (current.getPiece() instanceof King){
-                                if (!CanKingDie(i, j)){
+                                if (!CanKingDie(i, j)){                   //Prototype
                                     MovePiece(ps, i, j);
                                     SwapPlayers();
                                 }
@@ -256,7 +256,7 @@ public class GameFrame extends JFrame{
                             }
                         }
                         if (current.getPiece() instanceof King){
-                            if (!CanKingDie(i, j)){
+                            if (!CanKingDie(i, j)){                      //Prototype
                                 MovePiece(ps, i, j);
                                 SwapPlayers();
                             }
