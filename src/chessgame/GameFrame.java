@@ -51,10 +51,6 @@ public class GameFrame extends JFrame{
     private ImageIcon BlackKingImg = new ImageIcon("TopViewPieces/bKing.png");
 
     private JPanel cPPL = new JPanel();
-    private BackgroundPanel nPPL = new BackgroundPanel(1);
-    private BackgroundPanel sPPL = new BackgroundPanel(2);
-    private BackgroundPanel ePPL = new BackgroundPanel(3);
-    private BackgroundPanel wPPL = new BackgroundPanel(4);
 
     private Image gameLoading = new ImageIcon("gameLoading.png").getImage();
     private Image logo = new ImageIcon("Logo.png").getImage();
@@ -73,17 +69,8 @@ public class GameFrame extends JFrame{
         cPPL.setLayout(null);
 
         init();
-        //welcome();
-        //nPPL.setPreferredSize(new Dimension(640,63));
-        //sPPL.setPreferredSize(new Dimension(640,63));
-        //ePPL.setPreferredSize(new Dimension(63,640));
-        //wPPL.setPreferredSize(new Dimension(63,640));
 
-        C.add(cPPL, BorderLayout.CENTER);
-        //C.add(nPPL, BorderLayout.NORTH);
-        //C.add(sPPL, BorderLayout.SOUTH);
-        //C.add(ePPL, BorderLayout.EAST);
-        //C.add(wPPL, BorderLayout.WEST);
+        C.add(cPPL);
     }
 
     private void init (){
@@ -97,7 +84,6 @@ public class GameFrame extends JFrame{
                 Tiles[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
                 Tiles[i][j].addMouseListener(new Hole(i, j));
                 cPPL.add(Tiles[i][j]);
-                //add(createBorderedPanel(BorderFactory.createLineBorder(Color.BLACK), "createLineBorder(Color.red)"));
             }
         }
         for (int i = 0, j = 0; j < 8; i += 2){
@@ -342,8 +328,6 @@ public class GameFrame extends JFrame{
     }
 
     public void ColorMoves (int i, int j){
-        //Color G = new Color(127, 229, 55);
-        //Color R = new Color(255, 22, 22);
         for (int k = 0; k < 8; k++){
             for (int u = 0; u < 8; u++){
                 if (Tiles[i][j].getPiece().canMove(Tiles[i][j], Tiles[u][k])){
