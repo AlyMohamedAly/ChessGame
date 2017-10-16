@@ -1,7 +1,10 @@
 # ChessGame
 Chess Masters
+
 Version: 1.0
+
 Date: 16/10/2017
+
 Simple top down, 2D Chess Game.
 
 This game doesn't support any fancy chess moves, just normal moving and killing AKA chess for non-chess experts.
