@@ -364,6 +364,7 @@ public class GameFrame extends JFrame{
     }
 
     public boolean CanKingDie (int i, int j){
+        boolean flag = false;
         for (int k = 0; k < 8; k++){
             for (int l = 0; l < 8; l++){
                 if (Tiles[k][l].getPiece() != null){
@@ -372,7 +373,7 @@ public class GameFrame extends JFrame{
                             if (Tiles[k][l].getPiece().canKill(Tiles[k][l], Tiles[i][j])){
                                 Tiles[i][j].setBackground(Color.CYAN);
                                 Tiles[k][l].setBackground(Color.red);
-                                return true;
+                                flag = true;
                             }
                         }
                     }else{
@@ -380,12 +381,15 @@ public class GameFrame extends JFrame{
                             if (Tiles[k][l].getPiece().canKill(Tiles[k][l], Tiles[i][j])){
                                 Tiles[i][j].setBackground(Color.CYAN);
                                 Tiles[k][l].setBackground(Color.red);
-                                return true;
+                                flag = true;
                             }
                         }
                     }
                 }
             }
+        }
+        if (flag){
+            return true;
         }
         return false;
     }
