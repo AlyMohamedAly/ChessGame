@@ -1,11 +1,11 @@
 package chessgame;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -179,27 +179,64 @@ public class GameFrame extends JFrame{
 
         @Override
         public void mouseClicked (MouseEvent e){
-            Color W = new Color(249, 217, 202);
             Color Y = new Color(234, 230, 119);
             Piece ps = current.getPiece();
             if (current.getPiece() != null){
-                current.setBackground(current.getColor());
-
                 OriginalColor();
+                boolean flag = true;
+                if (getKing(current.getPiece()).checked){
+                    if (getThreats().length > 1){
+                        if (!(Tiles[i][j].getPiece() instanceof King)){
+                            flag = false;
+                        }
+                    }else{
+                        Tile Threat = (Tile) getThreats()[0].getParent();
+                        if (!(Tiles[i][j] == Threat)){
+                            flag = false;
+                        }
+                    }
+                }
+                if (flag){
+                    if (Tiles[i][j].getPiece() != null){
+                        if (current.getPiece().canMove(current, Tiles[i][j])){
+                            if (Tiles[i][j].getPiece().getColor().equals(current.getPiece().getColor())){
+                            }else{
+//                                if (Tiles[i][j].getPiece() == WhiteKing){
+//                                    MovePiece(ps, i, j);
+//                                    JOptionPane.showMessageDialog(null, "Black Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
+//                                    System.exit(0);
+//                                }else if (Tiles[i][j].getPiece() == BlackKing){
+//                                    MovePiece(ps, i, j);
+//                                    JOptionPane.showMessageDialog(null, "White Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
+//                                    System.exit(0);
+//                                }
+                                if (current.getPiece() instanceof Pawn){
+                                    Pawn temp = (Pawn) current.getPiece();
+                                    temp.Moved = true;
+                                    if (temp.getColor().equals("Black")){
+                                        if (i == 7){
+                                            Promote();
+                                        }
 
-                if (Tiles[i][j].getPiece() != null){
-                    if (current.getPiece().canMove(current, Tiles[i][j])){
-                        if (Tiles[i][j].getPiece().getColor().equals(current.getPiece().getColor())){
-                        }else{
-                            if (Tiles[i][j].getPiece() == WhiteKing){
-                                MovePiece(ps, i, j);
-                                JOptionPane.showMessageDialog(null, "Black Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
-                                System.exit(0);
-                            }else if (Tiles[i][j].getPiece() == BlackKing){
-                                MovePiece(ps, i, j);
-                                JOptionPane.showMessageDialog(null, "White Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
-                                System.exit(0);
+                                    }else{
+                                        if (i == 0){
+                                            Promote();
+                                        }
+                                    }
+                                }
+                                if (current.getPiece() instanceof King){
+                                    if (!CanKingDie(i, j)){
+                                        MovePiece(ps, i, j);
+                                        SwapPlayers();
+                                    }
+                                }else{
+                                    MovePiece(ps, i, j);
+                                    SwapPlayers();
+                                }
                             }
+                        }
+                    }else{
+                        if (current.getPiece().canMove(current, Tiles[i][j])){
                             if (current.getPiece() instanceof Pawn){
                                 Pawn temp = (Pawn) current.getPiece();
                                 temp.Moved = true;
@@ -223,41 +260,17 @@ public class GameFrame extends JFrame{
                                 MovePiece(ps, i, j);
                                 SwapPlayers();
                             }
-                        }
-                    }
-                }else{
-                    if (current.getPiece().canMove(current, Tiles[i][j])){
-                        if (current.getPiece() instanceof Pawn){
-                            Pawn temp = (Pawn) current.getPiece();
-                            temp.Moved = true;
-                            if (temp.getColor().equals("Black")){
-                                if (i == 7){
-                                    Promote();
-                                }
-
-                            }else{
-                                if (i == 0){
-                                    Promote();
-                                }
-                            }
-                        }
-                        if (current.getPiece() instanceof King){
-                            if (!CanKingDie(i, j)){
-                                MovePiece(ps, i, j);
-                                SwapPlayers();
-                            }
                         }else{
-                            MovePiece(ps, i, j);
-                            SwapPlayers();
                         }
-                    }else{
                     }
                 }
                 current.repaint();
                 current = EmptyTile();
                 if (player == 1){
+                    BlackKing.checked = false;
                     CheckMate(2);
                 }else{
+                    WhiteKing.checked = false;
                     CheckMate(1);
                 }
             }else if (Tiles[i][j].getPiece() != null){
@@ -310,6 +323,13 @@ public class GameFrame extends JFrame{
         Tiles[i][j].setPiece(ps);
     }
 
+    public King getKing (Piece p){
+        if (p.getColor().equals("White")){
+            return WhiteKing;
+        }
+        return BlackKing;
+    }
+
     public void Promote (){
         Queen Promotion;
         if (player == 1){
@@ -345,6 +365,36 @@ public class GameFrame extends JFrame{
                 }
             }
         }
+    }
+
+    public Piece[] getThreats (){
+        ArrayList<Piece> Threats = new ArrayList<Piece>();
+        for (int k = 0; k < 8; k++){
+            for (int l = 0; l < 8; l++){
+                if (Tiles[k][l].getPiece() != null){
+                    if (player == 2){
+                        if (Tiles[k][l].getPiece().getColor().equals("White")){
+                            Tile KingTile = (Tile) BlackKing.getParent();
+                            if (Tiles[k][l].getPiece().canKill(Tiles[k][l], KingTile)){
+                                Threats.add(Tiles[k][l].getPiece());
+                            }
+                        }
+                    }else{
+                        if (Tiles[k][l].getPiece().getColor().equals("Black")){
+                            Tile KingTile = (Tile) WhiteKing.getParent();
+                            if (Tiles[k][l].getPiece().canKill(Tiles[k][l], KingTile)){
+                                Threats.add(Tiles[k][l].getPiece());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        Piece[] ans = new Piece[Threats.size()];
+        for (int k = 0; k < ans.length; k++){
+            ans[k] = Threats.get(k);
+        }
+        return ans;
     }
 
     public boolean CanKingDie (int i, int j){
@@ -388,6 +438,8 @@ public class GameFrame extends JFrame{
                         if (Tiles[r][p].getPiece().getColor().equals("White")){
                             if (Tiles[r][p].getPiece().canMove(Tiles[r][p], KingTile)){
                                 KingTile.setBackground(Color.red);
+                                BlackKing.checked = true;
+                                System.out.println("Black " + BlackKing.checked + "\nWhite " + WhiteKing.checked);
                             }
                         }
                     }
@@ -401,6 +453,8 @@ public class GameFrame extends JFrame{
                         if (Tiles[r][p].getPiece().getColor().equals("Black")){
                             if (Tiles[r][p].getPiece().canMove(Tiles[r][p], KingTile)){
                                 KingTile.setBackground(Color.red);
+                                WhiteKing.checked = true;
+                                System.out.println("Black " + BlackKing.checked + "\nWhite " + WhiteKing.checked);
                             }
                         }
                     }

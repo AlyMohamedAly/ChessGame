@@ -2,6 +2,8 @@ package chessgame;
 
 public class King extends Piece{
 
+    public boolean checked = false;
+
     King (String s){
         super(s);
     }
