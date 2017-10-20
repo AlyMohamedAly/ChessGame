@@ -11,15 +11,6 @@ public class Tile extends JPanel{
         C = c;
     }
 
-    @Override
-    public boolean equals (Object o){
-        Tile target = (Tile) o;
-        if (target.getX() == this.getX() && target.getY() == this.getY()){
-            return true;
-        }
-        return false;
-    }
-
     Color getColor (){
         return C;
     }

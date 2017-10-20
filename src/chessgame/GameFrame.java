@@ -201,15 +201,15 @@ public class GameFrame extends JFrame{
                         if (current.getPiece().canMove(current, Tiles[i][j])){
                             if (Tiles[i][j].getPiece().getColor().equals(current.getPiece().getColor())){
                             }else{
-//                                if (Tiles[i][j].getPiece() == WhiteKing){
-//                                    MovePiece(ps, i, j);
-//                                    JOptionPane.showMessageDialog(null, "Black Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
-//                                    System.exit(0);
-//                                }else if (Tiles[i][j].getPiece() == BlackKing){
-//                                    MovePiece(ps, i, j);
-//                                    JOptionPane.showMessageDialog(null, "White Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
-//                                    System.exit(0);
-//                                }
+                                if (Tiles[i][j].getPiece() == WhiteKing){
+                                    MovePiece(ps, i, j);
+                                    JOptionPane.showMessageDialog(null, "Black Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
+                                    System.exit(0);
+                                }else if (Tiles[i][j].getPiece() == BlackKing){
+                                    MovePiece(ps, i, j);
+                                    JOptionPane.showMessageDialog(null, "White Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
+                                    System.exit(0);
+                                }
                                 if (current.getPiece() instanceof Pawn){
                                     Pawn temp = (Pawn) current.getPiece();
                                     temp.Moved = true;
