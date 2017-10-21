@@ -194,6 +194,9 @@ public class GameFrame extends JFrame{
                         if (!(Tiles[i][j] == Threat)){
                             flag = false;
                         }
+                        if (current.getPiece() instanceof King){
+                            flag = true;
+                        }
                     }
                 }
                 if (flag){
@@ -439,7 +442,6 @@ public class GameFrame extends JFrame{
                             if (Tiles[r][p].getPiece().canMove(Tiles[r][p], KingTile)){
                                 KingTile.setBackground(Color.red);
                                 BlackKing.checked = true;
-                                System.out.println("Black " + BlackKing.checked + "\nWhite " + WhiteKing.checked);
                             }
                         }
                     }
@@ -454,7 +456,6 @@ public class GameFrame extends JFrame{
                             if (Tiles[r][p].getPiece().canMove(Tiles[r][p], KingTile)){
                                 KingTile.setBackground(Color.red);
                                 WhiteKing.checked = true;
-                                System.out.println("Black " + BlackKing.checked + "\nWhite " + WhiteKing.checked);
                             }
                         }
                     }
