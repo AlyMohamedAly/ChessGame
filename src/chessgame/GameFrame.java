@@ -181,10 +181,10 @@ public class GameFrame extends JFrame{
         public void mouseClicked (MouseEvent e){
             Color Y = new Color(234, 230, 119);
             Piece ps = current.getPiece();
-            if (current.getPiece() != null){
+            if (ps != null){
                 OriginalColor();
                 boolean flag = true;
-                if (getKing(current.getPiece()).checked){
+                if (getKing(ps).checked){
                     if (getThreats().length > 1){
                         if (!(Tiles[i][j].getPiece() instanceof King)){
                             flag = false;
@@ -194,15 +194,15 @@ public class GameFrame extends JFrame{
                         if (!(Tiles[i][j] == Threat)){
                             flag = false;
                         }
-                        if (current.getPiece() instanceof King){
+                        if (ps instanceof King){
                             flag = true;
                         }
                     }
                 }
                 if (flag){
                     if (Tiles[i][j].getPiece() != null){
-                        if (current.getPiece().canMove(current, Tiles[i][j])){
-                            if (Tiles[i][j].getPiece().getColor().equals(current.getPiece().getColor())){
+                        if (ps.canMove(current, Tiles[i][j])){
+                            if (Tiles[i][j].getPiece().getColor().equals(ps.getColor())){
                             }else{
                                 if (Tiles[i][j].getPiece() == WhiteKing){
                                     MovePiece(ps, i, j);
@@ -213,8 +213,8 @@ public class GameFrame extends JFrame{
                                     JOptionPane.showMessageDialog(null, "White Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
                                     System.exit(0);
                                 }
-                                if (current.getPiece() instanceof Pawn){
-                                    Pawn temp = (Pawn) current.getPiece();
+                                if (ps instanceof Pawn){
+                                    Pawn temp = (Pawn) ps;
                                     temp.Moved++;
                                     if (temp.getColor().equals("Black")){
                                         if (i == 7){
@@ -227,7 +227,7 @@ public class GameFrame extends JFrame{
                                         }
                                     }
                                 }
-                                if (current.getPiece() instanceof King){
+                                if (ps instanceof King){
                                     if (!CanKingDie(i, j)){
                                         MovePiece(ps, i, j);
                                         SwapPlayers();
@@ -239,8 +239,8 @@ public class GameFrame extends JFrame{
                             }
                         }
                     }else{
-                        if (current.getPiece() instanceof Pawn){
-                            Pawn temp = (Pawn) current.getPiece();
+                        if (ps instanceof Pawn){
+                            Pawn temp = (Pawn) ps;
                             if (temp.getColor().equals("Black")){
                                 if (temp.canPassat(current, Tiles[i][j], Tiles[i - 1][j])){
                                     if (Tiles[i - 1][j].getPiece() instanceof Pawn){
@@ -248,7 +248,6 @@ public class GameFrame extends JFrame{
                                         if (Passat.Moved == 1){
                                             Tiles[i - 1][j].removePiece();
                                             MovePiece(ps, i, j);
-                                            SwapPlayers();
                                         }
                                     }
                                 }
@@ -259,15 +258,14 @@ public class GameFrame extends JFrame{
                                         if (Passat.Moved == 1){
                                             Tiles[i + 1][j].removePiece();
                                             MovePiece(ps, i, j);
-                                            SwapPlayers();
                                         }
                                     }
                                 }
                             }
                         }
-                        if (current.getPiece().canMove(current, Tiles[i][j])){
-                            if (current.getPiece() instanceof Pawn){
-                                Pawn temp = (Pawn) current.getPiece();
+                        if (ps.canMove(current, Tiles[i][j])){
+                            if (ps instanceof Pawn){
+                                Pawn temp = (Pawn) ps;
                                 temp.Moved++;
                                 if (temp.getColor().equals("Black")){
                                     if (i == 7){
@@ -279,7 +277,7 @@ public class GameFrame extends JFrame{
                                     }
                                 }
                             }
-                            if (current.getPiece() instanceof King){
+                            if (ps instanceof King){
                                 if (!CanKingDie(i, j)){
                                     MovePiece(ps, i, j);
                                     SwapPlayers();
@@ -345,7 +343,6 @@ public class GameFrame extends JFrame{
     }
 
     public void MovePiece (Piece ps, int i, int j){
-//        ps = current.getPiece();
         Tiles[i][j].removePiece();
         current.removePiece();
         Tiles[i][j].setPiece(ps);
