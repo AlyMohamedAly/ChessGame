@@ -215,7 +215,7 @@ public class GameFrame extends JFrame{
                                 }
                                 if (current.getPiece() instanceof Pawn){
                                     Pawn temp = (Pawn) current.getPiece();
-                                    temp.Moved = true;
+                                    temp.Moved++;
                                     if (temp.getColor().equals("Black")){
                                         if (i == 7){
                                             Promote();
@@ -239,15 +239,40 @@ public class GameFrame extends JFrame{
                             }
                         }
                     }else{
+                        if (current.getPiece() instanceof Pawn){
+                            Pawn temp = (Pawn) current.getPiece();
+                            if (temp.getColor().equals("Black")){
+                                if (temp.canPassat(current, Tiles[i][j], Tiles[i - 1][j])){
+                                    if (Tiles[i - 1][j].getPiece() instanceof Pawn){
+                                        Pawn Passat = (Pawn) Tiles[i - 1][j].getPiece();
+                                        if (Passat.Moved == 1){
+                                            Tiles[i - 1][j].removePiece();
+                                            MovePiece(ps, i, j);
+                                            SwapPlayers();
+                                        }
+                                    }
+                                }
+                            }else{
+                                if (temp.canPassat(current, Tiles[i][j], Tiles[i + 1][j])){
+                                    if (Tiles[i + 1][j].getPiece() instanceof Pawn){
+                                        Pawn Passat = (Pawn) Tiles[i + 1][j].getPiece();
+                                        if (Passat.Moved == 1){
+                                            Tiles[i + 1][j].removePiece();
+                                            MovePiece(ps, i, j);
+                                            SwapPlayers();
+                                        }
+                                    }
+                                }
+                            }
+                        }
                         if (current.getPiece().canMove(current, Tiles[i][j])){
                             if (current.getPiece() instanceof Pawn){
                                 Pawn temp = (Pawn) current.getPiece();
-                                temp.Moved = true;
+                                temp.Moved++;
                                 if (temp.getColor().equals("Black")){
                                     if (i == 7){
                                         Promote();
                                     }
-
                                 }else{
                                     if (i == 0){
                                         Promote();
@@ -320,7 +345,7 @@ public class GameFrame extends JFrame{
     }
 
     public void MovePiece (Piece ps, int i, int j){
-        ps = current.getPiece();
+//        ps = current.getPiece();
         Tiles[i][j].removePiece();
         current.removePiece();
         Tiles[i][j].setPiece(ps);
