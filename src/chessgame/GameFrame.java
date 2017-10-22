@@ -206,11 +206,11 @@ public class GameFrame extends JFrame{
                             }else{
                                 if (Tiles[i][j].getPiece() instanceof King){
                                     if (Tiles[i][j].getPiece() == WhiteKing){
-                                        MovePiece(ps, i, j);
+                                        MovePiece(i, j);
                                         JOptionPane.showMessageDialog(null, "Black Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
                                         System.exit(0);
-                                    }else if (Tiles[i][j].getPiece() == BlackKing){
-                                        MovePiece(ps, i, j);
+                                    }else{
+                                        MovePiece(i, j);
                                         JOptionPane.showMessageDialog(null, "White Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
                                         System.exit(0);
                                     }
@@ -230,11 +230,11 @@ public class GameFrame extends JFrame{
                                 }
                                 if (ps instanceof King){
                                     if (!CanKingDie(i, j)){
-                                        MovePiece(ps, i, j);
+                                        MovePiece(i, j);
                                         SwapPlayers();
                                     }
                                 }else{
-                                    MovePiece(ps, i, j);
+                                    MovePiece(i, j);
                                     SwapPlayers();
                                 }
                             }
@@ -248,7 +248,7 @@ public class GameFrame extends JFrame{
                                         Pawn Passat = (Pawn) Tiles[i - 1][j].getPiece();
                                         if (Passat.Moved == 1){
                                             Tiles[i - 1][j].removePiece();
-                                            MovePiece(ps, i, j);
+                                            MovePiece(i, j);
                                         }
                                     }
                                 }
@@ -258,7 +258,7 @@ public class GameFrame extends JFrame{
                                         Pawn Passat = (Pawn) Tiles[i + 1][j].getPiece();
                                         if (Passat.Moved == 1){
                                             Tiles[i + 1][j].removePiece();
-                                            MovePiece(ps, i, j);
+                                            MovePiece(i, j);
                                         }
                                     }
                                 }
@@ -280,11 +280,11 @@ public class GameFrame extends JFrame{
                             }
                             if (ps instanceof King){
                                 if (!CanKingDie(i, j)){
-                                    MovePiece(ps, i, j);
+                                    MovePiece(i, j);
                                     SwapPlayers();
                                 }
                             }else{
-                                MovePiece(ps, i, j);
+                                MovePiece(i, j);
                                 SwapPlayers();
                             }
                         }else{
@@ -344,10 +344,11 @@ public class GameFrame extends JFrame{
         }
     }
 
-    public void MovePiece (Piece ps, int i, int j){
+    public void MovePiece (int i, int j){
+        Piece pp = current.getPiece();
         Tiles[i][j].removePiece();
         current.removePiece();
-        Tiles[i][j].setPiece(ps);
+        Tiles[i][j].setPiece(pp);
     }
 
     public King getKing (Piece p){
