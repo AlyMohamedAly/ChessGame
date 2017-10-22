@@ -373,19 +373,97 @@ public class GameFrame extends JFrame{
     }
 
     public void ColorMoves (int i, int j){
-        for (int k = 0; k < 8; k++){
-            for (int u = 0; u < 8; u++){
-                if (Tiles[i][j].getPiece().canMove(Tiles[i][j], Tiles[u][k])){
-                    Tiles[u][k].setBackground(Color.GREEN);
-                    Tiles[u][k].repaint();
-                    if (Tiles[u][k].getPiece() != null){
-                        if (!Tiles[u][k].getPiece().getColor().equals(Tiles[i][j].getPiece().getColor())){
-                            Tiles[u][k].setBackground(Color.red);
-                            Tiles[u][k].repaint();
-                        }else{
-                            Tiles[u][k].setBackground(Tiles[u][k].getColor());
-                            Tiles[u][k].repaint();
+        Piece pss = Tiles[i][j].getPiece();
+        if (Tiles[i][j].getPiece() instanceof Pawn){
+            Pawn ppss = (Pawn) pss;
+            try{
+                if (ppss.getColor().equals("White")){
+                    if (ppss.canMove(Tiles[i][j], Tiles[i - 1][j])){
+                        Tiles[i - 1][j].setBackground(Color.green);
+                    }                                                                   //Moving
+                    if (ppss.canMove(Tiles[i][j], Tiles[i - 2][j])){
+                        Tiles[i - 2][j].setBackground(Color.green);
+                    }
+
+                    if (ppss.canMove(Tiles[i][j], Tiles[i - 1][j + 1])){
+                        Tiles[i - 1][j + 1].setBackground(Color.red);
+                    }                                                                   //Killing
+                    if (ppss.canMove(Tiles[i][j], Tiles[i - 1][j - 1])){
+                        Tiles[i - 1][j - 1].setBackground(Color.red);
+                    }
+
+                    if (ppss.canPassat(Tiles[i][j], Tiles[i - 1][j + 1], Tiles[i][j + 1])){
+                        if (Tiles[i][j + 1].getPiece() instanceof Pawn){
+                            Pawn ppks = (Pawn) Tiles[i][j + 1].getPiece();
+                            if (ppks.Moved == 1){
+                                Tiles[i - 1][j + 1].setBackground(Color.MAGENTA);
+                            }
                         }
+                    }                                                                       //onPassat
+                    if (ppss.canPassat(Tiles[i][j], Tiles[i - 1][j - 1], Tiles[i][j - 1])){
+                        if (Tiles[i][j - 1].getPiece() instanceof Pawn){
+                            Pawn ppks = (Pawn) Tiles[i][j - 1].getPiece();
+                            if (ppks.Moved == 1){
+                                Tiles[i - 1][j - 1].setBackground(Color.MAGENTA);
+                            }
+                        }
+                    }
+                    Tiles[i - 1][j].repaint();
+                    Tiles[i - 2][j].repaint();
+                    Tiles[i - 1][j + 1].repaint();
+                    Tiles[i - 1][j - 1].repaint();
+                }else{
+                    if (ppss.canMove(Tiles[i][j], Tiles[i + 1][j])){
+                        Tiles[i + 1][j].setBackground(Color.green);
+                    }                                                                   //Moving
+                    if (ppss.canMove(Tiles[i][j], Tiles[i + 2][j])){
+                        Tiles[i + 2][j].setBackground(Color.green);
+                    }
+
+                    if (ppss.canMove(Tiles[i][j], Tiles[i + 1][j - 1])){
+                        Tiles[i + 1][j - 1].setBackground(Color.red);
+                    }                                                                   //Killing
+                    if (ppss.canMove(Tiles[i][j], Tiles[i + 1][j + 1])){
+                        Tiles[i + 1][j + 1].setBackground(Color.red);
+                    }
+
+                    if (ppss.canPassat(Tiles[i][j], Tiles[i + 1][j - 1], Tiles[i][j - 1])){
+                        if (Tiles[i][j - 1].getPiece() instanceof Pawn){
+                            Pawn ppks = (Pawn) Tiles[i][j - 1].getPiece();
+                            if (ppks.Moved == 1){
+                                Tiles[i + 1][j - 1].setBackground(Color.MAGENTA);
+                            }
+                        }
+                    }                                                                       //onPassat
+                    if (ppss.canPassat(Tiles[i][j], Tiles[i + 1][j + 1], Tiles[i][j + 1])){
+                        if (Tiles[i][j + 1].getPiece() instanceof Pawn){
+                            Pawn ppks = (Pawn) Tiles[i][j + 1].getPiece();
+                            if (ppks.Moved == 1){
+                                Tiles[i + 1][j + 1].setBackground(Color.MAGENTA);
+                            }
+                        }
+                    }
+                    Tiles[i + 1][j].repaint();
+                    Tiles[i + 2][j].repaint();
+                    Tiles[i + 1][j - 1].repaint();
+                    Tiles[i + 1][j + 1].repaint();
+                }
+            }catch (Exception e){
+
+            }
+        }else{
+            for (int k = 0; k < 8; k++){
+                for (int u = 0; u < 8; u++){
+                    if (pss.canMove(Tiles[i][j], Tiles[u][k])){
+                        Tiles[u][k].setBackground(Color.GREEN);
+                        if (Tiles[u][k].getPiece() != null){
+                            if (!Tiles[u][k].getPiece().getColor().equals(pss.getColor())){
+                                Tiles[u][k].setBackground(Color.red);
+                            }else{
+                                Tiles[u][k].setBackground(Tiles[u][k].getColor());
+                            }
+                        }
+                        Tiles[u][k].repaint();
                     }
                 }
             }
