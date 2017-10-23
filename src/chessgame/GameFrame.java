@@ -360,6 +360,9 @@ public class GameFrame extends JFrame{
     }
 
     public boolean canBlock (Piece threat, int i, int j){              //Prototype
+        if (current.getPiece() instanceof King){
+            return false;
+        }
         if (threat instanceof Pawn || threat instanceof Knight || threat instanceof King){
             return false;
         }else{
@@ -422,7 +425,7 @@ public class GameFrame extends JFrame{
         return ans;
     }
 
-    public boolean CanKingDie (int i, int j){
+    public boolean CanKingDie (int i, int j){   //fix
         boolean flag = false;
         for (int k = 0; k < 8; k++){
             for (int l = 0; l < 8; l++){
