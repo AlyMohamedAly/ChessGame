@@ -14,58 +14,53 @@ import javax.swing.JPanel;
 
 public class GameFrame extends JFrame{
 
-    private Pawn[] WhitePawns = new Pawn[8];
-    private Knight WhiteLeftKnight = new Knight("WhiteLeftKnight");
-    private Knight WhiteRightKnight = new Knight("WhiteRightKnight");
-    private Bishop WhiteLeftBishop = new Bishop("WhiteLeftBishop");
-    private Bishop WhiteRightBishop = new Bishop("WhiteRightBishop");
-    private Rook WhiteLeftRook = new Rook("WhiteLeftRook");
-    private Rook WhiteRightRook = new Rook("WhiteRightRook");
-    private Queen WhiteQueen = new Queen("WhiteQueen");
-    private King WhiteKing = new King("WhiteKing");
+    private final Pawn[] WhitePawns = new Pawn[8];
+    private final Knight WhiteLeftKnight = new Knight("WhiteLeftKnight");
+    private final Knight WhiteRightKnight = new Knight("WhiteRightKnight");
+    private final Bishop WhiteLeftBishop = new Bishop("WhiteLeftBishop");
+    private final Bishop WhiteRightBishop = new Bishop("WhiteRightBishop");
+    private final Rook WhiteLeftRook = new Rook("WhiteLeftRook");
+    private final Rook WhiteRightRook = new Rook("WhiteRightRook");
+    private final Queen WhiteQueen = new Queen("WhiteQueen");
+    private final King WhiteKing = new King("WhiteKing");
 
-    private Pawn[] BlackPawns = new Pawn[8];
-    private Knight BlackLeftKnight = new Knight("BlackLeftKnight");
-    private Knight BlackRightKnight = new Knight("BlackRightKnight");
-    private Bishop BlackLeftBishop = new Bishop("BlackLeftBishop");
-    private Bishop BlackRightBishop = new Bishop("BlackRightBishop");
-    private Rook BlackLeftRook = new Rook("BlackLeftRook");
-    private Rook BlackRightRook = new Rook("BlackRightRook");
-    private Queen BlackQueen = new Queen("BlackQueen");
-    private King BlackKing = new King("BlackKing");
+    private final Pawn[] BlackPawns = new Pawn[8];
+    private final Knight BlackLeftKnight = new Knight("BlackLeftKnight");
+    private final Knight BlackRightKnight = new Knight("BlackRightKnight");
+    private final Bishop BlackLeftBishop = new Bishop("BlackLeftBishop");
+    private final Bishop BlackRightBishop = new Bishop("BlackRightBishop");
+    private final Rook BlackLeftRook = new Rook("BlackLeftRook");
+    private final Rook BlackRightRook = new Rook("BlackRightRook");
+    private final Queen BlackQueen = new Queen("BlackQueen");
+    private final King BlackKing = new King("BlackKing");
 
     public static Tile[][] Tiles = new Tile[8][8];
 
-    private ImageIcon WhitePawnImg = new ImageIcon("TopViewPieces/wPawn.png");
-    private ImageIcon WhiteKnightImg = new ImageIcon("TopViewPieces/wKnight.png");
-    private ImageIcon WhiteBishopImg = new ImageIcon("TopViewPieces/wBishop.png");
-    private ImageIcon WhiteRookImg = new ImageIcon("TopViewPieces/wRook.png");
-    private ImageIcon WhiteQueenImg = new ImageIcon("TopViewPieces/wQueen.png");
-    private ImageIcon WhiteKingImg = new ImageIcon("TopViewPieces/wKing.png");
+    private final ImageIcon WhitePawnImg = new ImageIcon("TopViewPieces/wPawn.png");
+    private final ImageIcon WhiteKnightImg = new ImageIcon("TopViewPieces/wKnight.png");
+    private final ImageIcon WhiteBishopImg = new ImageIcon("TopViewPieces/wBishop.png");
+    private final ImageIcon WhiteRookImg = new ImageIcon("TopViewPieces/wRook.png");
+    private final ImageIcon WhiteQueenImg = new ImageIcon("TopViewPieces/wQueen.png");
+    private final ImageIcon WhiteKingImg = new ImageIcon("TopViewPieces/wKing.png");
 
-    private ImageIcon BlackPawnImg = new ImageIcon("TopViewPieces/bPawn.png");
-    private ImageIcon BlackKnightImg = new ImageIcon("TopViewPieces/bKnight.png");
-    private ImageIcon BlackBishopImg = new ImageIcon("TopViewPieces/bBishop.png");
-    private ImageIcon BlackRookImg = new ImageIcon("TopViewPieces/bRook.png");
-    private ImageIcon BlackQueenImg = new ImageIcon("TopViewPieces/bQueen.png");
-    private ImageIcon BlackKingImg = new ImageIcon("TopViewPieces/bKing.png");
+    private final ImageIcon BlackPawnImg = new ImageIcon("TopViewPieces/bPawn.png");
+    private final ImageIcon BlackKnightImg = new ImageIcon("TopViewPieces/bKnight.png");
+    private final ImageIcon BlackBishopImg = new ImageIcon("TopViewPieces/bBishop.png");
+    private final ImageIcon BlackRookImg = new ImageIcon("TopViewPieces/bRook.png");
+    private final ImageIcon BlackQueenImg = new ImageIcon("TopViewPieces/bQueen.png");
+    private final ImageIcon BlackKingImg = new ImageIcon("TopViewPieces/bKing.png");
 
-    private JPanel cPPL = new JPanel();
+    private final JPanel cPPL = new JPanel();
 
-    private Image gameLoading = new ImageIcon("gameLoading.png").getImage();
-    private Image logo = new ImageIcon("Logo.png").getImage();
-    private Image template = new ImageIcon("Template.png").getImage();
-    private Image pressAnyKey = new ImageIcon("pressAnyKey.png").getImage();
-
+    //private Image gameLoading = new ImageIcon("gameLoading.png").getImage();
+    //private Image logo = new ImageIcon("Logo.png").getImage();
+    //private Image template = new ImageIcon("Template.png").getImage();
+    //private Image pressAnyKey = new ImageIcon("pressAnyKey.png").getImage();
     private Tile current = new Tile();
     private int player = 1;
+    Container C = this.getContentPane();
 
     GameFrame (){
-        this.setTitle("Chess Masters");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setBounds(300, 10, 646, 669);
-        this.setResizable(false);
-        Container C = this.getContentPane();
         cPPL.setLayout(null);
 
         init();
@@ -170,7 +165,8 @@ public class GameFrame extends JFrame{
 
     class Hole extends MouseAdapter{
 
-        private int i, j;
+        private final int i;
+        private final int j;
 
         Hole (int ind1, int ind2){
             i = ind1;
@@ -193,6 +189,9 @@ public class GameFrame extends JFrame{
                         Tile Threat = (Tile) getThreats()[0].getParent();
                         if (!(Tiles[i][j] == Threat)){
                             flag = false;
+                        }
+                        if (canBlock(Threat.getPiece(), i, j)){
+                            flag = true;
                         }
                         if (ps instanceof King){
                             flag = true;
@@ -240,30 +239,6 @@ public class GameFrame extends JFrame{
                             }
                         }
                     }else{
-                        if (ps instanceof Pawn){
-                            Pawn temp = (Pawn) ps;
-                            if (temp.getColor().equals("Black")){
-                                if (temp.canPassat(current, Tiles[i][j], Tiles[i - 1][j])){
-                                    if (Tiles[i - 1][j].getPiece() instanceof Pawn){
-                                        Pawn Passat = (Pawn) Tiles[i - 1][j].getPiece();
-                                        if (Passat.Moved == 1){
-                                            Tiles[i - 1][j].removePiece();
-                                            MovePiece(i, j);
-                                        }
-                                    }
-                                }
-                            }else{
-                                if (temp.canPassat(current, Tiles[i][j], Tiles[i + 1][j])){
-                                    if (Tiles[i + 1][j].getPiece() instanceof Pawn){
-                                        Pawn Passat = (Pawn) Tiles[i + 1][j].getPiece();
-                                        if (Passat.Moved == 1){
-                                            Tiles[i + 1][j].removePiece();
-                                            MovePiece(i, j);
-                                        }
-                                    }
-                                }
-                            }
-                        }
                         if (ps.canMove(current, Tiles[i][j])){
                             if (ps instanceof Pawn){
                                 Pawn temp = (Pawn) ps;
@@ -289,6 +264,31 @@ public class GameFrame extends JFrame{
                             }
                         }else{
                         }
+                        if (ps instanceof Pawn){
+                            Pawn temp = (Pawn) ps;
+                            if (temp.getColor().equals("Black")){
+                                if (temp.canPassat(current, Tiles[i][j], Tiles[i - 1][j])){
+                                    if (Tiles[i - 1][j].getPiece() instanceof Pawn){
+                                        Pawn Passat = (Pawn) Tiles[i - 1][j].getPiece();
+                                        if (Passat.Moved == 1){
+                                            Tiles[i - 1][j].removePiece();
+                                            MovePiece(i, j);
+                                        }
+                                    }
+                                }
+                            }else{
+                                if (temp.canPassat(current, Tiles[i][j], Tiles[i + 1][j])){
+                                    if (Tiles[i + 1][j].getPiece() instanceof Pawn){
+                                        Pawn Passat = (Pawn) Tiles[i + 1][j].getPiece();
+                                        if (Passat.Moved == 1){
+                                            Tiles[i + 1][j].removePiece();
+                                            MovePiece(i, j);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                     }
                 }
                 current.repaint();
@@ -323,10 +323,10 @@ public class GameFrame extends JFrame{
 
         public Tile EmptyTile (){
             Tile pp;
-            for (int i = 0; i < 8; i++){
-                for (int j = 0; j < 8; j++){
-                    if (Tiles[i][j].getPiece() == null){
-                        pp = Tiles[i][j];
+            for (int T = 0; T < 8; T++){
+                for (int Y = 0; Y < 8; Y++){
+                    if (Tiles[T][Y].getPiece() == null){
+                        pp = Tiles[T][Y];
                         return pp;
                     }
                 }
@@ -358,6 +358,22 @@ public class GameFrame extends JFrame{
         return BlackKing;
     }
 
+    public boolean canBlock (Piece threat, int i, int j){              //Prototype
+        if (threat instanceof Pawn || threat instanceof Knight || threat instanceof King){
+            return false;
+        }else{
+            Tile ThreatTile = (Tile) threat.getParent();
+            if (threat.canMove(ThreatTile, Tiles[i][j])){
+                Tile KingTile = (Tile) getKing(current.getPiece()).getParent();
+                if (threat.canMove(Tiles[i][j], KingTile)){
+                    return true;
+                }
+
+            }
+        }
+        return false;
+    }
+
     public void Promote (){
         Queen Promotion;
         if (player == 1){
@@ -376,7 +392,7 @@ public class GameFrame extends JFrame{
     }
 
     public Piece[] getThreats (){
-        ArrayList<Piece> Threats = new ArrayList<Piece>();
+        ArrayList<Piece> Threats = new ArrayList<>();
         for (int k = 0; k < 8; k++){
             for (int l = 0; l < 8; l++){
                 if (Tiles[k][l].getPiece() != null){
@@ -430,10 +446,7 @@ public class GameFrame extends JFrame{
                 }
             }
         }
-        if (flag){
-            return true;
-        }
-        return false;
+        return flag;
     }
 
     public void CheckMate (int n){
