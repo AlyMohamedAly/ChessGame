@@ -2,7 +2,6 @@ package chessgame;
 
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -273,6 +272,7 @@ public class GameFrame extends JFrame{
                                         if (Passat.Moved == 1){
                                             Tiles[i - 1][j].removePiece();
                                             MovePiece(i, j);
+                                            SwapPlayers();
                                         }
                                     }
                                 }
@@ -283,6 +283,7 @@ public class GameFrame extends JFrame{
                                         if (Passat.Moved == 1){
                                             Tiles[i + 1][j].removePiece();
                                             MovePiece(i, j);
+                                            SwapPlayers();
                                         }
                                     }
                                 }
