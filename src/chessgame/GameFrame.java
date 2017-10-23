@@ -425,8 +425,12 @@ public class GameFrame extends JFrame{
         return ans;
     }
 
-    public boolean CanKingDie (int i, int j){   //fix
+    public boolean CanKingDie (int i, int j){
         boolean flag = false;
+        Tile WhiteTile = (Tile) WhiteKing.getParent();
+        Tile BlackTile = (Tile) BlackKing.getParent();
+        WhiteTile.removePiece();
+        BlackTile.removePiece();
         for (int k = 0; k < 8; k++){
             for (int l = 0; l < 8; l++){
                 if (Tiles[k][l].getPiece() != null){
@@ -450,6 +454,8 @@ public class GameFrame extends JFrame{
                 }
             }
         }
+        WhiteTile.add(WhiteKing);
+        BlackTile.add(BlackKing);
         return flag;
     }
 
