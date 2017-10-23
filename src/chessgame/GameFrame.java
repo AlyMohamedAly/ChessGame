@@ -51,11 +51,8 @@ public class GameFrame extends JFrame{
 
     private final JPanel cPPL = new JPanel();
 
-    //private Image gameLoading = new ImageIcon("gameLoading.png").getImage();
-    //private Image logo = new ImageIcon("Logo.png").getImage();
-    //private Image template = new ImageIcon("Template.png").getImage();
-    //private Image pressAnyKey = new ImageIcon("pressAnyKey.png").getImage();
     private Tile current = new Tile();
+    private Knight TestKnight = new Knight("TestKnight");
     private int player = 1;
     Container C = this.getContentPane();
 
@@ -359,23 +356,22 @@ public class GameFrame extends JFrame{
         return BlackKing;
     }
 
-    public boolean canBlock (Piece threat, int i, int j){              //Prototype
-        if (current.getPiece() instanceof King){
-            return false;
-        }
-        if (threat instanceof Pawn || threat instanceof Knight || threat instanceof King){
+    public boolean canBlock (Piece threat, int i, int j){
+        if (threat instanceof Pawn || threat instanceof Knight || threat instanceof King || current.getPiece() instanceof King){
             return false;
         }else{
             Tile ThreatTile = (Tile) threat.getParent();
-            if (threat.canMove(ThreatTile, Tiles[i][j])){
-                Tile KingTile = (Tile) getKing(current.getPiece()).getParent();
-                if (threat.canMove(Tiles[i][j], KingTile)){
-                    return true;
-                }
-
+            Tile KingTile = (Tile) getKing(current.getPiece()).getParent();
+            Tiles[i][j].add(TestKnight);
+            if (threat.canMove(ThreatTile, KingTile)){
+                Tiles[i][j].remove(TestKnight);
+                return false;
+            }else{
+                Tiles[i][j].remove(TestKnight);
+                return true;
             }
+
         }
-        return false;
     }
 
     public void Promote (){
@@ -506,7 +502,7 @@ public class GameFrame extends JFrame{
                                 Tiles[i - 1][j + 1].setBackground(Color.MAGENTA);
                             }
                         }
-                    }                                                                       //onPassat
+                    }                                                                       //EnPassat
                 }
                 if (i - 1 >= 0 && j - 1 >= 0){
                     if (ppss.canPassat(Tiles[i][j], Tiles[i - 1][j - 1], Tiles[i][j - 1])){
@@ -527,7 +523,7 @@ public class GameFrame extends JFrame{
                                 Tiles[i + 1][j - 1].setBackground(Color.MAGENTA);
                             }
                         }
-                    }                                                                       //onPassat
+                    }                                                                       //EnPassat
                 }
                 if (i + 1 < 8 && j + 1 < 8){
                     if (ppss.canPassat(Tiles[i][j], Tiles[i + 1][j + 1], Tiles[i][j + 1])){
