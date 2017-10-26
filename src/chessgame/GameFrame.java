@@ -171,7 +171,6 @@ public class GameFrame extends JFrame{
 
         @Override
         public void mouseClicked (MouseEvent e){
-            Color Y = new Color(234, 230, 119);
             Piece ps = current.getPiece();
             if (ps != null){
                 OriginalColor();
@@ -294,7 +293,7 @@ public class GameFrame extends JFrame{
                 if (!(player == 1 && Tiles[i][j].getPiece().getColor().equals("Black"))){
                     if (!(player == 2 && Tiles[i][j].getPiece().getColor().equals("White"))){
                         ColorMoves(i, j);
-                        Tiles[i][j].setBackground(Y);
+                        Tiles[i][j].setBackground(Color.YELLOW);
                         current = Tiles[i][j];
                     }
                 }
@@ -372,7 +371,7 @@ public class GameFrame extends JFrame{
             Tile ThreatTile = (Tile) threat.getParent();
             Tile KingTile = (Tile) getKing(current.getPiece()).getParent();
             Tiles[i][j].add(TestKnight);
-            if (threat.canMove(ThreatTile, KingTile)){
+            if (threat.canKill(ThreatTile, KingTile)){
                 Tiles[i][j].remove(TestKnight);
                 return false;
             }else{
@@ -455,7 +454,7 @@ public class GameFrame extends JFrame{
                 for (int p = 0; p < 8; p++){
                     if (Tiles[r][p].getPiece() != null){
                         if (Tiles[r][p].getPiece().getColor().equals("White")){
-                            if (Tiles[r][p].getPiece().canMove(Tiles[r][p], KingTile)){
+                            if (Tiles[r][p].getPiece().canKill(Tiles[r][p], KingTile)){
                                 KingTile.setBackground(Color.red);
                                 BlackKing.checked = true;
                             }
@@ -469,7 +468,7 @@ public class GameFrame extends JFrame{
                 for (int p = 0; p < 8; p++){
                     if (Tiles[r][p].getPiece() != null){
                         if (Tiles[r][p].getPiece().getColor().equals("Black")){
-                            if (Tiles[r][p].getPiece().canMove(Tiles[r][p], KingTile)){
+                            if (Tiles[r][p].getPiece().canKill(Tiles[r][p], KingTile)){
                                 KingTile.setBackground(Color.red);
                                 WhiteKing.checked = true;
                             }
@@ -483,6 +482,12 @@ public class GameFrame extends JFrame{
 
     public boolean isDefending (Piece dps, Tile Target){
         if (dps instanceof King){
+            return false;
+        }
+        if (WhiteKing.checked){
+            return false;
+        }
+        if (BlackKing.checked){
             return false;
         }
         Tile HostTile = (Tile) dps.getParent();
