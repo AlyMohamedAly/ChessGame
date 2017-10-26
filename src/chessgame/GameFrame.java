@@ -199,17 +199,35 @@ public class GameFrame extends JFrame{
                         if (ps.canMove(current, Tiles[i][j])){
                             if (Tiles[i][j].getPiece().getColor().equals(ps.getColor())){
                             }else{
-                                if (Tiles[i][j].getPiece() instanceof King){
-                                    if (Tiles[i][j].getPiece() == WhiteKing){
-                                        MovePiece(i, j);
-                                        JOptionPane.showMessageDialog(null, "Black Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
-                                        System.exit(0);
+                                if (!(isDefending(current.getPiece(), Tiles[i][j]))){
+                                    if (ps instanceof Pawn){
+                                        Pawn temp = (Pawn) ps;
+                                        temp.Moved++;
+                                        if (temp.getColor().equals("Black")){
+                                            if (i == 7){
+                                                Promote();
+                                            }
+                                        }else{
+                                            if (i == 0){
+                                                Promote();
+                                            }
+                                        }
+                                    }
+                                    if (ps instanceof King){
+                                        if (!CanKingDie(i, j)){
+                                            MovePiece(i, j);
+                                            SwapPlayers();
+                                        }
                                     }else{
                                         MovePiece(i, j);
-                                        JOptionPane.showMessageDialog(null, "White Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
-                                        System.exit(0);
+                                        SwapPlayers();
                                     }
                                 }
+                            }
+                        }
+                    }else{
+                        if (ps.canMove(current, Tiles[i][j])){
+                            if (!(isDefending(current.getPiece(), Tiles[i][j]))){
                                 if (ps instanceof Pawn){
                                     Pawn temp = (Pawn) ps;
                                     temp.Moved++;
@@ -232,31 +250,6 @@ public class GameFrame extends JFrame{
                                     MovePiece(i, j);
                                     SwapPlayers();
                                 }
-                            }
-                        }
-                    }else{
-                        if (ps.canMove(current, Tiles[i][j])){
-                            if (ps instanceof Pawn){
-                                Pawn temp = (Pawn) ps;
-                                temp.Moved++;
-                                if (temp.getColor().equals("Black")){
-                                    if (i == 7){
-                                        Promote();
-                                    }
-                                }else{
-                                    if (i == 0){
-                                        Promote();
-                                    }
-                                }
-                            }
-                            if (ps instanceof King){
-                                if (!CanKingDie(i, j)){
-                                    MovePiece(i, j);
-                                    SwapPlayers();
-                                }
-                            }else{
-                                MovePiece(i, j);
-                                SwapPlayers();
                             }
                         }else{
                         }
@@ -286,7 +279,6 @@ public class GameFrame extends JFrame{
                                 }
                             }
                         }
-
                     }
                 }
                 current.repaint();
@@ -354,6 +346,48 @@ public class GameFrame extends JFrame{
             return WhiteKing;
         }
         return BlackKing;
+    }
+
+    public boolean isDefending (Piece dps, Tile Target){
+        if (dps instanceof King){
+            return false;
+        }
+        Tile HostTile = (Tile) dps.getParent();
+        HostTile.remove(dps);
+        Target.add(dps);
+        Tile WhiteTile = (Tile) WhiteKing.getParent();
+        Tile BlackTile = (Tile) BlackKing.getParent();
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+                Piece PotentialThreat = Tiles[i][j].getPiece();
+                if (PotentialThreat != null){
+                    if (player == 1){
+                        if (PotentialThreat.getColor().equals("Black")){
+                            if (PotentialThreat.canKill(Tiles[i][j], WhiteTile)){
+                                HostTile.add(dps);
+                                Target.remove(dps);
+                                Tile ThreatTile = (Tile) PotentialThreat.getParent();
+                                ThreatTile.setBackground(Color.red);
+                                return true;
+                            }
+                        }
+                    }else{
+                        if (PotentialThreat.getColor().equals("White")){
+                            if (PotentialThreat.canKill(Tiles[i][j], BlackTile)){
+                                HostTile.add(dps);
+                                Target.remove(dps);
+                                Tile ThreatTile = (Tile) PotentialThreat.getParent();
+                                ThreatTile.setBackground(Color.red);
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        HostTile.add(dps);
+        Target.remove(dps);
+        return false;
     }
 
     public boolean canBlock (Piece threat, int i, int j){
