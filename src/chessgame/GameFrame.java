@@ -302,36 +302,6 @@ public class GameFrame extends JFrame{
             Tiles[i][j].repaint();
             Tiles[i][j].validate();
         }
-
-        public void SwapPlayers (){
-            if (player == 1){
-                player = 2;
-            }else{
-                player = 1;
-            }
-        }
-
-        public Tile EmptyTile (){
-            Tile pp;
-            for (int T = 0; T < 8; T++){
-                for (int Y = 0; Y < 8; Y++){
-                    if (Tiles[T][Y].getPiece() == null){
-                        pp = Tiles[T][Y];
-                        return pp;
-                    }
-                }
-            }
-            return null;
-        }
-    }
-
-    public void OriginalColor (){
-        for (int k = 0; k < 8; k++){
-            for (int u = 0; u < 8; u++){
-                Tiles[u][k].setBackground(Tiles[u][k].getColor());
-                Tiles[u][k].repaint();
-            }
-        }
     }
 
     public void MovePiece (int i, int j){
@@ -348,46 +318,51 @@ public class GameFrame extends JFrame{
         return BlackKing;
     }
 
-    public boolean isDefending (Piece dps, Tile Target){
-        if (dps instanceof King){
-            return false;
+    public void SwapPlayers (){
+        if (player == 1){
+            player = 2;
+        }else{
+            player = 1;
         }
-        Tile HostTile = (Tile) dps.getParent();
-        HostTile.remove(dps);
-        Target.add(dps);
-        Tile WhiteTile = (Tile) WhiteKing.getParent();
-        Tile BlackTile = (Tile) BlackKing.getParent();
-        for (int i = 0; i < 8; i++){
-            for (int j = 0; j < 8; j++){
-                Piece PotentialThreat = Tiles[i][j].getPiece();
-                if (PotentialThreat != null){
-                    if (player == 1){
-                        if (PotentialThreat.getColor().equals("Black")){
-                            if (PotentialThreat.canKill(Tiles[i][j], WhiteTile)){
-                                HostTile.add(dps);
-                                Target.remove(dps);
-                                Tile ThreatTile = (Tile) PotentialThreat.getParent();
-                                ThreatTile.setBackground(Color.red);
-                                return true;
-                            }
-                        }
-                    }else{
-                        if (PotentialThreat.getColor().equals("White")){
-                            if (PotentialThreat.canKill(Tiles[i][j], BlackTile)){
-                                HostTile.add(dps);
-                                Target.remove(dps);
-                                Tile ThreatTile = (Tile) PotentialThreat.getParent();
-                                ThreatTile.setBackground(Color.red);
-                                return true;
-                            }
-                        }
-                    }
+    }
+
+    public void OriginalColor (){
+        for (int k = 0; k < 8; k++){
+            for (int u = 0; u < 8; u++){
+                Tiles[u][k].setBackground(Tiles[u][k].getColor());
+                Tiles[u][k].repaint();
+            }
+        }
+    }
+
+    public Tile EmptyTile (){
+        Tile pp;
+        for (int T = 0; T < 8; T++){
+            for (int Y = 0; Y < 8; Y++){
+                if (Tiles[T][Y].getPiece() == null){
+                    pp = Tiles[T][Y];
+                    return pp;
                 }
             }
         }
-        HostTile.add(dps);
-        Target.remove(dps);
-        return false;
+        return null;
+    }
+
+    public void Promote (){
+        Queen Promotion;
+        if (player == 1){
+            Promotion = new Queen("WhitePromotedPawn");
+            Promotion.setIcon(WhiteQueenImg);
+            current.removePiece();
+            current.setPiece(Promotion);
+        }else{
+            Promotion = new Queen("BlackPromotedPawn");
+            Promotion.setIcon(BlackQueenImg);
+            current.removePiece();
+            current.setPiece(Promotion);
+        }
+        current.repaint();
+        current.validate();
     }
 
     public boolean canBlock (Piece threat, int i, int j){
@@ -406,23 +381,6 @@ public class GameFrame extends JFrame{
             }
 
         }
-    }
-
-    public void Promote (){
-        Queen Promotion;
-        if (player == 1){
-            Promotion = new Queen("WhitePromotedPawn");
-            Promotion.setIcon(WhiteQueenImg);
-            current.removePiece();
-            current.setPiece(Promotion);
-        }else{
-            Promotion = new Queen("BlackPromotedPawn");
-            Promotion.setIcon(BlackQueenImg);
-            current.removePiece();
-            current.setPiece(Promotion);
-        }
-        current.repaint();
-        current.validate();
     }
 
     public Piece[] getThreats (){
@@ -521,6 +479,48 @@ public class GameFrame extends JFrame{
 
             }
         }
+    }
+
+    public boolean isDefending (Piece dps, Tile Target){
+        if (dps instanceof King){
+            return false;
+        }
+        Tile HostTile = (Tile) dps.getParent();
+        HostTile.remove(dps);
+        Target.add(dps);
+        Tile WhiteTile = (Tile) WhiteKing.getParent();
+        Tile BlackTile = (Tile) BlackKing.getParent();
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+                Piece PotentialThreat = Tiles[i][j].getPiece();
+                if (PotentialThreat != null){
+                    if (player == 1){
+                        if (PotentialThreat.getColor().equals("Black")){
+                            if (PotentialThreat.canKill(Tiles[i][j], WhiteTile)){
+                                HostTile.add(dps);
+                                Target.remove(dps);
+                                Tile ThreatTile = (Tile) PotentialThreat.getParent();
+                                ThreatTile.setBackground(Color.red);
+                                return true;
+                            }
+                        }
+                    }else{
+                        if (PotentialThreat.getColor().equals("White")){
+                            if (PotentialThreat.canKill(Tiles[i][j], BlackTile)){
+                                HostTile.add(dps);
+                                Target.remove(dps);
+                                Tile ThreatTile = (Tile) PotentialThreat.getParent();
+                                ThreatTile.setBackground(Color.red);
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        HostTile.add(dps);
+        Target.remove(dps);
+        return false;
     }
 
     public void ColorMoves (int i, int j){
