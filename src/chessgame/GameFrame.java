@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GameFrame extends JFrame{
@@ -288,6 +289,7 @@ public class GameFrame extends JFrame{
                     WhiteKing.checked = false;
                     CheckMate(1);
                 }
+                CheckGameOver(ps);  //prototype
             }else if (Tiles[i][j].getPiece() != null){
                 if (!(player == 1 && Tiles[i][j].getPiece().getColor().equals("Black"))){
                     if (!(player == 2 && Tiles[i][j].getPiece().getColor().equals("White"))){
@@ -314,6 +316,13 @@ public class GameFrame extends JFrame{
             return WhiteKing;
         }
         return BlackKing;
+    }
+
+    public King getOtherKing (Piece p){
+        if (p.getColor().equals("White")){
+            return BlackKing;
+        }
+        return WhiteKing;
     }
 
     public void SwapPlayers (){
@@ -381,14 +390,150 @@ public class GameFrame extends JFrame{
         }
     }
 
+    public void CheckGameOver (Piece currentPS){   //prototype
+        King currentKing = getOtherKing(currentPS);
+        if (currentKing.checked){
+            if (CanKingMove(currentKing)){
+                return;
+            }
+            String enemyColor = currentPS.getColor();
+            String MyColor = currentKing.getColor();
+            Piece[] Threats = getOtherThreats(currentPS);
+            for (int i = 0; i < 8; i++){
+                for (int j = 0; j < 8; j++){
+                    Piece ThisPiece = Tiles[i][j].getPiece();
+                    if (ThisPiece != null){
+                        if (ThisPiece.getColor().equals(MyColor)){
+                            Tile ThreatTile = (Tile) Threats[0].getParent();
+                            if (ThisPiece.canKill(Tiles[i][j], ThreatTile)){
+                                if (!(ThisPiece instanceof King)){
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (MyColor.equals("Black")){
+                JOptionPane.showMessageDialog(null, "White Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
+                System.exit(0);
+            }else{
+                JOptionPane.showMessageDialog(null, "Black Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
+                System.exit(0);
+            }
+        }
+    }
+
+    public boolean CanKingMove (Piece currentKing){  //prototype
+        int WJ = currentKing.getX() / 80;
+        int WI = currentKing.getY() / 80;
+        String currentColor = currentKing.getColor();
+        try{
+            if (Tiles[WI + 1][WJ].getPiece() == null || !(Tiles[WI + 1][WJ].getPiece().getColor().equals(currentColor))){
+                if (!CanKingDie(WI + 1, WJ)){
+                    return true;
+                }
+            }
+        }catch (ArrayIndexOutOfBoundsException ex){
+
+        }
+        try{
+            if (Tiles[WI + 1][WJ + 1].getPiece() == null || !(Tiles[WI + 1][WJ + 1].getPiece().getColor().equals(currentColor))){
+                if (!CanKingDie(WI + 1, WJ + 1)){
+                    return true;
+                }
+            }
+        }catch (ArrayIndexOutOfBoundsException ex){
+
+        }
+        try{
+            if (Tiles[WI + 1][WJ - 1].getPiece() == null || !(Tiles[WI + 1][WJ - 1].getPiece().getColor().equals(currentColor))){
+                if (!CanKingDie(WI + 1, WJ - 1)){
+                    return true;
+                }
+            }
+        }catch (ArrayIndexOutOfBoundsException ex){
+
+        }
+        try{
+            if (Tiles[WI - 1][WJ + 1].getPiece() == null || !(Tiles[WI - 1][WJ + 1].getPiece().getColor().equals(currentColor))){
+                if (!CanKingDie(WI - 1, WJ + 1)){
+                    return true;
+                }
+            }
+        }catch (ArrayIndexOutOfBoundsException ex){
+
+        }
+        try{
+            if (Tiles[WI - 1][WJ - 1].getPiece() == null || !(Tiles[WI - 1][WJ - 1].getPiece().getColor().equals(currentColor))){
+                if (!CanKingDie(WI - 1, WJ - 1)){
+                    return true;
+                }
+            }
+        }catch (ArrayIndexOutOfBoundsException ex){
+
+        }
+        try{
+            if (Tiles[WI - 1][WJ].getPiece() == null || !(Tiles[WI - 1][WJ].getPiece().getColor().equals(currentColor))){
+                if (!CanKingDie(WI - 1, WJ)){
+                    return true;
+                }
+            }
+        }catch (ArrayIndexOutOfBoundsException ex){
+
+        }
+        try{
+            if (Tiles[WI][WJ + 1].getPiece() == null || !(Tiles[WI][WJ + 1].getPiece().getColor().equals(currentColor))){
+                if (!CanKingDie(WI, WJ + 1)){
+                    return true;
+                }
+            }
+        }catch (ArrayIndexOutOfBoundsException ex){
+
+        }
+        try{
+            if (Tiles[WI][WJ - 1].getPiece() == null || !(Tiles[WI][WJ * 1].getPiece().getColor().equals(currentColor))){
+                if (!CanKingDie(WI, WJ - 1)){
+                    return true;
+                }
+            }
+        }catch (ArrayIndexOutOfBoundsException ex){
+
+        }
+        return false;
+    }
+
     public Piece[] getThreats (){
         ArrayList<Piece> Threats = new ArrayList<>();
         Piece currentPs = current.getPiece();
+        String currentColor = currentPs.getColor();
         for (int k = 0; k < 8; k++){
             for (int l = 0; l < 8; l++){
                 if (Tiles[k][l].getPiece() != null){
-                    if (!(Tiles[k][l].getPiece().getColor().equals(currentPs.getColor()))){
+                    if (!(Tiles[k][l].getPiece().getColor().equals(currentColor))){
                         Tile KingTile = (Tile) (getKing(currentPs)).getParent();
+                        if (Tiles[k][l].getPiece().canKill(Tiles[k][l], KingTile)){
+                            Threats.add(Tiles[k][l].getPiece());
+                        }
+                    }
+                }
+            }
+        }
+        Piece[] ans = new Piece[Threats.size()];
+        for (int k = 0; k < ans.length; k++){
+            ans[k] = Threats.get(k);
+        }
+        return ans;
+    }
+
+    public Piece[] getOtherThreats (Piece currentPS){  //prototype
+        ArrayList<Piece> Threats = new ArrayList<>();
+        String enemyColor = currentPS.getColor();
+        for (int k = 0; k < 8; k++){
+            for (int l = 0; l < 8; l++){
+                if (Tiles[k][l].getPiece() != null){
+                    if (Tiles[k][l].getPiece().getColor().equals(enemyColor)){
+                        Tile KingTile = (Tile) (getOtherKing(currentPS)).getParent();
                         if (Tiles[k][l].getPiece().canKill(Tiles[k][l], KingTile)){
                             Threats.add(Tiles[k][l].getPiece());
                         }
