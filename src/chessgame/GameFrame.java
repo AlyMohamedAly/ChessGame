@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GameFrame extends JFrame{
@@ -384,22 +383,14 @@ public class GameFrame extends JFrame{
 
     public Piece[] getThreats (){
         ArrayList<Piece> Threats = new ArrayList<>();
+        Piece currentPs = current.getPiece();
         for (int k = 0; k < 8; k++){
             for (int l = 0; l < 8; l++){
                 if (Tiles[k][l].getPiece() != null){
-                    if (player == 2){
-                        if (Tiles[k][l].getPiece().getColor().equals("White")){
-                            Tile KingTile = (Tile) BlackKing.getParent();
-                            if (Tiles[k][l].getPiece().canKill(Tiles[k][l], KingTile)){
-                                Threats.add(Tiles[k][l].getPiece());
-                            }
-                        }
-                    }else{
-                        if (Tiles[k][l].getPiece().getColor().equals("Black")){
-                            Tile KingTile = (Tile) WhiteKing.getParent();
-                            if (Tiles[k][l].getPiece().canKill(Tiles[k][l], KingTile)){
-                                Threats.add(Tiles[k][l].getPiece());
-                            }
+                    if (!(Tiles[k][l].getPiece().getColor().equals(currentPs.getColor()))){
+                        Tile KingTile = (Tile) (getKing(currentPs)).getParent();
+                        if (Tiles[k][l].getPiece().canKill(Tiles[k][l], KingTile)){
+                            Threats.add(Tiles[k][l].getPiece());
                         }
                     }
                 }
@@ -414,35 +405,25 @@ public class GameFrame extends JFrame{
 
     public boolean CanKingDie (int i, int j){
         boolean flag = false;
-        Tile WhiteTile = (Tile) WhiteKing.getParent();
-        Tile BlackTile = (Tile) BlackKing.getParent();
-        WhiteTile.removePiece();
-        BlackTile.removePiece();
+        Piece currentPs = current.getPiece();
+        Piece currentKing = getKing(currentPs);
+        Tile KingTile = (Tile) currentKing.getParent();
+        String currentColor = currentPs.getColor();
+        KingTile.removePiece();
         for (int k = 0; k < 8; k++){
             for (int l = 0; l < 8; l++){
                 if (Tiles[k][l].getPiece() != null){
-                    if (player == 2){
-                        if (Tiles[k][l].getPiece().getColor().equals("White")){
-                            if (Tiles[k][l].getPiece().canKill(Tiles[k][l], Tiles[i][j])){
-                                Tiles[i][j].setBackground(Color.CYAN);
-                                Tiles[k][l].setBackground(Color.red);
-                                flag = true;
-                            }
-                        }
-                    }else{
-                        if (Tiles[k][l].getPiece().getColor().equals("Black")){
-                            if (Tiles[k][l].getPiece().canKill(Tiles[k][l], Tiles[i][j])){
-                                Tiles[i][j].setBackground(Color.CYAN);
-                                Tiles[k][l].setBackground(Color.red);
-                                flag = true;
-                            }
+                    if (!(Tiles[k][l].getPiece().getColor().equals(currentColor))){
+                        if (Tiles[k][l].getPiece().canKill(Tiles[k][l], Tiles[i][j])){
+                            Tiles[i][j].setBackground(Color.CYAN);
+                            Tiles[k][l].setBackground(Color.red);
+                            flag = true;
                         }
                     }
                 }
             }
         }
-        WhiteTile.add(WhiteKing);
-        BlackTile.add(BlackKing);
+        KingTile.add(currentKing);
         return flag;
     }
 
