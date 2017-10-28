@@ -185,7 +185,7 @@ public class GameFrame extends JFrame{
                         if (!(Tiles[i][j] == Threat)){
                             flag = false;
                         }
-                        if (canBlock(Threat.getPiece(), i, j)){
+                        if (canBlock(ps, Threat.getPiece(), i, j)){
                             flag = true;
                         }
                         if (ps instanceof King){
@@ -213,7 +213,8 @@ public class GameFrame extends JFrame{
                                         }
                                     }
                                     if (ps instanceof King){
-                                        if (!CanKingDie(i, j)){
+                                        King HisMajesty = (King) ps;
+                                        if (!CanKingDie(i, j, HisMajesty)){
                                             MovePiece(i, j);
                                             SwapPlayers();
                                         }
@@ -241,7 +242,8 @@ public class GameFrame extends JFrame{
                                     }
                                 }
                                 if (ps instanceof King){
-                                    if (!CanKingDie(i, j)){
+                                    King HisMajesty = (King) ps;
+                                    if (!CanKingDie(i, j, HisMajesty)){
                                         MovePiece(i, j);
                                         SwapPlayers();
                                     }
@@ -372,12 +374,12 @@ public class GameFrame extends JFrame{
         current.validate();
     }
 
-    public boolean canBlock (Piece threat, int i, int j){
+    public boolean canBlock (Piece currentPiece, Piece threat, int i, int j){
         if (threat instanceof Pawn || threat instanceof Knight || threat instanceof King || current.getPiece() instanceof King){
             return false;
         }else{
             Tile ThreatTile = (Tile) threat.getParent();
-            Tile KingTile = (Tile) getKing(current.getPiece()).getParent();
+            Tile KingTile = (Tile) (getKing(currentPiece)).getParent();
             Tiles[i][j].add(TestKnight);
             if (threat.canKill(ThreatTile, KingTile)){
                 Tiles[i][j].remove(TestKnight);
@@ -390,24 +392,74 @@ public class GameFrame extends JFrame{
         }
     }
 
+    public void CheckDraw (){ // prototype
+        int queens = 0, rooks = 0, knights = 0, bishops = 0, pawns = 0;
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+                Piece ThisPiece = Tiles[i][j].getPiece();
+                if (ThisPiece != null){
+                    if (ThisPiece instanceof Pawn){
+                        pawns++;
+                    }
+                    if (ThisPiece instanceof Knight){
+                        knights++;
+                    }
+                    if (ThisPiece instanceof Bishop){
+                        bishops++;
+                    }
+                    if (ThisPiece instanceof Rook){
+                        rooks++;
+                    }
+                    if (ThisPiece instanceof Queen){
+                        queens++;
+                    }
+                }
+            }
+        }
+        if (queens == 0 && rooks == 0 && pawns == 0){
+            if ((knights == 1 && bishops == 0) || (bishops == 1 && knights == 0)){
+                JOptionPane.showMessageDialog(null, "Draw!", "Game Over", JOptionPane.PLAIN_MESSAGE);
+                System.exit(0);
+            }
+        }
+    }
+
     public void CheckGameOver (Piece currentPS){   //prototype
+        //CheckDraw();
         King currentKing = getOtherKing(currentPS);
         if (currentKing.checked){
             if (CanKingMove(currentKing)){
                 return;
             }
+
             String enemyColor = currentPS.getColor();
             String MyColor = currentKing.getColor();
             Piece[] Threats = getOtherThreats(currentPS);
+            Tile ThreatTile = (Tile) Threats[0].getParent();
             for (int i = 0; i < 8; i++){
                 for (int j = 0; j < 8; j++){
                     Piece ThisPiece = Tiles[i][j].getPiece();
                     if (ThisPiece != null){
                         if (ThisPiece.getColor().equals(MyColor)){
-                            Tile ThreatTile = (Tile) Threats[0].getParent();
                             if (ThisPiece.canKill(Tiles[i][j], ThreatTile)){
-                                if (!(ThisPiece instanceof King)){
-                                    return;
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < 8; i++){
+                for (int j = 0; j < 8; j++){
+                    Piece ThisPiece = Tiles[i][j].getPiece();
+                    if (ThisPiece != null){
+                        if (ThisPiece.getColor().equals(MyColor)){
+                            for (int k = 0; k < 8; k++){
+                                for (int l = 0; l < 8; l++){
+                                    if (ThisPiece.canMove(Tiles[i][j], Tiles[k][l])){
+                                        if (canBlock(currentKing, Threats[0], k, l)){
+                                            return;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -425,12 +477,13 @@ public class GameFrame extends JFrame{
     }
 
     public boolean CanKingMove (Piece currentKing){  //prototype
+        King HisMajesty = (King) currentKing;
         int WJ = currentKing.getX() / 80;
         int WI = currentKing.getY() / 80;
         String currentColor = currentKing.getColor();
         try{
             if (Tiles[WI + 1][WJ].getPiece() == null || !(Tiles[WI + 1][WJ].getPiece().getColor().equals(currentColor))){
-                if (!CanKingDie(WI + 1, WJ)){
+                if (!CanKingDie(WI + 1, WJ, HisMajesty)){
                     return true;
                 }
             }
@@ -439,7 +492,7 @@ public class GameFrame extends JFrame{
         }
         try{
             if (Tiles[WI + 1][WJ + 1].getPiece() == null || !(Tiles[WI + 1][WJ + 1].getPiece().getColor().equals(currentColor))){
-                if (!CanKingDie(WI + 1, WJ + 1)){
+                if (!CanKingDie(WI + 1, WJ + 1, HisMajesty)){
                     return true;
                 }
             }
@@ -448,7 +501,7 @@ public class GameFrame extends JFrame{
         }
         try{
             if (Tiles[WI + 1][WJ - 1].getPiece() == null || !(Tiles[WI + 1][WJ - 1].getPiece().getColor().equals(currentColor))){
-                if (!CanKingDie(WI + 1, WJ - 1)){
+                if (!CanKingDie(WI + 1, WJ - 1, HisMajesty)){
                     return true;
                 }
             }
@@ -457,7 +510,7 @@ public class GameFrame extends JFrame{
         }
         try{
             if (Tiles[WI - 1][WJ + 1].getPiece() == null || !(Tiles[WI - 1][WJ + 1].getPiece().getColor().equals(currentColor))){
-                if (!CanKingDie(WI - 1, WJ + 1)){
+                if (!CanKingDie(WI - 1, WJ + 1, HisMajesty)){
                     return true;
                 }
             }
@@ -466,7 +519,7 @@ public class GameFrame extends JFrame{
         }
         try{
             if (Tiles[WI - 1][WJ - 1].getPiece() == null || !(Tiles[WI - 1][WJ - 1].getPiece().getColor().equals(currentColor))){
-                if (!CanKingDie(WI - 1, WJ - 1)){
+                if (!CanKingDie(WI - 1, WJ - 1, HisMajesty)){
                     return true;
                 }
             }
@@ -475,7 +528,7 @@ public class GameFrame extends JFrame{
         }
         try{
             if (Tiles[WI - 1][WJ].getPiece() == null || !(Tiles[WI - 1][WJ].getPiece().getColor().equals(currentColor))){
-                if (!CanKingDie(WI - 1, WJ)){
+                if (!CanKingDie(WI - 1, WJ, HisMajesty)){
                     return true;
                 }
             }
@@ -484,7 +537,7 @@ public class GameFrame extends JFrame{
         }
         try{
             if (Tiles[WI][WJ + 1].getPiece() == null || !(Tiles[WI][WJ + 1].getPiece().getColor().equals(currentColor))){
-                if (!CanKingDie(WI, WJ + 1)){
+                if (!CanKingDie(WI, WJ + 1, HisMajesty)){
                     return true;
                 }
             }
@@ -493,7 +546,7 @@ public class GameFrame extends JFrame{
         }
         try{
             if (Tiles[WI][WJ - 1].getPiece() == null || !(Tiles[WI][WJ * 1].getPiece().getColor().equals(currentColor))){
-                if (!CanKingDie(WI, WJ - 1)){
+                if (!CanKingDie(WI, WJ - 1, HisMajesty)){
                     return true;
                 }
             }
@@ -548,19 +601,17 @@ public class GameFrame extends JFrame{
         return ans;
     }
 
-    public boolean CanKingDie (int i, int j){
+    public boolean CanKingDie (int i, int j, King currentKing){
         boolean flag = false;
-        Piece currentPs = current.getPiece();
-        Piece currentKing = getKing(currentPs);
         Tile KingTile = (Tile) currentKing.getParent();
-        String currentColor = currentPs.getColor();
+        String currentColor = currentKing.getColor();
         KingTile.removePiece();
         for (int k = 0; k < 8; k++){
             for (int l = 0; l < 8; l++){
                 if (Tiles[k][l].getPiece() != null){
                     if (!(Tiles[k][l].getPiece().getColor().equals(currentColor))){
                         if (Tiles[k][l].getPiece().canKill(Tiles[k][l], Tiles[i][j])){
-                            Tiles[i][j].setBackground(Color.CYAN);
+                            //Tiles[i][j].setBackground(Color.CYAN);
                             Tiles[k][l].setBackground(Color.red);
                             flag = true;
                         }
