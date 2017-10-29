@@ -213,7 +213,7 @@ public class GameFrame extends JFrame{
                                         }
                                     }
                                     if (ps instanceof King){
-                                        King HisMajesty = (King) ps;
+                                        King HisMajesty = getKing(ps);
                                         if (!CanKingDie(i, j, HisMajesty)){
                                             MovePiece(i, j);
                                             SwapPlayers();
@@ -242,7 +242,7 @@ public class GameFrame extends JFrame{
                                     }
                                 }
                                 if (ps instanceof King){
-                                    King HisMajesty = (King) ps;
+                                    King HisMajesty = getKing(ps);
                                     if (!CanKingDie(i, j, HisMajesty)){
                                         MovePiece(i, j);
                                         SwapPlayers();
@@ -424,24 +424,55 @@ public class GameFrame extends JFrame{
         }
     }
 
+    public boolean CheckStaleMate (String MyColor){  //prototype
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+                Piece ThisPiece = Tiles[i][j].getPiece();
+                if (ThisPiece != null){
+                    if (!(ThisPiece instanceof King)){
+                        if (ThisPiece.getColor().equals(MyColor)){
+                            for (int k = 0; k < 8; k++){
+                                for (int l = 0; l < 8; l++){
+                                    if (ThisPiece.canMove(Tiles[i][j], Tiles[k][l])){
+                                        if (!(isDefending(ThisPiece, Tiles[k][l]))){
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public void CheckGameOver (Piece currentPS){   //prototype
-        //CheckDraw();
+        CheckDraw();
         King currentKing = getOtherKing(currentPS);
+        //String enemyColor = currentPS.getColor();
+        String MyColor = currentKing.getColor();
+
         if (currentKing.checked){
             if (CanKingMove(currentKing)){
                 return;
             }
-
-            String enemyColor = currentPS.getColor();
-            String MyColor = currentKing.getColor();
+        }
+        if (CheckStaleMate(MyColor)){
+            JOptionPane.showMessageDialog(null, "Draw!", "Game Over", JOptionPane.PLAIN_MESSAGE);
+            System.exit(0);
+        }
+        if (currentKing.checked){
             Piece[] Threats = getOtherThreats(currentPS);
             Tile ThreatTile = (Tile) Threats[0].getParent();
+
             for (int i = 0; i < 8; i++){
                 for (int j = 0; j < 8; j++){
                     Piece ThisPiece = Tiles[i][j].getPiece();
                     if (ThisPiece != null){
                         if (ThisPiece.getColor().equals(MyColor)){
-                            if (ThisPiece.canKill(Tiles[i][j], ThreatTile)){
+                            if (ThisPiece.canKill(Tiles[i][j], ThreatTile)){        // killing the threat
                                 return;
                             }
                         }
@@ -456,7 +487,7 @@ public class GameFrame extends JFrame{
                             for (int k = 0; k < 8; k++){
                                 for (int l = 0; l < 8; l++){
                                     if (ThisPiece.canMove(Tiles[i][j], Tiles[k][l])){
-                                        if (canBlock(currentKing, Threats[0], k, l)){
+                                        if (canBlock(currentKing, Threats[0], k, l)){   //defend the king
                                             return;
                                         }
                                     }
@@ -478,8 +509,8 @@ public class GameFrame extends JFrame{
 
     public boolean CanKingMove (Piece currentKing){  //prototype
         King HisMajesty = (King) currentKing;
-        int WJ = currentKing.getX() / 80;
-        int WI = currentKing.getY() / 80;
+        int WJ = currentKing.getParent().getX() / 80;
+        int WI = currentKing.getParent().getY() / 80;
         String currentColor = currentKing.getColor();
         try{
             if (Tiles[WI + 1][WJ].getPiece() == null || !(Tiles[WI + 1][WJ].getPiece().getColor().equals(currentColor))){
