@@ -214,7 +214,7 @@ public class GameFrame extends JFrame{
                                     }
                                     if (ps instanceof King){
                                         King HisMajesty = getKing(ps);
-                                        if (!CanKingDie(i, j, HisMajesty)){
+                                        if (!CanKingDie(i, j, HisMajesty, true)){
                                             MovePiece(i, j);
                                             SwapPlayers();
                                         }
@@ -243,7 +243,7 @@ public class GameFrame extends JFrame{
                                 }
                                 if (ps instanceof King){
                                     King HisMajesty = getKing(ps);
-                                    if (!CanKingDie(i, j, HisMajesty)){
+                                    if (!CanKingDie(i, j, HisMajesty, true)){
                                         MovePiece(i, j);
                                         SwapPlayers();
                                     }
@@ -258,7 +258,7 @@ public class GameFrame extends JFrame{
                             Pawn temp = (Pawn) ps;
                             if (temp.getColor().equals("Black")){
                                 if (temp.canPassat(current, Tiles[i][j], Tiles[i - 1][j])){
-                                    if (Tiles[i - 1][j].getPiece() instanceof Pawn){
+                                    if (Tiles[i - 1][j].getPiece() instanceof Pawn && !(Tiles[i - 1][j].getPiece().getColor().equals(ps.getColor()))){
                                         Pawn Passat = (Pawn) Tiles[i - 1][j].getPiece();
                                         if (Passat.Moved == 1){
                                             Tiles[i - 1][j].removePiece();
@@ -269,7 +269,7 @@ public class GameFrame extends JFrame{
                                 }
                             }else{
                                 if (temp.canPassat(current, Tiles[i][j], Tiles[i + 1][j])){
-                                    if (Tiles[i + 1][j].getPiece() instanceof Pawn){
+                                    if (Tiles[i + 1][j].getPiece() instanceof Pawn && !(Tiles[i + 1][j].getPiece().getColor().equals(ps.getColor()))){
                                         Pawn Passat = (Pawn) Tiles[i + 1][j].getPiece();
                                         if (Passat.Moved == 1){
                                             Tiles[i + 1][j].removePiece();
@@ -424,7 +424,7 @@ public class GameFrame extends JFrame{
         }
     }
 
-    public boolean CheckStaleMate (String MyColor){  //prototype
+    public boolean CheckStaleMate (King currentKing, String MyColor){  //prototype
         for (int i = 0; i < 8; i++){
             for (int j = 0; j < 8; j++){
                 Piece ThisPiece = Tiles[i][j].getPiece();
@@ -434,18 +434,18 @@ public class GameFrame extends JFrame{
                             for (int k = 0; k < 8; k++){
                                 for (int l = 0; l < 8; l++){
                                     if (ThisPiece.canMove(Tiles[i][j], Tiles[k][l])){
-                                        if (!(isDefending(ThisPiece, Tiles[k][l]))){
-                                            return false;
-                                        }
+                                        return false;
                                     }
                                 }
                             }
                         }
+                    }else{
+                        //canKingDie
                     }
                 }
             }
         }
-        return false;
+        return true;
     }
 
     public void CheckGameOver (Piece currentPS){   //prototype
@@ -459,10 +459,10 @@ public class GameFrame extends JFrame{
                 return;
             }
         }
-        if (CheckStaleMate(MyColor)){
-            JOptionPane.showMessageDialog(null, "Draw!", "Game Over", JOptionPane.PLAIN_MESSAGE);
-            System.exit(0);
-        }
+//        if (CheckStaleMate(currentKing, MyColor)){
+//            JOptionPane.showMessageDialog(null, "Draw!", "Game Over", JOptionPane.PLAIN_MESSAGE);
+//            System.exit(0);
+//        }
         if (currentKing.checked){
             Piece[] Threats = getOtherThreats(currentPS);
             Tile ThreatTile = (Tile) Threats[0].getParent();
@@ -483,12 +483,14 @@ public class GameFrame extends JFrame{
                 for (int j = 0; j < 8; j++){
                     Piece ThisPiece = Tiles[i][j].getPiece();
                     if (ThisPiece != null){
-                        if (ThisPiece.getColor().equals(MyColor)){
-                            for (int k = 0; k < 8; k++){
-                                for (int l = 0; l < 8; l++){
-                                    if (ThisPiece.canMove(Tiles[i][j], Tiles[k][l])){
-                                        if (canBlock(currentKing, Threats[0], k, l)){   //defend the king
-                                            return;
+                        if (!(ThisPiece instanceof King)){
+                            if (ThisPiece.getColor().equals(MyColor)){
+                                for (int k = 0; k < 8; k++){
+                                    for (int l = 0; l < 8; l++){
+                                        if (ThisPiece.canMove(Tiles[i][j], Tiles[k][l])){
+                                            if (canBlock(currentKing, Threats[0], k, l)){   //defend the king
+                                                return;
+                                            }
                                         }
                                     }
                                 }
@@ -514,7 +516,7 @@ public class GameFrame extends JFrame{
         String currentColor = currentKing.getColor();
         try{
             if (Tiles[WI + 1][WJ].getPiece() == null || !(Tiles[WI + 1][WJ].getPiece().getColor().equals(currentColor))){
-                if (!CanKingDie(WI + 1, WJ, HisMajesty)){
+                if (!CanKingDie(WI + 1, WJ, HisMajesty, false)){
                     return true;
                 }
             }
@@ -523,7 +525,7 @@ public class GameFrame extends JFrame{
         }
         try{
             if (Tiles[WI + 1][WJ + 1].getPiece() == null || !(Tiles[WI + 1][WJ + 1].getPiece().getColor().equals(currentColor))){
-                if (!CanKingDie(WI + 1, WJ + 1, HisMajesty)){
+                if (!CanKingDie(WI + 1, WJ + 1, HisMajesty, false)){
                     return true;
                 }
             }
@@ -532,7 +534,7 @@ public class GameFrame extends JFrame{
         }
         try{
             if (Tiles[WI + 1][WJ - 1].getPiece() == null || !(Tiles[WI + 1][WJ - 1].getPiece().getColor().equals(currentColor))){
-                if (!CanKingDie(WI + 1, WJ - 1, HisMajesty)){
+                if (!CanKingDie(WI + 1, WJ - 1, HisMajesty, false)){
                     return true;
                 }
             }
@@ -541,7 +543,7 @@ public class GameFrame extends JFrame{
         }
         try{
             if (Tiles[WI - 1][WJ + 1].getPiece() == null || !(Tiles[WI - 1][WJ + 1].getPiece().getColor().equals(currentColor))){
-                if (!CanKingDie(WI - 1, WJ + 1, HisMajesty)){
+                if (!CanKingDie(WI - 1, WJ + 1, HisMajesty, false)){
                     return true;
                 }
             }
@@ -550,7 +552,7 @@ public class GameFrame extends JFrame{
         }
         try{
             if (Tiles[WI - 1][WJ - 1].getPiece() == null || !(Tiles[WI - 1][WJ - 1].getPiece().getColor().equals(currentColor))){
-                if (!CanKingDie(WI - 1, WJ - 1, HisMajesty)){
+                if (!CanKingDie(WI - 1, WJ - 1, HisMajesty, false)){
                     return true;
                 }
             }
@@ -559,7 +561,7 @@ public class GameFrame extends JFrame{
         }
         try{
             if (Tiles[WI - 1][WJ].getPiece() == null || !(Tiles[WI - 1][WJ].getPiece().getColor().equals(currentColor))){
-                if (!CanKingDie(WI - 1, WJ, HisMajesty)){
+                if (!CanKingDie(WI - 1, WJ, HisMajesty, false)){
                     return true;
                 }
             }
@@ -568,7 +570,7 @@ public class GameFrame extends JFrame{
         }
         try{
             if (Tiles[WI][WJ + 1].getPiece() == null || !(Tiles[WI][WJ + 1].getPiece().getColor().equals(currentColor))){
-                if (!CanKingDie(WI, WJ + 1, HisMajesty)){
+                if (!CanKingDie(WI, WJ + 1, HisMajesty, false)){
                     return true;
                 }
             }
@@ -577,7 +579,7 @@ public class GameFrame extends JFrame{
         }
         try{
             if (Tiles[WI][WJ - 1].getPiece() == null || !(Tiles[WI][WJ * 1].getPiece().getColor().equals(currentColor))){
-                if (!CanKingDie(WI, WJ - 1, HisMajesty)){
+                if (!CanKingDie(WI, WJ - 1, HisMajesty, false)){
                     return true;
                 }
             }
@@ -632,7 +634,7 @@ public class GameFrame extends JFrame{
         return ans;
     }
 
-    public boolean CanKingDie (int i, int j, King currentKing){
+    public boolean CanKingDie (int i, int j, King currentKing, boolean color){
         boolean flag = false;
         Tile KingTile = (Tile) currentKing.getParent();
         String currentColor = currentKing.getColor();
@@ -643,7 +645,9 @@ public class GameFrame extends JFrame{
                     if (!(Tiles[k][l].getPiece().getColor().equals(currentColor))){
                         if (Tiles[k][l].getPiece().canKill(Tiles[k][l], Tiles[i][j])){
                             //Tiles[i][j].setBackground(Color.CYAN);
-                            Tiles[k][l].setBackground(Color.red);
+                            if (color){
+                                Tiles[k][l].setBackground(Color.red);
+                            }
                             flag = true;
                         }
                     }
@@ -743,7 +747,7 @@ public class GameFrame extends JFrame{
             if (ppss.getColor().equals("White")){
                 if (i - 1 >= 0 && j + 1 < 8){
                     if (ppss.canPassat(Tiles[i][j], Tiles[i - 1][j + 1], Tiles[i][j + 1])){
-                        if (Tiles[i][j + 1].getPiece() instanceof Pawn){
+                        if (Tiles[i][j + 1].getPiece() instanceof Pawn && Tiles[i][j + 1].getPiece().getColor().equals("Black")){
                             Pawn ppks = (Pawn) Tiles[i][j + 1].getPiece();
                             if (ppks.Moved == 1){
                                 Tiles[i - 1][j + 1].setBackground(Color.MAGENTA);
@@ -753,7 +757,7 @@ public class GameFrame extends JFrame{
                 }
                 if (i - 1 >= 0 && j - 1 >= 0){
                     if (ppss.canPassat(Tiles[i][j], Tiles[i - 1][j - 1], Tiles[i][j - 1])){
-                        if (Tiles[i][j - 1].getPiece() instanceof Pawn){
+                        if (Tiles[i][j - 1].getPiece() instanceof Pawn && Tiles[i][j - 1].getPiece().getColor().equals("Black")){
                             Pawn ppks = (Pawn) Tiles[i][j - 1].getPiece();
                             if (ppks.Moved == 1){
                                 Tiles[i - 1][j - 1].setBackground(Color.MAGENTA);
@@ -764,7 +768,7 @@ public class GameFrame extends JFrame{
             }else{
                 if (j - 1 >= 0 && i + 1 < 8){
                     if (ppss.canPassat(Tiles[i][j], Tiles[i + 1][j - 1], Tiles[i][j - 1])){
-                        if (Tiles[i][j - 1].getPiece() instanceof Pawn){
+                        if (Tiles[i][j - 1].getPiece() instanceof Pawn && Tiles[i][j - 1].getPiece().getColor().equals("White")){
                             Pawn ppks = (Pawn) Tiles[i][j - 1].getPiece();
                             if (ppks.Moved == 1){
                                 Tiles[i + 1][j - 1].setBackground(Color.MAGENTA);
@@ -774,7 +778,7 @@ public class GameFrame extends JFrame{
                 }
                 if (i + 1 < 8 && j + 1 < 8){
                     if (ppss.canPassat(Tiles[i][j], Tiles[i + 1][j + 1], Tiles[i][j + 1])){
-                        if (Tiles[i][j + 1].getPiece() instanceof Pawn){
+                        if (Tiles[i][j + 1].getPiece() instanceof Pawn && Tiles[i][j + 1].getPiece().getColor().equals("White")){
                             Pawn ppks = (Pawn) Tiles[i][j + 1].getPiece();
                             if (ppks.Moved == 1){
                                 Tiles[i + 1][j + 1].setBackground(Color.MAGENTA);
