@@ -439,8 +439,6 @@ public class GameFrame extends JFrame{
                                 }
                             }
                         }
-                    }else{
-                        //canKingDie
                     }
                 }
             }
@@ -459,10 +457,12 @@ public class GameFrame extends JFrame{
                 return;
             }
         }
-//        if (CheckStaleMate(currentKing, MyColor)){
-//            JOptionPane.showMessageDialog(null, "Draw!", "Game Over", JOptionPane.PLAIN_MESSAGE);
-//            System.exit(0);
-//        }
+        if (CheckStaleMate(currentKing, MyColor)){
+            if (!(CanKingMove(currentKing))){
+                JOptionPane.showMessageDialog(null, "Draw!", "Game Over", JOptionPane.PLAIN_MESSAGE);
+                System.exit(0);
+            }
+        }
         if (currentKing.checked){
             Piece[] Threats = getOtherThreats(currentPS);
             Tile ThreatTile = (Tile) Threats[0].getParent();
@@ -472,8 +472,10 @@ public class GameFrame extends JFrame{
                     Piece ThisPiece = Tiles[i][j].getPiece();
                     if (ThisPiece != null){
                         if (ThisPiece.getColor().equals(MyColor)){
-                            if (ThisPiece.canKill(Tiles[i][j], ThreatTile)){        // killing the threat
-                                return;
+                            if (!(ThisPiece instanceof King)){
+                                if (ThisPiece.canKill(Tiles[i][j], ThreatTile)){        // killing the threat
+                                    return;
+                                }
                             }
                         }
                     }
