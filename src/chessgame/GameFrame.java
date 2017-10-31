@@ -492,8 +492,18 @@ public class GameFrame extends JFrame{
         }
         if (queens == 0 && rooks == 0 && pawns == 0){
             if ((knights == 1 && bishops == 0) || (bishops == 1 && knights == 0)){
-                JOptionPane.showMessageDialog(null, "Draw!", "Game Over", JOptionPane.PLAIN_MESSAGE);
-                System.exit(0);
+                int choice = JOptionPane.showConfirmDialog(null, "Restart?", "Draw!", JOptionPane.OK_OPTION);
+                if (choice == 0){
+                    this.setVisible(false);
+                    GameFrame restratgame = new GameFrame();
+                    restratgame.setTitle("Chess Masters");
+                    restratgame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    restratgame.setBounds(300, 10, 646, 669);
+                    restratgame.setResizable(false);
+                    restratgame.setVisible(true);
+                }else{
+                    System.exit(0);
+                }
             }
         }
     }
@@ -645,8 +655,18 @@ public class GameFrame extends JFrame{
         }
         if (CheckStaleMate(currentKing, MyColor)){
             if (!(CanKingMove(currentKing))){
-                JOptionPane.showMessageDialog(null, "Draw!", "Game Over", JOptionPane.PLAIN_MESSAGE);
-                System.exit(0);
+                int choice = JOptionPane.showConfirmDialog(null, "Restart?", "Draw!", JOptionPane.OK_OPTION);
+                if (choice == 0){
+                    this.setVisible(false);
+                    GameFrame restratgame = new GameFrame();
+                    restratgame.setTitle("Chess Masters");
+                    restratgame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    restratgame.setBounds(300, 10, 646, 669);
+                    restratgame.setResizable(false);
+                    restratgame.setVisible(true);
+                }else{
+                    System.exit(0);
+                }
             }
         }
         if (currentKing.checked){
