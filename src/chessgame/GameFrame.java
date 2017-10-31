@@ -688,11 +688,33 @@ public class GameFrame extends JFrame{
                 }
             }
             if (MyColor.equals("Black")){
-                JOptionPane.showMessageDialog(null, "White Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
-                System.exit(0);
+                int choice = JOptionPane.showConfirmDialog(null, "Restart?", "White Wins!", JOptionPane.OK_OPTION);
+                if (choice == 0){
+                    this.setVisible(false);
+                    GameFrame restratgame = new GameFrame();
+                    restratgame.setTitle("Chess Masters");
+                    restratgame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    restratgame.setBounds(300, 10, 646, 669);
+                    restratgame.setResizable(false);
+                    restratgame.setVisible(true);
+                }else{
+                    System.exit(0);
+                }
+
             }else{
-                JOptionPane.showMessageDialog(null, "Black Wins!", "Game Over", JOptionPane.PLAIN_MESSAGE);
-                System.exit(0);
+                int choice = JOptionPane.showConfirmDialog(null, "Restart?", "Black Wins!", JOptionPane.OK_OPTION);
+                //System.exit(0);
+                if (choice == 0){
+                    this.setVisible(false);
+                    GameFrame restratgame = new GameFrame();
+                    restratgame.setTitle("Chess Masters");
+                    restratgame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    restratgame.setBounds(300, 10, 646, 669);
+                    restratgame.setResizable(false);
+                    restratgame.setVisible(true);
+                }else{
+                    System.exit(0);
+                }
             }
         }
     }
