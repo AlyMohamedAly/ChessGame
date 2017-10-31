@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+//JOptionPane.showConfirmDialog(null, "Save?", "Game Over", JOptionPane.YES_NO_OPTION);
 
 public class GameFrame extends JFrame{
 
@@ -358,18 +359,53 @@ public class GameFrame extends JFrame{
     }
 
     public void Promote (){
-        Queen Promotion;
+        String[] options = new String[]{"Queen", "Rook", "Bishop", "Knight"};
+
+        int response = JOptionPane.showOptionDialog(null, "Choose a promotion", "Promote", JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+
+        Piece Promotion = new Queen("WhitePromotedPawn");
+
         if (player == 1){
-            Promotion = new Queen("WhitePromotedPawn");
-            Promotion.setIcon(WhiteQueenImg);
-            current.removePiece();
-            current.setPiece(Promotion);
+            switch (response){
+                case 0:
+                    Promotion.setIcon(WhiteQueenImg);
+                    break;
+                case 1:
+                    Promotion = new Rook("WhitePromotedPawn");
+                    Promotion.setIcon(WhiteRookImg);
+                    break;
+                case 2:
+                    Promotion = new Bishop("WhitePromotedPawn");
+                    Promotion.setIcon(WhiteBishopImg);
+                    break;
+                case 3:
+                    Promotion = new Knight("WhitePromotedPawn");
+                    Promotion.setIcon(WhiteKnightImg);
+                    break;
+            }
         }else{
-            Promotion = new Queen("BlackPromotedPawn");
-            Promotion.setIcon(BlackQueenImg);
-            current.removePiece();
-            current.setPiece(Promotion);
+            switch (response){
+                case 0:
+                    Promotion = new Queen("BlackPromotedPawn");
+                    Promotion.setIcon(BlackQueenImg);
+                    break;
+                case 1:
+                    Promotion = new Rook("BlackPromotedPawn");
+                    Promotion.setIcon(BlackRookImg);
+                    break;
+                case 2:
+                    Promotion = new Bishop("BlackPromotedPawn");
+                    Promotion.setIcon(BlackBishopImg);
+                    break;
+                case 3:
+                    Promotion = new Knight("BlackPromotedPawn");
+                    Promotion.setIcon(BlackKnightImg);
+                    break;
+            }
         }
+        current.removePiece();
+        current.setPiece(Promotion);
         current.repaint();
         current.validate();
     }
