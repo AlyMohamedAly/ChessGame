@@ -41,17 +41,17 @@ class Pawn extends Piece{
         int TJ = t.getX() / 80;
 
         if (this.getColor().equals("White")){
-            if (TJ == CJ - 1 && TI == CI - 1 && t2.getPiece() != null){
+            if (TI == 2 && TJ == CJ - 1 && TI == CI - 1 && t2.getPiece() != null){
                 return true;
             }
-            if (TJ == CJ + 1 && TI == CI - 1 && t2.getPiece() != null){
+            if (TI == 2 && TJ == CJ + 1 && TI == CI - 1 && t2.getPiece() != null){
                 return true;
             }
         }else{
-            if (TJ == CJ - 1 && TI == CI + 1 && t2.getPiece() != null){
+            if (TI == 6 && TJ == CJ - 1 && TI == CI + 1 && t2.getPiece() != null){
                 return true;
             }
-            if (TJ == CJ + 1 && TI == CI + 1 && t2.getPiece() != null){
+            if (TI == 6 && TJ == CJ + 1 && TI == CI + 1 && t2.getPiece() != null){
                 return true;
             }
         }
@@ -75,7 +75,7 @@ class Pawn extends Piece{
             if (TJ == CJ && TI == CI - 1 && GameFrame.Tiles[TI][TJ].getPiece() == null){
                 return true;
             }
-            if (Moved == 0){
+            if (Moved == 0 && CI == 6){
                 if (TJ == CJ && TI == CI - 2 && GameFrame.Tiles[TI][TJ].getPiece() == null && GameFrame.Tiles[CI - 1][CJ].getPiece() == null){
                     return true;
                 }
@@ -91,7 +91,7 @@ class Pawn extends Piece{
             if (TJ == CJ && TI == CI + 1 && GameFrame.Tiles[TI][TJ].getPiece() == null){
                 return true;
             }
-            if (Moved == 0){
+            if (Moved == 0 && CI == 1){
                 if (TJ == CJ && TI == CI + 2 && GameFrame.Tiles[TI][TJ].getPiece() == null && GameFrame.Tiles[CI + 1][CJ].getPiece() == null){
                     return true;
                 }

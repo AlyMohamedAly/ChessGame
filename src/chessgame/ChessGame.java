@@ -8,7 +8,7 @@ public class ChessGame{
         GameFrame gg = new GameFrame();
         gg.setTitle("Chess Masters");
         gg.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gg.setBounds(300, 10, 646, 669);
+        gg.setBounds(300, 10, 646, 692);
         gg.setResizable(false);
         gg.setVisible(true);
     }

@@ -2,16 +2,30 @@ package chessgame;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class GameFrame extends JFrame{
+public class GameFrame extends JFrame implements ActionListener{
+
+    private final JMenuBar mnuBar = new JMenuBar();
+    private final JMenu mnuFile = new JMenu("File");
+    private final JMenuItem itmOpen = new JMenuItem("Load");
+    private final JMenuItem itmSave = new JMenuItem("Save");
 
     private final Pawn[] WhitePawns = new Pawn[8];
     private final Knight WhiteLeftKnight = new Knight("WhiteLeftKnight");
@@ -52,7 +66,7 @@ public class GameFrame extends JFrame{
     private final JPanel cPPL = new JPanel();
 
     private Tile current = new Tile();
-    private Knight TestKnight = new Knight("TestKnight");
+    private final Knight TestKnight = new Knight("TestKnight");
     private int player = 1;
     Container C = this.getContentPane();
 
@@ -118,6 +132,13 @@ public class GameFrame extends JFrame{
             BlackPawns[i].setIcon(BlackPawnImg);
             Tiles[1][i].add(BlackPawns[i]);
         }
+        this.setJMenuBar(mnuBar);
+        mnuBar.add(mnuFile);
+        mnuFile.add(itmOpen);
+        mnuFile.add(itmSave);
+        itmOpen.addActionListener(this);
+        itmSave.addActionListener(this);
+
         WhiteLeftKnight.setIcon(WhiteKnightImg);
         WhiteRightKnight.setIcon(WhiteKnightImg);
         Tiles[7][1].add(WhiteLeftKnight);
@@ -157,6 +178,16 @@ public class GameFrame extends JFrame{
         BlackQueen.setIcon(BlackQueenImg);
         Tiles[0][4].add(BlackKing);
         Tiles[0][3].add(BlackQueen);
+    }
+
+    @Override
+    public void actionPerformed (ActionEvent e){
+        Object o = e.getSource();
+        if (o == itmSave){
+            save();
+        }else if (o == itmOpen){
+            load();
+        }
     }
 
     class Hole extends MouseAdapter{
@@ -340,6 +371,7 @@ public class GameFrame extends JFrame{
             for (int u = 0; u < 8; u++){
                 Tiles[u][k].setBackground(Tiles[u][k].getColor());
                 Tiles[u][k].repaint();
+                Tiles[u][k].validate();
             }
         }
     }
@@ -596,7 +628,7 @@ public class GameFrame extends JFrame{
         int response = JOptionPane.showOptionDialog(null, "Choose a promotion", "Promote", JOptionPane.DEFAULT_OPTION,
                 JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
-        Piece Promotion = new Queen("WhitePromotedPawn");
+        Piece Promotion = new Queen("WhitePromotedQueenPawn");
 
         if (player == 1){
             switch (response){
@@ -604,34 +636,34 @@ public class GameFrame extends JFrame{
                     Promotion.setIcon(WhiteQueenImg);
                     break;
                 case 1:
-                    Promotion = new Rook("WhitePromotedPawn");
+                    Promotion = new Rook("WhitePromotedRookPawn");
                     Promotion.setIcon(WhiteRookImg);
                     break;
                 case 2:
-                    Promotion = new Bishop("WhitePromotedPawn");
+                    Promotion = new Bishop("WhitePromotedBishopPawn");
                     Promotion.setIcon(WhiteBishopImg);
                     break;
                 case 3:
-                    Promotion = new Knight("WhitePromotedPawn");
+                    Promotion = new Knight("WhitePromotedKnightPawn");
                     Promotion.setIcon(WhiteKnightImg);
                     break;
             }
         }else{
             switch (response){
                 case 0:
-                    Promotion = new Queen("BlackPromotedPawn");
+                    Promotion = new Queen("BlackPromotedQueenPawn");
                     Promotion.setIcon(BlackQueenImg);
                     break;
                 case 1:
-                    Promotion = new Rook("BlackPromotedPawn");
+                    Promotion = new Rook("BlackPromotedRookPawn");
                     Promotion.setIcon(BlackRookImg);
                     break;
                 case 2:
-                    Promotion = new Bishop("BlackPromotedPawn");
+                    Promotion = new Bishop("BlackPromotedBishopPawn");
                     Promotion.setIcon(BlackBishopImg);
                     break;
                 case 3:
-                    Promotion = new Knight("BlackPromotedPawn");
+                    Promotion = new Knight("BlackPromotedKnightPawn");
                     Promotion.setIcon(BlackKnightImg);
                     break;
             }
@@ -884,4 +916,146 @@ public class GameFrame extends JFrame{
         return false;
     }
 
+    public void save (){
+
+        try{
+            FileOutputStream fos = new FileOutputStream("game.data");
+            ObjectOutputStream o = new ObjectOutputStream(fos);
+
+            for (int i = 0; i < 8; i++){
+                for (int j = 0; j < 8; j++){
+                    if (Tiles[i][j].getPiece() == null){
+                        o.writeUTF("null");
+//                        System.out.println("null");
+                        continue;
+                    }
+                    o.writeUTF(Tiles[i][j].getPiece().GetType());
+//                      System.out.println(Tiles[i][j].getPiece().GetType());
+                }
+            }
+            o.writeInt(player);
+            o.flush();
+            o.close();
+        }catch (Exception ex){
+
+        }
+
+    }
+
+    public void load (){
+//        String[] loaded = new String[64];
+        try{
+            FileInputStream fis = new FileInputStream("game.data");
+            ObjectInputStream o = new ObjectInputStream(fis);
+            for (int i = 0; i < 8; i++){
+                for (int j = 0; j < 8; j++){
+                    String loaded = o.readUTF();
+                    if (loaded.equals("null")){
+                        Tiles[i][j].removePiece();
+                    }else if (loaded.equals("WhiteLeftKnight")){
+                        Tiles[i][j].setPiece(WhiteLeftKnight);
+                    }else if (loaded.equals("WhiteRightKnight")){
+                        Tiles[i][j].setPiece(WhiteRightKnight);
+                    }else if (loaded.equals("WhiteLeftBishop")){
+                        Tiles[i][j].setPiece(WhiteLeftBishop);
+                    }else if (loaded.equals("WhiteRightBishop")){
+                        Tiles[i][j].setPiece(WhiteRightBishop);
+                    }else if (loaded.equals("WhiteLeftRook")){
+                        Tiles[i][j].setPiece(WhiteLeftRook);
+                    }else if (loaded.equals("WhiteRightRook")){
+                        Tiles[i][j].setPiece(WhiteRightRook);
+                    }else if (loaded.equals("WhiteQueen")){
+                        Tiles[i][j].setPiece(WhiteQueen);
+                    }else if (loaded.equals("WhiteKing")){
+                        Tiles[i][j].setPiece(WhiteKing);
+                    }else if (loaded.equals("WhitePromotedRookPawn")){
+                        Rook WhitePromotedRookPawn = new Rook("WhitePromotedRookPawn");
+                        WhitePromotedRookPawn.setIcon(WhiteRookImg);
+                        Tiles[i][j].setPiece(WhitePromotedRookPawn);
+                    }else if (loaded.equals("WhitePromotedBishopPawn")){
+                        Bishop WhitePromotedBishopPawn = new Bishop("WhitePromotedBishopPawn");
+                        WhitePromotedBishopPawn.setIcon(WhiteBishopImg);
+                        Tiles[i][j].setPiece(WhitePromotedBishopPawn);
+                    }else if (loaded.equals("WhitePromotedKnightPawn")){
+                        Knight WhitePromotedKnightPawn = new Knight("WhitePromotedKnightPawn");
+                        WhitePromotedKnightPawn.setIcon(WhiteKnightImg);
+                        Tiles[i][j].setPiece(WhitePromotedKnightPawn);
+                    }else if (loaded.equals("WhitePromotedQueenPawn")){
+                        Queen WhitePromotedQueenPawn = new Queen("WhitePromotedQueenPawn");
+                        WhitePromotedQueenPawn.setIcon(WhiteQueenImg);
+                        Tiles[i][j].setPiece(WhitePromotedQueenPawn);
+                    }else if (loaded.equals("BlackLeftKnight")){
+                        Tiles[i][j].setPiece(BlackLeftKnight);
+                    }else if (loaded.equals("BlackRightKnight")){
+                        Tiles[i][j].setPiece(BlackRightKnight);
+                    }else if (loaded.equals("BlackLeftBishop")){
+                        Tiles[i][j].setPiece(BlackLeftBishop);
+                    }else if (loaded.equals("BlackRightBishop")){
+                        Tiles[i][j].setPiece(BlackRightBishop);
+                    }else if (loaded.equals("BlackLeftRook")){
+                        Tiles[i][j].setPiece(BlackLeftRook);
+                    }else if (loaded.equals("BlackRightRook")){
+                        Tiles[i][j].setPiece(BlackRightRook);
+                    }else if (loaded.equals("BlackQueen")){
+                        Tiles[i][j].setPiece(BlackQueen);
+                    }else if (loaded.equals("BlackKing")){
+                        Tiles[i][j].setPiece(BlackKing);
+                    }else if (loaded.equals("BlackPromotedQueenPawn")){
+                        Queen BlackPromotedQueenPawn = new Queen("BlackPromotedQueenPawn");
+                        BlackPromotedQueenPawn.setIcon(BlackQueenImg);
+                        Tiles[i][j].setPiece(BlackPromotedQueenPawn);
+                    }else if (loaded.equals("BlackPromotedRookPawn")){
+                        Rook BlackPromotedRookPawn = new Rook("BlackPromotedRookPawn");
+                        BlackPromotedRookPawn.setIcon(BlackRookImg);
+                        Tiles[i][j].setPiece(BlackPromotedRookPawn);
+                    }else if (loaded.equals("BlackPromotedBishopPawn")){
+                        Bishop BlackPromotedBishopPawn = new Bishop("BlackPromotedBishopPawn");
+                        BlackPromotedBishopPawn.setIcon(BlackBishopImg);
+                        Tiles[i][j].setPiece(BlackPromotedBishopPawn);
+                    }else if (loaded.equals("BlackPromotedKnightPawn")){
+                        Knight BlackPromotedKnightPawn = new Knight("BlackPromotedKnightPawn");
+                        BlackPromotedKnightPawn.setIcon(BlackKnightImg);
+                        Tiles[i][j].setPiece(BlackPromotedKnightPawn);
+                    }else if (loaded.equals("WhitePawn0")){
+                        Tiles[i][j].setPiece(WhitePawns[0]);
+                    }else if (loaded.equals("WhitePawn1")){
+                        Tiles[i][j].setPiece(WhitePawns[1]);
+                    }else if (loaded.equals("WhitePawn2")){
+                        Tiles[i][j].setPiece(WhitePawns[2]);
+                    }else if (loaded.equals("WhitePawn3")){
+                        Tiles[i][j].setPiece(WhitePawns[3]);
+                    }else if (loaded.equals("WhitePawn4")){
+                        Tiles[i][j].setPiece(WhitePawns[4]);
+                    }else if (loaded.equals("WhitePawn5")){
+                        Tiles[i][j].setPiece(WhitePawns[5]);
+                    }else if (loaded.equals("WhitePawn6")){
+                        Tiles[i][j].setPiece(WhitePawns[6]);
+                    }else if (loaded.equals("WhitePawn7")){
+                        Tiles[i][j].setPiece(WhitePawns[7]);
+                    }else if (loaded.equals("BlackPawn0")){
+                        Tiles[i][j].setPiece(BlackPawns[0]);
+                    }else if (loaded.equals("BlackPawn1")){
+                        Tiles[i][j].setPiece(BlackPawns[1]);
+                    }else if (loaded.equals("BlackPawn2")){
+                        Tiles[i][j].setPiece(BlackPawns[2]);
+                    }else if (loaded.equals("BlackPawn3")){
+                        Tiles[i][j].setPiece(BlackPawns[3]);
+                    }else if (loaded.equals("BlackPawn4")){
+                        Tiles[i][j].setPiece(BlackPawns[4]);
+                    }else if (loaded.equals("BlackPawn5")){
+                        Tiles[i][j].setPiece(BlackPawns[5]);
+                    }else if (loaded.equals("BlackPawn6")){
+                        Tiles[i][j].setPiece(BlackPawns[6]);
+                    }else if (loaded.equals("BlackPawn7")){
+                        Tiles[i][j].setPiece(BlackPawns[7]);
+                    }
+                }
+            }
+            player = o.readInt();
+            o.close();
+            OriginalColor();
+        }catch (Exception ex){
+
+        }
+    }
 }
