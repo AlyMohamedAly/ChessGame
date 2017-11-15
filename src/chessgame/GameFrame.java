@@ -19,9 +19,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 public class GameFrame extends JFrame implements ActionListener{
-
+    private JTextArea area = new JTextArea();
     private final JMenuBar mnuBar = new JMenuBar();
     private final JMenu mnuFile = new JMenu("File");
     private final JMenuItem itmOpen = new JMenuItem("Load");
@@ -81,6 +82,7 @@ public class GameFrame extends JFrame implements ActionListener{
     private void init (){
         Color B = new Color(145, 83, 55);
         Color W = new Color(249, 217, 202);
+        
 
         for (int i = 0; i < 8; i++){
             for (int j = 0; j < 8; j++){
@@ -134,6 +136,9 @@ public class GameFrame extends JFrame implements ActionListener{
         }
         this.setJMenuBar(mnuBar);
         mnuBar.add(mnuFile);
+        mnuBar.add(area);
+        area.setEditable(false);
+        area.setText("\t\t\tPlayer "+player+" (White)");
         mnuFile.add(itmOpen);
         mnuFile.add(itmSave);
         itmOpen.addActionListener(this);
@@ -361,8 +366,10 @@ public class GameFrame extends JFrame implements ActionListener{
     public void SwapPlayers (){
         if (player == 1){
             player = 2;
+            area.setText("\t\t\tPlayer "+player+" (Black)");
         }else{
             player = 1;
+            area.setText("\t\t\tPlayer "+player+" (White)");
         }
     }
 
