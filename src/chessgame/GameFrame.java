@@ -27,6 +27,7 @@ public class GameFrame extends JFrame implements ActionListener{
     private final JMenu mnuFile = new JMenu("File");
     private final JMenuItem itmOpen = new JMenuItem("Load");
     private final JMenuItem itmSave = new JMenuItem("Save");
+    private final JMenuItem itmNew = new JMenuItem("New");
 
     private final Pawn[] WhitePawns = new Pawn[8];
     private final Knight WhiteLeftKnight = new Knight("WhiteLeftKnight");
@@ -139,11 +140,12 @@ public class GameFrame extends JFrame implements ActionListener{
         mnuBar.add(area);
         area.setEditable(false);
         area.setText("\t\t\tPlayer "+player+" (White)");
-        mnuFile.add(itmOpen);
+        mnuFile.add(itmNew);
         mnuFile.add(itmSave);
+        mnuFile.add(itmOpen);
         itmOpen.addActionListener(this);
         itmSave.addActionListener(this);
-
+        itmNew.addActionListener(this);
         WhiteLeftKnight.setIcon(WhiteKnightImg);
         WhiteRightKnight.setIcon(WhiteKnightImg);
         Tiles[7][1].add(WhiteLeftKnight);
@@ -184,7 +186,14 @@ public class GameFrame extends JFrame implements ActionListener{
         Tiles[0][4].add(BlackKing);
         Tiles[0][3].add(BlackQueen);
     }
-
+    public void update(){
+        for(int i=0;i<8;i++){
+            for (int j = 0; j <8; j++) {
+                Tiles[i][j].repaint();
+                Tiles[i][j].validate();
+            }
+        }
+    }
     @Override
     public void actionPerformed (ActionEvent e){
         Object o = e.getSource();
@@ -192,6 +201,15 @@ public class GameFrame extends JFrame implements ActionListener{
             save();
         }else if (o == itmOpen){
             load();
+        }
+        else if (o== itmNew){
+            this.dispose();
+            GameFrame gg = new GameFrame();
+            gg.setTitle("Chess Masters");
+            gg.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            gg.setBounds(300, 10, 646, 692);
+            gg.setResizable(false);
+            gg.setVisible(true);
         }
     }
 
