@@ -1059,6 +1059,11 @@ public class GameFrame extends JFrame implements ActionListener{
                 }
             }
             player = o.readInt();
+            if (player == 1){
+                area.setText("\t\t\tPlayer "+player+" (White)");
+            }else{
+                area.setText("\t\t\tPlayer "+player+" (Black)");
+            }
             o.close();
             OriginalColor();
         }catch (Exception ex){
