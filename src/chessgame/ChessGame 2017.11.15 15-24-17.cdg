@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="ChessGame">
+  <ClassDiagramComponents>
+    <Class name="Bishop" package="chessgame" visibility="public" xPosition="1464.0" yPosition="357.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="package">
+          <Argument type="String" name="s"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="canKill" returnType="boolean" visibility="public">
+          <Argument type="Tile" name="c"/>
+          <Argument type="Tile" name="t"/>
+        </Method>
+        <Method name="canMove" returnType="boolean" visibility="public">
+          <Argument type="Tile" name="c"/>
+          <Argument type="Tile" name="t"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="GameFrame" package="chessgame" visibility="public" xPosition="423.0" yPosition="96.0">
+      <Fields>
+        <Field name="WhitePawns" type="Pawn[]" visibility="private" isFinal="true"/>
+        <Field name="WhiteLeftKnight" type="Knight" visibility="private" isFinal="true"/>
+        <Field name="WhiteRightKnight" type="Knight" visibility="private" isFinal="true"/>
+        <Field name="WhiteLeftBishop" type="Bishop" visibility="private" isFinal="true"/>
+        <Field name="WhiteRightBishop" type="Bishop" visibility="private" isFinal="true"/>
+        <Field name="WhiteLeftRook" type="Rook" visibility="private" isFinal="true"/>
+        <Field name="WhiteRightRook" type="Rook" visibility="private" isFinal="true"/>
+        <Field name="WhiteQueen" type="Queen" visibility="private" isFinal="true"/>
+        <Field name="WhiteKing" type="King" visibility="private" isFinal="true"/>
+        <Field name="BlackPawns" type="Pawn[]" visibility="private" isFinal="true"/>
+        <Field name="BlackLeftKnight" type="Knight" visibility="private" isFinal="true"/>
+        <Field name="BlackRightKnight" type="Knight" visibility="private" isFinal="true"/>
+        <Field name="BlackLeftBishop" type="Bishop" visibility="private" isFinal="true"/>
+        <Field name="BlackRightBishop" type="Bishop" visibility="private" isFinal="true"/>
+        <Field name="BlackLeftRook" type="Rook" visibility="private" isFinal="true"/>
+        <Field name="BlackRightRook" type="Rook" visibility="private" isFinal="true"/>
+        <Field name="BlackQueen" type="Queen" visibility="private" isFinal="true"/>
+        <Field name="BlackKing" type="King" visibility="private" isFinal="true"/>
+        <Field name="Tiles" type="Tile[][]" visibility="public" isStatic="true"/>
+        <Field name="current" type="Tile" visibility="private"/>
+        <Field name="player" type="int" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="package"/>
+      </Constructors>
+      <Methods>
+        <Method name="init" returnType="void" visibility="private"/>
+        <Method name="update" returnType="void" visibility="public"/>
+        <Method name="actionPerformed" returnType="void" visibility="public">
+          <Argument type="ActionEvent" name="e"/>
+        </Method>
+        <Method name="getKing" returnType="King" visibility="public">
+          <Argument type="Piece" name="p"/>
+        </Method>
+        <Method name="getOtherKing" returnType="King" visibility="public">
+          <Argument type="Piece" name="p"/>
+        </Method>
+        <Method name="MovePiece" returnType="void" visibility="public">
+          <Argument type="int" name="i"/>
+          <Argument type="int" name="j"/>
+        </Method>
+        <Method name="SwapPlayers" returnType="void" visibility="public"/>
+        <Method name="OriginalColor" returnType="void" visibility="public"/>
+        <Method name="EmptyTile" returnType="Tile" visibility="public"/>
+        <Method name="canBlock" returnType="boolean" visibility="public">
+          <Argument type="Piece" name="currentPiece"/>
+          <Argument type="Piece" name="threat"/>
+          <Argument type="int" name="i"/>
+          <Argument type="int" name="j"/>
+        </Method>
+        <Method name="CheckStaleMate" returnType="boolean" visibility="public">
+          <Argument type="King" name="currentKing"/>
+          <Argument type="String" name="MyColor"/>
+        </Method>
+        <Method name="getOtherThreats" returnType="Piece[]" visibility="public">
+          <Argument type="Piece" name="currentPS"/>
+        </Method>
+        <Method name="getThreats" returnType="Piece[]" visibility="public"/>
+        <Method name="CanKingDie" returnType="boolean" visibility="public">
+          <Argument type="int" name="i"/>
+          <Argument type="int" name="j"/>
+          <Argument type="King" name="currentKing"/>
+          <Argument type="boolean" name="color"/>
+        </Method>
+        <Method name="CheckDraw" returnType="void" visibility="public"/>
+        <Method name="CheckMate" returnType="void" visibility="public">
+          <Argument type="int" name="n"/>
+        </Method>
+        <Method name="isDefending" returnType="boolean" visibility="public">
+          <Argument type="Piece" name="dps"/>
+          <Argument type="Tile" name="Target"/>
+        </Method>
+        <Method name="Promote" returnType="void" visibility="public"/>
+        <Method name="CheckGameOver" returnType="void" visibility="public">
+          <Argument type="Piece" name="currentPS"/>
+        </Method>
+        <Method name="ColorMoves" returnType="void" visibility="public">
+          <Argument type="int" name="i"/>
+          <Argument type="int" name="j"/>
+        </Method>
+        <Method name="CanKingMove" returnType="boolean" visibility="public">
+          <Argument type="Piece" name="currentKing"/>
+        </Method>
+        <Method name="save" returnType="void" visibility="public"/>
+        <Method name="load" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="King" package="chessgame" visibility="public" xPosition="1318.0" yPosition="951.0">
+      <Fields>
+        <Field name="checked" type="boolean" visibility="public"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="package">
+          <Argument type="String" name="s"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="canKill" returnType="boolean" visibility="public">
+          <Argument type="Tile" name="c"/>
+          <Argument type="Tile" name="t"/>
+        </Method>
+        <Method name="canMove" returnType="boolean" visibility="public">
+          <Argument type="Tile" name="c"/>
+          <Argument type="Tile" name="t"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Knight" package="chessgame" visibility="public" xPosition="947.0" yPosition="926.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="package">
+          <Argument type="String" name="s"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="canKill" returnType="boolean" visibility="public">
+          <Argument type="Tile" name="c"/>
+          <Argument type="Tile" name="t"/>
+        </Method>
+        <Method name="canMove" returnType="boolean" visibility="public">
+          <Argument type="Tile" name="c"/>
+          <Argument type="Tile" name="t"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Pawn" package="chessgame" visibility="public" xPosition="1546.0" yPosition="157.0">
+      <Fields>
+        <Field name="Moved" type="int" visibility="public"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="package">
+          <Argument type="String" name="s"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="canKill" returnType="boolean" visibility="public">
+          <Argument type="Tile" name="c"/>
+          <Argument type="Tile" name="t"/>
+        </Method>
+        <Method name="canPassat" returnType="boolean" visibility="public">
+          <Argument type="Tile" name="c"/>
+          <Argument type="Tile" name="t"/>
+          <Argument type="Tile" name="t2"/>
+        </Method>
+        <Method name="canMove" returnType="boolean" visibility="public">
+          <Argument type="Tile" name="c"/>
+          <Argument type="Tile" name="t"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Piece" package="chessgame" visibility="public" isAbstract="true" xPosition="962.0" yPosition="102.0">
+      <Fields>
+        <Field name="Name" type="String" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="package">
+          <Argument type="String" name="name"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getColor" returnType="String" visibility="package"/>
+        <Method name="GetType" returnType="String" visibility="package"/>
+        <Method name="canMove" returnType="boolean" visibility="public" isAbstract="true">
+          <Argument type="Tile" name="c"/>
+          <Argument type="Tile" name="t"/>
+        </Method>
+        <Method name="canKill" returnType="boolean" visibility="public" isAbstract="true">
+          <Argument type="Tile" name="c"/>
+          <Argument type="Tile" name="t"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Queen" package="chessgame" visibility="public" xPosition="1247.0" yPosition="497.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="package">
+          <Argument type="String" name="s"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="canKill" returnType="boolean" visibility="public">
+          <Argument type="Tile" name="c"/>
+          <Argument type="Tile" name="t"/>
+        </Method>
+        <Method name="canMove" returnType="boolean" visibility="public">
+          <Argument type="Tile" name="c"/>
+          <Argument type="Tile" name="t"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Rook" package="chessgame" visibility="public" xPosition="850.0" yPosition="382.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="package">
+          <Argument type="String" name="s"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="canKill" returnType="boolean" visibility="public">
+          <Argument type="Tile" name="c"/>
+          <Argument type="Tile" name="t"/>
+        </Method>
+        <Method name="canMove" returnType="boolean" visibility="public">
+          <Argument type="Tile" name="c"/>
+          <Argument type="Tile" name="t"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Tile" package="chessgame" visibility="public" xPosition="1663.0" yPosition="652.0">
+      <Fields>
+        <Field name="C" type="Color" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="setColor" returnType="void" visibility="package">
+          <Argument type="Color" name="c"/>
+        </Method>
+        <Method name="getColor" returnType="Color" visibility="package"/>
+        <Method name="setPiece" returnType="void" visibility="package">
+          <Argument type="Piece" name="pp"/>
+        </Method>
+        <Method name="getPiece" returnType="Piece" visibility="package"/>
+        <Method name="removePiece" returnType="void" visibility="package"/>
+        <Method name="BlackTile" returnType="void" visibility="package"/>
+        <Method name="WhiteTile" returnType="void" visibility="package"/>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <IsRelation name="is" source="chessgame.King" target="chessgame.Piece"/>
+    <HasRelation name="" source="chessgame.GameFrame" target="chessgame.King" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="chessgame.Bishop" target="chessgame.Piece"/>
+    <UseRelation source="chessgame.Queen" target="chessgame.Tile" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation name="" source="chessgame.Pawn" target="chessgame.Tile" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="chessgame.Queen" target="chessgame.Piece"/>
+    <UseRelation source="chessgame.GameFrame" target="chessgame.Piece" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation name="" source="chessgame.Knight" target="chessgame.Tile" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation name="" source="chessgame.Bishop" target="chessgame.Tile" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="chessgame.Knight" target="chessgame.Piece"/>
+    <IsRelation name="is" source="chessgame.Pawn" target="chessgame.Piece"/>
+    <IsRelation name="is" source="chessgame.Rook" target="chessgame.Piece"/>
+    <UseRelation source="chessgame.Piece" target="chessgame.Tile" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="chessgame.GameFrame" target="chessgame.Tile" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation name="" source="chessgame.King" target="chessgame.Tile" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="current" source="chessgame.GameFrame" target="chessgame.Tile" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="chessgame.Rook" target="chessgame.Tile" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="" source="chessgame.GameFrame" target="chessgame.Rook" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="" source="chessgame.GameFrame" target="chessgame.Bishop" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="" source="chessgame.GameFrame" target="chessgame.Queen" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="" source="chessgame.GameFrame" target="chessgame.Knight" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>
